@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "name": "Cuaderno universitario A4",
+    "description": "Cuaderno espiralado de 84 hojas rayadas, tapa dura",
+    "price": 4500.00,
+    "type": "PHYSICAL",
+    "stock": 120,
+    "category": { "id": 1, "name": "Útiles", "description": "Útiles escolares y de oficina" },
+    "publisherId": 1,
+    "freeShipping": true,
+    "international": false
+  },
+  {
+    "id": 2,
+    "name": "Calculadora científica",
+    "description": "Calculadora científica con 417 funciones, ideal para Análisis Matemático",
+    "price": 38999.99,
+    "type": "PHYSICAL",
+    "stock": 15,
+    "category": { "id": 2, "name": "Tecnología", "description": "Dispositivos electrónicos para estudiar" },
+    "publisherId": 2,
+    "freeShipping": true,
+    "international": true
+  },
+  {
+    "id": 3,
+    "name": "Set de resaltadores pastel",
+    "description": "Pack de 6 resaltadores de colores pastel con punta biselada",
+    "price": 7250.50,
+    "type": "PHYSICAL",
+    "stock": 0,
+    "category": { "id": 1, "name": "Útiles", "description": "Útiles escolares y de oficina" },
+    "publisherId": 1,
+    "freeShipping": false,
+    "international": true
+  },
+  {
+    "id": 4,
+    "name": "Mochila para notebook 15.6\"",
+    "description": "Mochila impermeable con compartimento acolchado y puerto USB",
+    "price": 52000.00,
+    "type": "PHYSICAL",
+    "stock": 8,
+    "category": { "id": 3, "name": "Accesorios", "description": "Mochilas, cartucheras y más" },
+    "publisherId": 3,
+    "freeShipping": false,
+    "international": false
+  },
+  {
+    "id": 5,
+    "name": "Clase particular de Programación I",
+    "description": "Clase de repaso de Java para el parcial, modalidad virtual",
+    "price": 15000.00,
+    "type": "SERVICE",
+    "minutesDuration": 60,
+    "attendanceType": "VIRTUAL",
+    "category": { "id": 4, "name": "Clases particulares", "description": "Apoyo académico entre estudiantes" },
+    "publisherId": 4,
+    "freeShipping": false,
+    "international": false
+  },
+  {
+    "id": 6,
+    "name": "Curso intensivo de Física I",
+    "description": "Curso de 4 encuentros presenciales en la sede Monserrat",
+    "price": 45000.00,
+    "type": "SERVICE",
+    "minutesDuration": 120,
+    "attendanceType": "PRESENCIAL",
+    "category": { "id": 5, "name": "Cursos", "description": "Cursos cortos y talleres" },
+    "publisherId": 5,
+    "freeShipping": false,
+    "international": false
+  }
+]

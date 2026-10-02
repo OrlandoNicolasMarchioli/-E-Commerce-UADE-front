@@ -13,9 +13,9 @@ const ProductCard = ({ name, description, price, category, children }) => {
 
   return (
     <div className="product-card">
-      <span className="product-card__category">{category}</span>
+      {category && <span className="product-card__category">{category}</span>}
       <h3 className="product-card__name">{name}</h3>
-      <p className="product-card__description">{description}</p>
+      <p className="product-card__description">{description ? description : "Sin descripción"}</p>
       <div className="product-card__price">{formattedPrice}</div>
       <div className="product-card__extras">{children}</div>
     </div>

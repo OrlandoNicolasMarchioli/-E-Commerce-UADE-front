@@ -16,7 +16,7 @@ const ProductList = () => {
             name={product.name}
             description={product.description}
             price={product.price}
-            category={product.category.name}
+            category={product.category?.name}
           >
             {/* && -> solo se muestra si es true */}
             {product.freeShipping && (
@@ -32,9 +32,7 @@ const ProductList = () => {
 
             {/* condicionales extra con los datos del back (type y stock) */}
             {product.type === 'SERVICE' && (
-              <span className="badge badge--service">
-                ⏱ {product.minutesDuration} min · {product.attendanceType}
-              </span>
+              <span className="badge badge--service">🎓 Servicio</span>
             )}
             {product.type === 'PHYSICAL' && product.stock === 0 && (
               <span className="badge badge--no-stock">Sin stock</span>

@@ -70,6 +70,7 @@ Todos los mockups son HTML estático que usan únicamente CSS custom properties 
 | [15](docs/mockups/15-admin-orders.html) | Admin · gestión de pedidos · cambio de estado | `PUT /api/orders/{id}/status` |
 | [16](docs/mockups/16-cart-states.html) | Carrito vacío · toast add-to-cart · vaciar carrito | `POST /api/cart/items` · `DELETE /api/cart` |
 | [17](docs/mockups/17-review-edit.html) | Editar reseña inline · confirmar eliminar | `PUT /api/products/{id}/reviews/{reviewId}` · `DELETE /api/products/{id}/reviews/{reviewId}` |
+| [18](docs/mockups/18-component-library.html) | Component Library — catálogo de todos los componentes React | — (referencia de diseño) |
 
 ---
 

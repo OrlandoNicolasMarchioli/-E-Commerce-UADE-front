@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "demo": "vite --config vite.demo.config.js",
     "build": "vite build",
+    "build:demo": "vite build --config vite.demo.config.js",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run"
   },
   "dependencies": {
     "@rolldown/binding-win32-x64-msvc": "^1.2.14",

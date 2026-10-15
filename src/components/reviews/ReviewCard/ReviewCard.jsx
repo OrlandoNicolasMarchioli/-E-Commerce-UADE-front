@@ -1,10 +1,13 @@
 import '../../ui.css';
 
+// Formats a date string to a human-readable medium date (e.g. "15 Oct 2024")
 const formatDate = (d) =>
   new Date(d).toLocaleDateString('en-GB', { dateStyle: 'medium' });
 
+/** Displays a single review with avatar initials, star rating, comment, and owner-only edit/delete controls. */
 const ReviewCard = ({ review, isOwner = false, onEdit, onDelete }) => {
   const { id, rating, comment, reviewDate, firstName, lastName } = review;
+  // Gracefully handles missing name fields with a '?' placeholder
   const initials = `${firstName?.[0] ?? '?'}${lastName?.[0] ?? ''}`;
 
   return (

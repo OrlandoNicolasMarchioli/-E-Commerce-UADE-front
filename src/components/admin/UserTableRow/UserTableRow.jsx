@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Admin table row for a user account; the block/unblock button style and label flip based on user.blocked. */
 const UserTableRow = ({ user, onEdit, onToggleBlock }) => (
   <tr>
     <td>
@@ -14,6 +15,7 @@ const UserTableRow = ({ user, onEdit, onToggleBlock }) => (
     <td>{user.role}</td>
     <td>{user.joinDate}</td>
     <td>
+      {/* Reusing the stock badge variants as a quick Active/Blocked visual indicator */}
       <span className={`ui-badge ui-badge--${user.blocked ? 'out-of-stock' : 'in-stock'}`}>
         {user.blocked ? 'Blocked' : 'Active'}
       </span>

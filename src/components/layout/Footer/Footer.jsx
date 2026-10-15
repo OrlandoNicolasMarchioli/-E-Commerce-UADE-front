@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Renders the site footer with configurable link columns and a copyright bar below. */
 const Footer = ({ columns = [], copyright = '© 2024 E-Commerce. All rights reserved.' }) => (
   <>
     <footer className="ui-footer">

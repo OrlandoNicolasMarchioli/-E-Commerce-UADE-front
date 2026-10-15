@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Card that toggles between Sign In and Create Account tabs, with client-side validation before calling callbacks. */
 const AuthCard = ({ onLogin, onRegister }) => {
   const [tab, setTab] = useState('login');
   const [form, setForm] = useState({ email: '', password: '', name: '', confirmPassword: '' });
   const [error, setError] = useState('');
 
+  // Returns a generic change handler that updates a single field in the form state
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const handleSubmit = (e) => {

@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Admin list row for a single category showing its icon, name, product count, and edit/delete actions. */
 const CategoryListItem = ({ category, onEdit, onDelete }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 16px', background: 'var(--color-neutral-0)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)' }}>
     <div style={{ width: 40, height: 40, background: 'var(--color-brand-primary-light)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', flexShrink: 0 }}>

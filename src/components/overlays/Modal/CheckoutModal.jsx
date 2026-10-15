@@ -1,10 +1,13 @@
 import Modal from './Modal';
 import '../../ui.css';
 
+// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (p) =>
   p.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
+/** Purchase confirmation modal listing cart items and the computed total before committing the order. */
 const CheckoutModal = ({ items = [], onConfirm, onCancel }) => {
+  // Use server-provided subtotal when available; otherwise compute it client-side
   const total = items.reduce(
     (s, i) => s + (i.subtotal ?? i.unitPrice * i.quantity),
     0,

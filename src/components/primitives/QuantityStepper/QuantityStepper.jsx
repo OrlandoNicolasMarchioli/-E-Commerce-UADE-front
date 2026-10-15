@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Increment/decrement quantity control supporting both controlled (value prop) and uncontrolled (defaultValue) usage. */
 const QuantityStepper = ({
   value: externalValue,
   onChange,
@@ -8,11 +9,13 @@ const QuantityStepper = ({
   max = 99,
   defaultValue = 1,
 }) => {
+  // isControlled: true when the parent owns the value via the value prop
   const isControlled = externalValue !== undefined;
   const [internal, setInternal] = useState(defaultValue);
   const qty = isControlled ? externalValue : internal;
 
   const update = (next) => {
+    // Clamp to [min, max] before updating
     if (next < min || next > max) return;
     if (!isControlled) setInternal(next);
     onChange?.(next);

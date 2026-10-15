@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Compact strip showing a product thumbnail, name, and category — used as context above review or order forms. */
 const ProductContextStrip = ({ imageUrl, name, category }) => (
   <div className="ui-product-strip">
     <div className="ui-product-strip-img">

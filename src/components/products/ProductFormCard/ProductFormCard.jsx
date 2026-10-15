@@ -2,8 +2,10 @@ import { useState } from 'react';
 import ImageUploadArea from '../ImageUploadArea/ImageUploadArea';
 import '../../ui.css';
 
+// Default blank form values; merged with initialValues to support both create and edit flows
 const INITIAL = { name: '', category: '', price: '', stock: '', description: '' };
 
+/** Form card for creating or editing a product; pre-fills fields from initialValues when editing. */
 const ProductFormCard = ({ initialValues, categories = [], onSubmit, onCancel }) => {
   const [form, setForm] = useState({ ...INITIAL, ...initialValues });
   const [images, setImages] = useState([]);

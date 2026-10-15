@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+// Default blank values; merged with initialValues so the form works for both create and edit flows
 const INITIAL = { name: '', icon: '', description: '' };
 
+/** Form panel for creating or editing a category; pre-fills fields from initialValues when editing. */
 const CategoryFormPanel = ({ initialValues, onSubmit, onCancel }) => {
   const [form, setForm] = useState({ ...INITIAL, ...initialValues });
 

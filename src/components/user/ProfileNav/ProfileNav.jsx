@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+// Default nav items used when no custom items are passed; covers the common profile actions
 const DEFAULT_ITEMS = [
   { id: 'edit',     label: '✏️ Edit profile' },
   { id: 'password', label: '🔒 Change password' },
@@ -8,6 +9,7 @@ const DEFAULT_ITEMS = [
   { id: 'logout',   label: '🚪 Sign out', danger: true },
 ];
 
+/** Vertical navigation list for the user profile section; items with danger=true render in a destructive color. */
 const ProfileNav = ({ items = DEFAULT_ITEMS, activeId, onChange }) => (
   <nav className="ui-profile-nav">
     {items.map((item) => (

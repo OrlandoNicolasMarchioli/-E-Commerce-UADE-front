@@ -1,10 +1,13 @@
 import '../../ui.css';
 
+// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (price) =>
   price.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
+/** Clickable product summary card showing image, category, name, rating, price, and stock status. */
 const ProductCard = ({ product, onClick }) => {
   const { name, price, type, stock, category, images = [], averageRating, reviewCount } = product;
+  // Only physical products can be out of stock; services are always available
   const outOfStock = type === 'PHYSICAL' && stock === 0;
   const imgSrc     = images[0]?.url;
 

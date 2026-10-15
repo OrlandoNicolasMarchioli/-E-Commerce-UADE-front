@@ -1,9 +1,12 @@
 import '../../ui.css';
 
+// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (p) =>
   p.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
+/** Sidebar summary listing cart items with their subtotals, a computed total, and checkout/continue buttons. */
 const OrderSummary = ({ items = [], onCheckout, onContinue }) => {
+  // Use server-provided subtotal when available; otherwise compute it client-side
   const total = items.reduce(
     (acc, item) => acc + (item.subtotal ?? item.unitPrice * item.quantity),
     0,

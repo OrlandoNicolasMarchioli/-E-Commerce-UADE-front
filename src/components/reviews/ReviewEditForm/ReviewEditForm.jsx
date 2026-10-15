@@ -2,6 +2,7 @@ import { useState } from 'react';
 import StarSelector from '../../primitives/StarSelector/StarSelector';
 import '../../ui.css';
 
+/** Form for creating or editing a review; the Save button is disabled until a star rating is selected. */
 const ReviewEditForm = ({ initialRating = 0, initialComment = '', onSave, onCancel }) => {
   const [rating, setRating] = useState(initialRating);
   const [comment, setComment] = useState(initialComment);

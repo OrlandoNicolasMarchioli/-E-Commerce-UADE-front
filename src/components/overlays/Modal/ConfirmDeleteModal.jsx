@@ -1,5 +1,6 @@
 import Modal from './Modal';
 
+/** Danger confirmation modal for deleting a product by name; wraps the base Modal with a preset danger variant. */
 const ConfirmDeleteModal = ({ productName, onConfirm, onCancel }) => (
   <Modal
     title="Delete product?"

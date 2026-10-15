@@ -2,8 +2,10 @@ import { useState, useCallback } from 'react';
 import Toast from './Toast';
 import '../../ui.css';
 
+// Module-level counter so each toast gets a unique id across renders
 let toastId = 0;
 
+/** Custom hook that manages the toast list and exposes show/dismiss helpers to any component. */
 export const useToast = () => {
   const [toasts, setToasts] = useState([]);
 
@@ -20,6 +22,7 @@ export const useToast = () => {
   return { toasts, show, dismiss };
 };
 
+/** Fixed-position container that stacks active Toast components; pair with useToast for state management. */
 const ToastContainer = ({ toasts = [], onDismiss }) => (
   <div className="ui-toast-container" aria-live="polite" aria-atomic="false">
     {toasts.map((t) => (

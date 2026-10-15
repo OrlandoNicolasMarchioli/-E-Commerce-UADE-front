@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Renders a breadcrumb trail; items without href are treated as the current (non-linked) page. */
 const Breadcrumb = ({ items = [] }) => (
   <nav className="ui-bc" aria-label="Breadcrumb">
     {items.map((item, i) => (

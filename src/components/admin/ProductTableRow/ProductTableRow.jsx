@@ -1,6 +1,7 @@
 import OrderStatusBadge from '../../primitives/Badge/OrderStatusBadge';
 import '../../ui.css';
 
+/** Admin table row for a single product with thumbnail, key fields, stock badge, and edit/delete actions. */
 const ProductTableRow = ({ product, onEdit, onDelete }) => (
   <tr>
     <td>

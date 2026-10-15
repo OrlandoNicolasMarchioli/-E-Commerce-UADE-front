@@ -1,9 +1,12 @@
 import '../../ui.css';
 
+/** Aggregate review summary showing average score and a per-star distribution bar chart; hidden when there are no reviews. */
 const ReviewSummary = ({ reviews = [] }) => {
   if (reviews.length === 0) return null;
 
+  // Average rounded to one decimal place for display
   const avg  = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+  // Distribution listed highest-to-lowest so 5★ appears at the top
   const dist = [5, 4, 3, 2, 1].map((star) => ({
     star,
     count: reviews.filter((r) => r.rating === star).length,

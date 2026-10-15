@@ -1,7 +1,7 @@
-import ProductList from './components/ProductList.jsx'
+import ComponentLibraryPage from './pages/ComponentLibraryPage/ComponentLibraryPage';
 
 function App() {
-  return <ProductList />
+  return <ComponentLibraryPage />;
 }
 
-export default App
+export default App;

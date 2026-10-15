@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Búsqueda</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--error:#DC2626;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowmd:0 4px 6px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+/* NAVBAR */
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl);white-space:nowrap}
+.nav-search{flex:1;position:relative}
+.nav-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:var(--r12);font-size:var(--base);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 16px;background:var(--accent);border:none;border-radius:0 var(--r12) var(--r12) 0;cursor:pointer;font-size:var(--base)}
+.nav-actions{display:flex;gap:12px;align-items:center;flex-shrink:0}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);font-weight:var(--fw5);cursor:pointer;text-decoration:none}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6);position:relative}
+.cart-dot{position:absolute;top:-5px;right:-5px;background:var(--brand2);color:#fff;border-radius:var(--rfull);font-size:10px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:700}
+/* BREADCRUMB */
+.breadcrumb{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px;align-items:center}
+.breadcrumb a{color:var(--brand2);text-decoration:none}
+/* LAYOUT */
+.search-layout{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:24px 32px;max-width:1280px;margin:0 auto}
+/* SIDEBAR */
+.sidebar{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;align-self:start;position:sticky;top:88px}
+.sidebar h3{font-size:var(--base);font-weight:var(--fw7);margin-bottom:16px;color:var(--brand)}
+.filter-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--n200)}
+.filter-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.filter-title{font-size:var(--sm);font-weight:var(--fw6);margin-bottom:12px;color:var(--n700);text-transform:uppercase;letter-spacing:.05em}
+.filter-option{display:flex;align-items:center;gap:8px;margin-bottom:10px;cursor:pointer}
+.filter-option input[type=checkbox]{accent-color:var(--brand);width:16px;height:16px}
+.filter-option label{font-size:var(--sm);color:var(--n700);cursor:pointer;flex:1}
+.filter-option .count{font-size:0.75rem;color:var(--n500);background:var(--n100);padding:1px 7px;border-radius:var(--rfull)}
+.price-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.price-input{padding:8px 10px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);width:100%}
+.btn-apply{width:100%;margin-top:10px;padding:8px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-clear{background:transparent;border:1px solid var(--n300);color:var(--n600);width:100%;padding:7px;border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff);margin-top:8px}
+/* MAIN */
+.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;background:var(--n0);padding:14px 20px;border-radius:var(--r8);box-shadow:var(--shadow)}
+.results-count{font-size:var(--sm);color:var(--n600)}
+.results-count strong{color:var(--n900)}
+.sort-row{display:flex;align-items:center;gap:12px}
+.sort-label{font-size:var(--sm);color:var(--n600)}
+.sort-select{padding:7px 12px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);color:var(--n700);cursor:pointer;background:var(--n0)}
+.view-toggle{display:flex;gap:4px}
+.view-btn{padding:6px 10px;border:1px solid var(--n300);background:var(--n0);cursor:pointer;border-radius:var(--r4);color:var(--n600);font-size:var(--sm)}
+.view-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* PRODUCT GRID */
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product-card{background:var(--n0);border-radius:var(--r12);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:box-shadow .15s,transform .15s}
+.product-card:hover{box-shadow:var(--shadowmd);transform:translateY(-2px)}
+.product-img{width:100%;height:180px;background:var(--n100);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--sm);position:relative}
+.product-type-badge{position:absolute;top:10px;left:10px;background:var(--brand);color:#fff;font-size:0.7rem;font-weight:var(--fw6);padding:3px 8px;border-radius:var(--rfull);letter-spacing:.03em}
+.product-body{padding:16px}
+.product-cat{font-size:0.75rem;color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.product-name{font-size:var(--base);font-weight:var(--fw6);margin-bottom:6px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.product-rating{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.stars{color:var(--accent);font-size:0.8rem}
+.rating-count{font-size:0.75rem;color:var(--n600)}
+.product-price{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand)}
+.product-stock{font-size:0.75rem;color:var(--n600);margin-top:3px}
+.product-footer{padding:12px 16px;border-top:1px solid var(--n200);display:flex;gap:8px}
+.btn-cart{flex:1;padding:9px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-detail{padding:9px 14px;background:transparent;color:var(--brand);border:1.5px solid var(--brand);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* NO RESULTS */
+.no-results{text-align:center;padding:64px 32px;color:var(--n600)}
+.no-results h3{font-size:var(--xl);margin-bottom:8px;color:var(--n700)}
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:32px}
+.page-btn{width:38px;height:38px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r8);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.page-btn:hover:not(.active){background:var(--n100)}
+/* ACTIVE FILTERS */
+.active-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-tag{background:var(--n100);border:1px solid var(--n200);border-radius:var(--rfull);padding:5px 12px;font-size:0.75rem;color:var(--n700);display:flex;align-items:center;gap:6px}
+.filter-tag button{background:none;border:none;cursor:pointer;color:var(--n500);font-size:var(--sm);line-height:1;padding:0}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search">
+    <input type="text" value="notebook">
+    <button class="nav-search-btn">🔍</button>
+  </div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Mis compras</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒 <span class="cart-dot">2</span></button>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="#">Inicio</a> › Resultados para <strong>"notebook"</strong>
+</div>
+
+<div class="search-layout">
+
+  <!-- SIDEBAR FILTROS -->
+  <aside class="sidebar">
+    <h3>Filtros</h3>
+
+    <div class="filter-section">
+      <div class="filter-title">Categoría</div>
+      <div class="filter-option"><input type="checkbox" id="c1" checked><label for="c1">Tecnología</label><span class="count">12</span></div>
+      <div class="filter-option"><input type="checkbox" id="c2"><label for="c2">Electrónica</label><span class="count">5</span></div>
+      <div class="filter-option"><input type="checkbox" id="c3"><label for="c3">Librería</label><span class="count">3</span></div>
+      <div class="filter-option"><input type="checkbox" id="c4"><label for="c4">Servicios</label><span class="count">8</span></div>
+      <div class="filter-option"><input type="checkbox" id="c5"><label for="c5">Deportes</label><span class="count">2</span></div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title">Tipo</div>
+      <div class="filter-option"><input type="checkbox" id="t1" checked><label for="t1">Producto físico</label></div>
+      <div class="filter-option"><input type="checkbox" id="t2"><label for="t2">Servicio</label></div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title">Precio</div>
+      <div class="price-inputs">
+        <input class="price-input" type="number" placeholder="Mínimo">
+        <input class="price-input" type="number" placeholder="Máximo">
+      </div>
+      <button class="btn-apply">Aplicar</button>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-title">Disponibilidad</div>
+      <div class="filter-option"><input type="checkbox" id="s1" checked><label for="s1">Con stock</label></div>
+      <div class="filter-option"><input type="checkbox" id="s2"><label for="s2">Sin stock</label></div>
+    </div>
+
+    <button class="btn-clear">Limpiar filtros</button>
+  </aside>
+
+  <!-- RESULTADOS -->
+  <main>
+    <!-- Filtros activos -->
+    <div class="active-filters">
+      <div class="filter-tag">Tecnología <button>×</button></div>
+      <div class="filter-tag">Con stock <button>×</button></div>
+      <div class="filter-tag">Físico <button>×</button></div>
+    </div>
+
+    <div class="results-header">
+      <span class="results-count"><strong>12 resultados</strong> para "notebook"</span>
+      <div class="sort-row">
+        <span class="sort-label">Ordenar por:</span>
+        <select class="sort-select">
+          <option>Relevancia</option>
+          <option>Menor precio</option>
+          <option selected>Mayor precio</option>
+          <option>Más nuevos</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active">⊞</button>
+          <button class="view-btn">☰</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge">FÍSICO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Tecnología</div>
+          <div class="product-name">Notebook Lenovo IdeaPad 15" 16GB RAM 512GB SSD</div>
+          <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(24)</span></div>
+          <div class="product-price">$950.000</div>
+          <div class="product-stock">Stock: 10 u.</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart">+ Carrito</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge">FÍSICO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Tecnología</div>
+          <div class="product-name">Notebook HP Pavilion 14" Intel i5 8GB</div>
+          <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(11)</span></div>
+          <div class="product-price">$720.000</div>
+          <div class="product-stock">Stock: 3 u.</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart">+ Carrito</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge" style="background:var(--brand2)">SERVICIO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Servicios</div>
+          <div class="product-name">Clases de Programación – Python para Data Science</div>
+          <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(7)</span></div>
+          <div class="product-price">$12.000</div>
+          <div class="product-stock">Servicio · 90 min · Online</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart">+ Carrito</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge">FÍSICO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Tecnología</div>
+          <div class="product-name">Notebook Asus VivoBook 15 AMD Ryzen 5</div>
+          <div class="product-rating"><span class="stars">★★★☆☆</span><span class="rating-count">(4)</span></div>
+          <div class="product-price">$810.000</div>
+          <div class="product-stock">Stock: 1 u.</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart">+ Carrito</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge">FÍSICO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Tecnología</div>
+          <div class="product-name">Notebook Acer Aspire 5 15.6" FHD</div>
+          <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(18)</span></div>
+          <div class="product-price">$640.000</div>
+          <div class="product-stock">Sin stock</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart" disabled style="opacity:.5;cursor:not-allowed">Sin stock</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-img">
+          <span class="product-type-badge">FÍSICO</span>
+          📷 Imagen
+        </div>
+        <div class="product-body">
+          <div class="product-cat">Tecnología</div>
+          <div class="product-name">Notebook Dell Inspiron 15 3000 Intel Core i3</div>
+          <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(9)</span></div>
+          <div class="product-price">$580.000</div>
+          <div class="product-stock">Stock: 6 u.</div>
+        </div>
+        <div class="product-footer">
+          <button class="btn-cart">+ Carrito</button>
+          <button class="btn-detail">Ver</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+      <button class="page-btn">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <span style="color:var(--n500);padding:0 4px">…</span>
+      <button class="page-btn">6</button>
+      <button class="page-btn">›</button>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

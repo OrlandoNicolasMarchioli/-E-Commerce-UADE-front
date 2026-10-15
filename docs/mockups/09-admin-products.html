@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Mis Publicaciones (Admin)</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --warning:#D97706;--warning-bg:#FEF3C7;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-badge{background:var(--accent);color:var(--n900);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);margin-left:8px}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-link.active{color:#fff;font-weight:var(--fw7)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:28px 32px}
+/* HEADER */
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-header h1{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+.btn-new{padding:11px 22px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff);display:flex;align-items:center;gap:8px}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;border-left:4px solid var(--brand)}
+.stat-val{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+.stat-label{font-size:var(--xs);color:var(--n600);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+/* TOOLBAR */
+.toolbar{background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:14px 20px;display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.search-input{flex:1;padding:9px 14px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none}
+.search-input:focus{border-color:var(--brand2)}
+.filter-select{padding:9px 12px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);color:var(--n700);background:var(--n0);cursor:pointer}
+/* TABLE */
+.table-wrap{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--n50)}
+th{padding:12px 16px;font-size:var(--xs);font-weight:var(--fw6);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--n200)}
+th:last-child{text-align:center}
+td{padding:14px 16px;font-size:var(--sm);color:var(--n700);border-bottom:1px solid var(--n200);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--n50)}
+.product-cell{display:flex;align-items:center;gap:12px}
+.product-thumb{width:44px;height:44px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:var(--xs);color:var(--n500);flex-shrink:0}
+.product-name{font-weight:var(--fw6);color:var(--n900);margin-bottom:2px;font-size:var(--sm)}
+.product-meta{font-size:var(--xs);color:var(--n600)}
+.badge{padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6);display:inline-block}
+.badge-physical{background:var(--n100);color:var(--n700)}
+.badge-service{background:#EDE9FE;color:#7C3AED}
+.badge-instock{background:var(--success-bg);color:var(--success)}
+.badge-nostock{background:var(--error-bg);color:var(--error)}
+.badge-lowstock{background:var(--warning-bg);color:var(--warning)}
+.price-cell{font-weight:var(--fw6);color:var(--brand)}
+.actions{display:flex;gap:6px;justify-content:center}
+.btn-edit{padding:6px 14px;background:transparent;color:var(--brand2);border:1px solid var(--brand2);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.btn-delete{padding:6px 14px;background:transparent;color:var(--error);border:1px solid var(--error);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+/* PAGINATION */
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--n0);border-top:1px solid var(--n200)}
+.page-info{font-size:var(--sm);color:var(--n600)}
+.page-btns{display:flex;gap:6px}
+.page-btn{width:34px;height:34px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r4);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* DELETE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:400px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:10px;color:var(--n900)}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:24px}
+.modal-product-name{font-weight:var(--fw6);color:var(--error)}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-delete{flex:1;padding:11px;background:var(--error);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE <span class="nav-badge">ADMIN</span></span>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Categorías</a>
+    <a class="nav-link active" href="#">Publicaciones</a>
+    <a class="nav-link" href="#">Usuarios</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Admin › Mis publicaciones</div>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Mis publicaciones</h1>
+    <button class="btn-new">＋ Nuevo producto</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-val">18</div><div class="stat-label">Total publicados</div></div>
+    <div class="stat" style="border-left-color:var(--success)"><div class="stat-val" style="color:var(--success)">14</div><div class="stat-label">Con stock</div></div>
+    <div class="stat" style="border-left-color:var(--warning)"><div class="stat-val" style="color:var(--warning)">2</div><div class="stat-label">Stock bajo</div></div>
+    <div class="stat" style="border-left-color:var(--error)"><div class="stat-val" style="color:var(--error)">2</div><div class="stat-label">Sin stock</div></div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input class="search-input" type="text" placeholder="Buscar por nombre...">
+    <select class="filter-select">
+      <option>Todas las categorías</option>
+      <option>Tecnología</option>
+      <option>Librería</option>
+      <option>Servicios</option>
+    </select>
+    <select class="filter-select">
+      <option>Todos los tipos</option>
+      <option>Físico</option>
+      <option>Servicio</option>
+    </select>
+    <select class="filter-select">
+      <option>Stock: todos</option>
+      <option>Con stock</option>
+      <option>Sin stock</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="product-thumb">📷</div>
+              <div>
+                <div class="product-name">Notebook Lenovo IdeaPad 15" 16GB</div>
+                <div class="product-meta">ID #1 · Publicado 14/10/2026</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-physical">FÍSICO</span></td>
+          <td>Tecnología</td>
+          <td class="price-cell">$950.000</td>
+          <td><span class="badge badge-instock">10 u.</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit">✏️ Editar</button>
+              <button class="btn-delete">🗑️ Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="product-thumb">📷</div>
+              <div>
+                <div class="product-name">Auriculares Bluetooth JBL Tune 510BT</div>
+                <div class="product-meta">ID #2 · Publicado 10/10/2026</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-physical">FÍSICO</span></td>
+          <td>Electrónica</td>
+          <td class="price-cell">$45.000</td>
+          <td><span class="badge badge-lowstock">2 u.</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit">✏️ Editar</button>
+              <button class="btn-delete">🗑️ Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="product-thumb">📷</div>
+              <div>
+                <div class="product-name">Clases de Programación Python – Data Science</div>
+                <div class="product-meta">ID #3 · Publicado 5/10/2026</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-service">SERVICIO</span></td>
+          <td>Servicios</td>
+          <td class="price-cell">$12.000</td>
+          <td><span class="badge" style="background:var(--n100);color:var(--n600)">—</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit">✏️ Editar</button>
+              <button class="btn-delete">🗑️ Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="product-thumb">📷</div>
+              <div>
+                <div class="product-name">Cuaderno Rivadavia A4 Rayado</div>
+                <div class="product-meta">ID #4 · Publicado 1/10/2026</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-physical">FÍSICO</span></td>
+          <td>Librería</td>
+          <td class="price-cell">$1.200</td>
+          <td><span class="badge badge-nostock">Sin stock</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit">✏️ Editar</button>
+              <button class="btn-delete">🗑️ Eliminar</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="product-thumb">📷</div>
+              <div>
+                <div class="product-name">Monitor LG 24" Full HD IPS</div>
+                <div class="product-meta">ID #5 · Publicado 28/09/2026</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-physical">FÍSICO</span></td>
+          <td>Tecnología</td>
+          <td class="price-cell">$180.000</td>
+          <td><span class="badge badge-instock">3 u.</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit">✏️ Editar</button>
+              <button class="btn-delete">🗑️ Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <span class="page-info">Mostrando 1–5 de 18 productos</span>
+      <div class="page-btns">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>¿Eliminar producto?</h2>
+    <p>Estás por eliminar <span class="modal-product-name">"Cuaderno Rivadavia A4 Rayado"</span>. Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-delete">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

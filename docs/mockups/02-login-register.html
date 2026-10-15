@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Login / Registro</title>
+<style>
+:root{
+  --color-brand-primary:#002D62;--color-brand-secondary:#0070C0;
+  --color-neutral-0:#fff;--color-neutral-50:#F8F9FA;--color-neutral-200:#E9ECEF;
+  --color-neutral-300:#DEE2E6;--color-neutral-600:#6C757D;--color-neutral-900:#212529;
+  --color-error:#DC2626;--color-error-bg:#FEE2E2;
+  --font-family-base:'Inter','Segoe UI',system-ui,sans-serif;
+  --font-size-sm:0.875rem;--font-size-base:1rem;--font-size-xl:1.5rem;--font-size-2xl:1.875rem;
+  --font-weight-regular:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;
+  --space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;
+  --radius-sm:4px;--radius-md:8px;--radius-lg:12px;
+  --shadow-lg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-family-base);background:var(--color-neutral-50);color:var(--color-neutral-900);min-height:100vh;display:flex;flex-direction:column}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:var(--space-8);gap:var(--space-16)}
+.side-brand{max-width:380px}
+.side-brand h1{font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);color:var(--color-brand-primary);margin-bottom:var(--space-4)}
+.side-brand p{color:var(--color-neutral-600);line-height:1.6;font-size:var(--font-size-base)}
+.form-card{background:var(--color-neutral-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:var(--space-8);width:420px}
+.form-card h2{font-size:var(--font-size-xl);font-weight:var(--font-weight-bold);margin-bottom:var(--space-6);color:var(--color-brand-primary)}
+.form-group{margin-bottom:var(--space-5)}
+.form-label{display:block;font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);color:var(--color-neutral-900);margin-bottom:var(--space-2)}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--color-neutral-300);border-radius:var(--radius-sm);font-size:var(--font-size-base);font-family:inherit;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--color-brand-secondary)}
+.form-input.error{border-color:var(--color-error);background:var(--color-error-bg)}
+.form-error{font-size:0.75rem;color:var(--color-error);margin-top:var(--space-2)}
+.form-hint{font-size:0.75rem;color:var(--color-neutral-600);margin-top:var(--space-2)}
+.btn-submit{width:100%;padding:12px;background:var(--color-brand-primary);color:#fff;border:none;border-radius:var(--radius-md);font-size:var(--font-size-base);font-weight:var(--font-weight-semibold);cursor:pointer;font-family:inherit;margin-top:var(--space-4)}
+.form-footer{text-align:center;margin-top:var(--space-5);font-size:var(--font-size-sm);color:var(--color-neutral-600)}
+.form-footer a{color:var(--color-brand-secondary);text-decoration:none;font-weight:var(--font-weight-medium)}
+.divider{border:none;border-top:1px solid var(--color-neutral-200);margin:var(--space-6) 0}
+.tabs{display:flex;border-bottom:2px solid var(--color-neutral-200);margin-bottom:var(--space-6)}
+.tab{flex:1;padding:var(--space-3) 0;text-align:center;font-size:var(--font-size-sm);font-weight:var(--font-weight-medium);cursor:pointer;color:var(--color-neutral-600);border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab.active{color:var(--color-brand-primary);border-bottom-color:var(--color-brand-primary)}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN FORM -->
+<div class="page">
+  <div class="side-brand">
+    <h1>UADE E-Commerce</h1>
+    <p>Plataforma de compra y venta para la comunidad universitaria de la Universidad Argentina de la Empresa.</p>
+    <br>
+    <p style="color:#002D62;font-size:0.875rem">✓ Comprá y vendé con tu comunidad<br>✓ Seguí tus pedidos en tiempo real<br>✓ Publicá productos y servicios</p>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="form-card">
+    <div class="tabs">
+      <div class="tab active">Ingresar</div>
+      <div class="tab">Crear cuenta</div>
+    </div>
+
+    <!-- ── TAB LOGIN ────────────────────────────────────────── -->
+    <h2>Bienvenido de vuelta</h2>
+
+    <div class="form-group">
+      <label class="form-label">Email institucional</label>
+      <input class="form-input" type="email" placeholder="nombre@mail.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input class="form-input" type="password" placeholder="••••••••">
+    </div>
+    <button class="btn-submit">Ingresar</button>
+    <div class="form-footer">¿No tenés cuenta? <a href="#">Registrate gratis</a></div>
+
+    <hr class="divider">
+
+    <!-- Estado: error de credenciales -->
+    <div style="background:#FEE2E2;border:1px solid #DC2626;border-radius:8px;padding:12px;font-size:0.875rem;color:#B91C1C">
+      ⚠️ Email o contraseña incorrectos. Verificá tus datos e intentá de nuevo.
+    </div>
+  </div>
+</div>
+
+<hr style="border:none;border-top:3px dashed #E9ECEF;margin:0 32px">
+
+<!-- REGISTER FORM -->
+<div class="page">
+  <div class="form-card" style="width:480px">
+    <div class="tabs">
+      <div class="tab">Ingresar</div>
+      <div class="tab active">Crear cuenta</div>
+    </div>
+
+    <h2>Creá tu cuenta UADE</h2>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label class="form-label">Nombre *</label>
+        <input class="form-input" type="text" placeholder="Ada">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Apellido *</label>
+        <input class="form-input" type="text" placeholder="Lovelace">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email *</label>
+      <input class="form-input error" type="email" value="ada@existente.com">
+      <div class="form-error">Este email ya está registrado.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Contraseña *</label>
+      <input class="form-input" type="password" placeholder="Mínimo 8 caracteres">
+      <div class="form-hint">Usá letras, números y símbolos para mayor seguridad.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Legajo universitario</label>
+      <input class="form-input" type="text" placeholder="Ej: 1162678 (opcional)">
+    </div>
+
+    <button class="btn-submit">Crear cuenta</button>
+    <div class="form-footer">¿Ya tenés cuenta? <a href="#">Ingresá</a></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Mi Perfil</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative}
+.nav-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:12px;font-size:var(--base);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 16px;background:var(--accent);border:none;border-radius:0 12px 12px 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:860px;margin:0 auto;padding:28px 32px}
+/* PROFILE HEADER */
+.profile-header{background:linear-gradient(135deg,var(--brand) 0%,#004B9D 100%);border-radius:var(--r16);padding:32px;color:#fff;display:flex;align-items:center;gap:28px;margin-bottom:28px}
+.avatar{width:88px;height:88px;border-radius:var(--rfull);background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0}
+.profile-info h2{font-size:var(--2xl);font-weight:var(--fw7);margin-bottom:4px}
+.profile-info p{opacity:.8;font-size:var(--sm);margin-bottom:8px}
+.profile-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:3px 12px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6);display:inline-block}
+/* LAYOUT */
+.profile-layout{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+/* SIDEBAR NAV */
+.profile-nav{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden;position:sticky;top:88px}
+.profile-nav-item{padding:14px 20px;font-size:var(--sm);font-weight:var(--fw5);color:var(--n700);cursor:pointer;display:flex;align-items:center;gap:10px;border-left:3px solid transparent;transition:all .15s}
+.profile-nav-item:hover{background:var(--n50);color:var(--brand)}
+.profile-nav-item.active{background:#EFF6FF;color:var(--brand);border-left-color:var(--brand);font-weight:var(--fw7)}
+.profile-nav-item+.profile-nav-item{border-top:1px solid var(--n200)}
+/* FORM CARD */
+.form-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:28px}
+.form-card h3{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand);margin-bottom:6px}
+.form-card p{font-size:var(--sm);color:var(--n600);margin-bottom:24px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:var(--sm);font-weight:var(--fw5);color:var(--n700);margin-bottom:6px}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--n300);border-radius:var(--r4);font-size:var(--base);font-family:var(--ff);outline:none;transition:border-color .15s;background:var(--n0)}
+.form-input:focus{border-color:var(--brand2)}
+.form-input:disabled{background:var(--n100);color:var(--n500);cursor:not-allowed}
+.form-hint{font-size:var(--xs);color:var(--n600);margin-top:4px}
+.divider{border:none;border-top:1px solid var(--n200);margin:24px 0}
+.form-actions{display:flex;gap:12px;justify-content:flex-end}
+.btn-save{padding:11px 28px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-cancel{padding:11px 24px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--base);cursor:pointer;font-family:var(--ff)}
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--success);color:#fff;padding:14px 20px;border-radius:var(--r8);box-shadow:var(--shadowlg);font-size:var(--sm);font-weight:var(--fw5);display:flex;align-items:center;gap:10px;z-index:500}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;text-align:center}
+.stat-val{font-size:2rem;font-weight:var(--fw7);color:var(--brand);margin-bottom:4px}
+.stat-label{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" placeholder="Buscar..."><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Mis compras</a>
+    <a class="nav-link" href="#" style="color:#fff;font-weight:700">Ada L. ▾</a>
+    <button class="nav-cart">🛒</button>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Mi perfil</div>
+
+<div class="container">
+  <!-- HEADER DE PERFIL -->
+  <div class="profile-header">
+    <div class="avatar">👤</div>
+    <div class="profile-info">
+      <h2>Ada Lovelace</h2>
+      <p>ada@mail.com · Legajo: L1</p>
+      <span class="profile-badge">Usuario activo</span>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val">12</div>
+      <div class="stat-label">Compras realizadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">5</div>
+      <div class="stat-label">Reseñas escritas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">3</div>
+      <div class="stat-label">Publicaciones activas</div>
+    </div>
+  </div>
+
+  <div class="profile-layout">
+    <!-- NAV LATERAL -->
+    <nav class="profile-nav">
+      <div class="profile-nav-item active">✏️ Editar perfil</div>
+      <div class="profile-nav-item">🔒 Cambiar contraseña</div>
+      <div class="profile-nav-item">📦 Mis compras</div>
+      <div class="profile-nav-item">🏷️ Mis publicaciones</div>
+      <div class="profile-nav-item" style="color:var(--error)">🚪 Cerrar sesión</div>
+    </nav>
+
+    <!-- FORM DE EDICIÓN -->
+    <div class="form-card">
+      <h3>Editar perfil</h3>
+      <p>Actualizá tu información personal</p>
+
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Nombre *</label>
+          <input class="form-input" type="text" value="Ada">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Apellido *</label>
+          <input class="form-input" type="text" value="Lovelace">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input class="form-input" type="email" value="ada@mail.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Legajo universitario</label>
+        <input class="form-input" type="text" value="L1">
+        <div class="form-hint">Tu número de legajo de la UADE (opcional)</div>
+      </div>
+
+      <hr class="divider">
+
+      <h3 style="font-size:var(--lg);margin-bottom:6px">Cambiar contraseña</h3>
+      <p style="font-size:var(--sm);color:var(--n600);margin-bottom:16px">Dejalo en blanco si no querés cambiarla</p>
+
+      <div class="form-group">
+        <label class="form-label">Nueva contraseña</label>
+        <input class="form-input" type="password" placeholder="Mínimo 8 caracteres">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirmar contraseña</label>
+        <input class="form-input" type="password" placeholder="Repetí la contraseña">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-cancel">Cancelar</button>
+        <button class="btn-save">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST DE ÉXITO -->
+<div class="toast">✓ Perfil actualizado correctamente</div>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Categorías (Admin)</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-badge{background:var(--accent);color:var(--n900);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);margin-left:8px}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-link.active{color:#fff;font-weight:var(--fw7)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:28px 32px}
+.page-layout{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+h1.page-title{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand);margin-bottom:24px}
+/* LIST */
+.cat-list{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden}
+.cat-list-header{padding:14px 20px;background:var(--n50);border-bottom:1px solid var(--n200);display:flex;justify-content:space-between;align-items:center}
+.cat-list-header span{font-size:var(--sm);color:var(--n600)}
+.search-input{padding:8px 12px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none;width:200px}
+.search-input:focus{border-color:var(--brand2)}
+.cat-item{padding:16px 20px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--n200);transition:background .12s}
+.cat-item:last-child{border-bottom:none}
+.cat-item:hover{background:var(--n50)}
+.cat-item.editing{background:#EFF6FF;border-left:3px solid var(--brand2)}
+.cat-icon{width:40px;height:40px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.cat-name{flex:1;font-weight:var(--fw6);color:var(--n900);font-size:var(--base)}
+.cat-meta{font-size:var(--xs);color:var(--n600);margin-top:2px}
+.cat-actions{display:flex;gap:6px}
+.btn-edit-cat{padding:6px 14px;background:transparent;color:var(--brand2);border:1px solid var(--brand2);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.btn-del-cat{padding:6px 14px;background:transparent;color:var(--error);border:1px solid var(--error);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+/* FORM CARD */
+.form-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:24px;position:sticky;top:88px}
+.form-card h3{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand);margin-bottom:6px}
+.form-card p{font-size:var(--sm);color:var(--n600);margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:var(--sm);font-weight:var(--fw5);color:var(--n700);margin-bottom:6px}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--n300);border-radius:var(--r4);font-size:var(--base);font-family:var(--ff);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--brand2)}
+.btn-save{width:100%;padding:11px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff);margin-bottom:8px}
+.btn-reset{width:100%;padding:10px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* SUCCESS BANNER */
+.success-banner{background:var(--success-bg);border:1px solid var(--success);border-radius:var(--r8);padding:12px 16px;font-size:var(--sm);color:var(--success);font-weight:var(--fw5);display:flex;align-items:center;gap:8px;margin-bottom:16px}
+/* DELETE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:380px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:10px}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:24px}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-delete{flex:1;padding:11px;background:var(--error);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE <span class="nav-badge">ADMIN</span></span>
+  <div class="nav-actions">
+    <a class="nav-link active" href="#">Categorías</a>
+    <a class="nav-link" href="#">Publicaciones</a>
+    <a class="nav-link" href="#">Usuarios</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Admin › Categorías</div>
+
+<div class="container">
+  <h1 class="page-title">Gestión de Categorías</h1>
+
+  <div class="page-layout">
+    <!-- LISTA -->
+    <div>
+      <div class="cat-list">
+        <div class="cat-list-header">
+          <span>8 categorías</span>
+          <input class="search-input" type="text" placeholder="Buscar categoría...">
+        </div>
+
+        <div class="cat-item editing">
+          <div class="cat-icon">💻</div>
+          <div>
+            <div class="cat-name">Tecnología</div>
+            <div class="cat-meta">ID #1 · 24 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">📚</div>
+          <div>
+            <div class="cat-name">Librería</div>
+            <div class="cat-meta">ID #2 · 15 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">🏃</div>
+          <div>
+            <div class="cat-name">Deportes</div>
+            <div class="cat-meta">ID #3 · 8 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">🎓</div>
+          <div>
+            <div class="cat-name">Servicios</div>
+            <div class="cat-meta">ID #4 · 12 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">🎧</div>
+          <div>
+            <div class="cat-name">Electrónica</div>
+            <div class="cat-meta">ID #5 · 19 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">👕</div>
+          <div>
+            <div class="cat-name">Ropa y accesorios</div>
+            <div class="cat-meta">ID #6 · 6 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">🏠</div>
+          <div>
+            <div class="cat-name">Hogar</div>
+            <div class="cat-meta">ID #7 · 3 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+
+        <div class="cat-item">
+          <div class="cat-icon">📦</div>
+          <div>
+            <div class="cat-name">Otros</div>
+            <div class="cat-meta">ID #8 · 2 productos</div>
+          </div>
+          <div class="cat-actions">
+            <button class="btn-edit-cat">✏️ Editar</button>
+            <button class="btn-del-cat">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+      <h3>Editar categoría</h3>
+      <p>Editando: <strong>Tecnología</strong></p>
+
+      <div class="success-banner">✓ Categoría creada correctamente</div>
+
+      <div class="form-group">
+        <label class="form-label">Nombre *</label>
+        <input class="form-input" type="text" value="Tecnología">
+      </div>
+
+      <button class="btn-save">Guardar cambios</button>
+      <button class="btn-reset">Cancelar / Nueva categoría</button>
+
+      <hr style="border:none;border-top:1px solid var(--n200);margin:20px 0">
+
+      <h3 style="font-size:var(--base);margin-bottom:6px">Nueva categoría</h3>
+      <p style="font-size:var(--sm);color:var(--n600);margin-bottom:16px">Crear una nueva categoría desde cero</p>
+      <div class="form-group">
+        <label class="form-label">Nombre *</label>
+        <input class="form-input" type="text" placeholder="Ej: Instrumentos musicales">
+      </div>
+      <button class="btn-save" style="background:var(--brand2)">+ Crear categoría</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>¿Eliminar categoría?</h2>
+    <p>Estás por eliminar <strong>"Hogar"</strong>. Los productos asociados quedarán sin categoría.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-delete">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

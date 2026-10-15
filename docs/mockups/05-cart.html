@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Carrito</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --error:#DC2626;--error-bg:#FEE2E2;--success:#059669;--success-bg:#D1FAE5;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;--3xl:2.25rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative}
+.nav-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:12px;font-size:var(--base);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 16px;background:var(--accent);border:none;border-radius:0 12px 12px 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6);position:relative}
+.cart-dot{position:absolute;top:-5px;right:-5px;background:var(--brand2);color:#fff;border-radius:var(--rfull);font-size:10px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:28px 32px}
+h1.page-title{font-size:var(--2xl);font-weight:var(--fw7);margin-bottom:24px;color:var(--brand)}
+.cart-layout{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+/* CART ITEMS */
+.cart-items{display:flex;flex-direction:column;gap:16px}
+.cart-header{background:var(--n0);padding:14px 20px;border-radius:var(--r8);box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center}
+.cart-count{font-size:var(--sm);color:var(--n600)}
+.btn-clear-all{background:none;border:none;color:var(--error);font-size:var(--sm);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.cart-item{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;display:grid;grid-template-columns:80px 1fr auto;gap:16px;align-items:center}
+.item-img{width:80px;height:80px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs);flex-shrink:0}
+.item-info{flex:1}
+.item-cat{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.item-name{font-size:var(--base);font-weight:var(--fw6);margin-bottom:6px;line-height:1.3}
+.item-unit-price{font-size:var(--sm);color:var(--n600)}
+.item-controls{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.qty-ctrl{display:flex;align-items:center;border:1px solid var(--n300);border-radius:var(--r8);overflow:hidden}
+.qty-btn{width:32px;height:32px;background:var(--n50);border:none;cursor:pointer;font-size:var(--lg);color:var(--n700)}
+.qty-val{width:44px;text-align:center;font-size:var(--base);font-weight:var(--fw6);border:none;background:var(--n0)}
+.item-subtotal{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand)}
+.btn-remove{background:none;border:none;color:var(--n500);cursor:pointer;font-size:var(--sm);font-family:var(--ff);display:flex;align-items:center;gap:4px}
+.btn-remove:hover{color:var(--error)}
+/* EMPTY STATE */
+.cart-empty{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:64px 32px;text-align:center}
+.cart-empty-icon{font-size:64px;margin-bottom:16px}
+.cart-empty h3{font-size:var(--xl);font-weight:var(--fw7);margin-bottom:8px;color:var(--n700)}
+.cart-empty p{color:var(--n600);margin-bottom:24px;font-size:var(--sm)}
+.btn-shop{background:var(--brand);color:#fff;padding:12px 28px;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+/* ORDER SUMMARY */
+.order-summary{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:24px;position:sticky;top:88px}
+.summary-title{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:20px;color:var(--brand)}
+.summary-row{display:flex;justify-content:space-between;font-size:var(--sm);margin-bottom:12px;color:var(--n700)}
+.summary-row.total{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand);padding-top:16px;border-top:2px solid var(--n200);margin-top:8px;margin-bottom:20px}
+.btn-checkout{width:100%;padding:14px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw7);cursor:pointer;font-family:var(--ff);margin-bottom:10px}
+.btn-continue{width:100%;padding:12px;background:transparent;color:var(--brand);border:2px solid var(--brand);border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.secure-badge{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:16px;color:var(--n600);font-size:var(--xs)}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:440px;max-width:90vw}
+.modal h2{font-size:var(--xl);font-weight:var(--fw7);margin-bottom:12px;color:var(--brand)}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:24px}
+.modal-order-preview{background:var(--n50);border-radius:var(--r8);padding:16px;margin-bottom:20px;font-size:var(--sm)}
+.modal-row{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--n700)}
+.modal-row.total{font-weight:var(--fw7);font-size:var(--base);color:var(--brand);padding-top:8px;border-top:1px solid var(--n200);margin-top:8px;margin-bottom:0}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-confirm{flex:1;padding:12px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:12px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--base);cursor:pointer;font-family:var(--ff)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" placeholder="Buscar productos..."><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Mis compras</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒 <span class="cart-dot">3</span></button>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Carrito</div>
+
+<div class="container">
+  <h1 class="page-title">Mi carrito</h1>
+
+  <div class="cart-layout">
+    <!-- ITEMS -->
+    <div>
+      <div class="cart-header">
+        <span class="cart-count">3 productos en el carrito</span>
+        <button class="btn-clear-all">Vaciar carrito</button>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <div class="cart-items">
+        <div class="cart-item">
+          <div class="item-img">📷</div>
+          <div class="item-info">
+            <div class="item-cat">Tecnología</div>
+            <div class="item-name">Notebook Lenovo IdeaPad 15" 16GB RAM 512GB SSD</div>
+            <div class="item-unit-price">$950.000 por unidad</div>
+          </div>
+          <div class="item-controls">
+            <div class="qty-ctrl">
+              <button class="qty-btn">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <div class="item-subtotal">$950.000</div>
+            <button class="btn-remove">🗑️ Eliminar</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="item-img">📷</div>
+          <div class="item-info">
+            <div class="item-cat">Librería</div>
+            <div class="item-name">Cuaderno Rivadavia A4 Rayado x5</div>
+            <div class="item-unit-price">$1.200 por unidad</div>
+          </div>
+          <div class="item-controls">
+            <div class="qty-ctrl">
+              <button class="qty-btn">−</button>
+              <span class="qty-val">3</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <div class="item-subtotal">$3.600</div>
+            <button class="btn-remove">🗑️ Eliminar</button>
+          </div>
+        </div>
+
+        <div class="cart-item">
+          <div class="item-img">📷</div>
+          <div class="item-info">
+            <div class="item-cat">Electrónica</div>
+            <div class="item-name">Auriculares Bluetooth JBL Tune 510BT</div>
+            <div class="item-unit-price">$45.000 por unidad</div>
+          </div>
+          <div class="item-controls">
+            <div class="qty-ctrl">
+              <button class="qty-btn">−</button>
+              <span class="qty-val">1</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <div class="item-subtotal">$45.000</div>
+            <button class="btn-remove">🗑️ Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="order-summary">
+      <div class="summary-title">Resumen del pedido</div>
+      <div class="summary-row"><span>Notebook Lenovo (×1)</span><span>$950.000</span></div>
+      <div class="summary-row"><span>Cuaderno Rivadavia (×3)</span><span>$3.600</span></div>
+      <div class="summary-row"><span>Auriculares JBL (×1)</span><span>$45.000</span></div>
+      <div class="summary-row total"><span>Total</span><span>$998.600</span></div>
+      <button class="btn-checkout">Confirmar compra</button>
+      <button class="btn-continue">Seguir comprando</button>
+      <div class="secure-badge">🔒 Pago seguro y protegido</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMACIÓN (estado visible para el mockup) -->
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>Confirmar compra</h2>
+    <p>Al confirmar, se generará tu pedido con los productos del carrito. El stock se descontará automáticamente.</p>
+    <div class="modal-order-preview">
+      <div class="modal-row"><span>Notebook Lenovo (×1)</span><span>$950.000</span></div>
+      <div class="modal-row"><span>Cuaderno Rivadavia (×3)</span><span>$3.600</span></div>
+      <div class="modal-row"><span>Auriculares JBL (×1)</span><span>$45.000</span></div>
+      <div class="modal-row total"><span>Total a pagar</span><span>$998.600</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-confirm">Confirmar compra</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

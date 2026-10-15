@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Gestión de Pedidos (Admin)</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --warning:#D97706;--warning-bg:#FEF3C7;
+  --info:#2563EB;--info-bg:#DBEAFE;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-badge{background:var(--accent);color:var(--n900);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);margin-left:8px}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-link.active{color:#fff;font-weight:var(--fw7)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:28px 32px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.page-header h1{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+.gap-note{background:var(--warning-bg);border:1px solid var(--warning);border-radius:var(--r8);padding:10px 16px;font-size:var(--xs);color:var(--warning);font-weight:var(--fw5);max-width:380px;line-height:1.5}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.stat{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:16px;border-left:4px solid var(--n300)}
+.stat-val{font-size:var(--xl);font-weight:var(--fw7)}
+.stat-label{font-size:var(--xs);color:var(--n600);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+/* STATUS FILTER TABS */
+.status-tabs{display:flex;gap:4px;background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:6px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:var(--r4);font-size:var(--sm);font-weight:var(--fw5);cursor:pointer;color:var(--n600);transition:all .12s}
+.tab:hover{background:var(--n100)}
+.tab.active{background:var(--brand);color:#fff;font-weight:var(--fw6)}
+/* TOOLBAR */
+.toolbar{background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:14px 20px;display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.search-input{flex:1;padding:9px 14px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none}
+.search-input:focus{border-color:var(--brand2)}
+.filter-select{padding:9px 12px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);color:var(--n700);background:var(--n0);cursor:pointer}
+/* TABLE */
+.table-wrap{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--n50)}
+th{padding:11px 16px;font-size:var(--xs);font-weight:var(--fw6);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--n200)}
+td{padding:13px 16px;font-size:var(--sm);color:var(--n700);border-bottom:1px solid var(--n200);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--n50)}
+/* BADGES */
+.badge{padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6);display:inline-block}
+.badge-pending{background:var(--warning-bg);color:var(--warning)}
+.badge-paid{background:var(--info-bg);color:var(--info)}
+.badge-shipped{background:#EDE9FE;color:#7C3AED}
+.badge-delivered{background:var(--success-bg);color:var(--success)}
+.badge-cancelled{background:var(--error-bg);color:var(--error)}
+.user-cell{font-size:var(--sm);font-weight:var(--fw5);color:var(--n900)}
+.user-email{font-size:var(--xs);color:var(--n600)}
+.price-col{font-weight:var(--fw7);color:var(--brand)}
+/* STATUS ACTIONS */
+.status-action{display:flex;gap:6px;align-items:center}
+.btn-advance{padding:6px 14px;background:var(--brand);color:#fff;border:none;border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.btn-advance:disabled{background:var(--n300);color:var(--n500);cursor:not-allowed}
+.btn-view-order{padding:6px 10px;background:transparent;color:var(--brand2);border:1px solid var(--brand2);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff)}
+/* TRANSITION LABEL */
+.transition-label{font-size:var(--xs);color:var(--n600)}
+.transition-arrow{font-size:var(--xs);color:var(--brand2);font-weight:var(--fw7)}
+/* PAGINATION */
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--n0);border-top:1px solid var(--n200)}
+.page-info{font-size:var(--sm);color:var(--n600)}
+.page-btns{display:flex;gap:6px}
+.page-btn{width:34px;height:34px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r4);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* MODAL STATUS UPDATE */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:440px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:8px}
+.modal p{color:var(--n600);font-size:var(--sm);margin-bottom:20px;line-height:1.6}
+.transition-visual{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px}
+.state-box{padding:8px 20px;border-radius:var(--rfull);font-size:var(--sm);font-weight:var(--fw7)}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-ok{flex:1;padding:11px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE <span class="nav-badge">ADMIN</span></span>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Categorías</a>
+    <a class="nav-link" href="#">Publicaciones</a>
+    <a class="nav-link active" href="#">Pedidos</a>
+    <a class="nav-link" href="#">Usuarios</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Admin › Pedidos</div>
+
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Pedidos</h1>
+      <p style="font-size:var(--sm);color:var(--n600);margin-top:4px">Avanzá el estado de cada pedido · <code>PUT /api/orders/{id}/status?userId={id}</code></p>
+    </div>
+    <div class="gap-note">
+      ⚠ <strong>Gap:</strong> No existe <code>GET /api/orders</code> global para ADMIN.
+      El listado se obtiene llamando <code>GET /api/orders?userId={id}</code> por cada usuario
+      o bien buscando por ID de pedido.
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat" style="border-left-color:var(--warning)">
+      <div class="stat-val" style="color:var(--warning)">8</div>
+      <div class="stat-label">Pendientes</div>
+    </div>
+    <div class="stat" style="border-left-color:var(--info)">
+      <div class="stat-val" style="color:var(--info)">5</div>
+      <div class="stat-label">Pagados</div>
+    </div>
+    <div class="stat" style="border-left-color:#7C3AED">
+      <div class="stat-val" style="color:#7C3AED">3</div>
+      <div class="stat-label">Enviados</div>
+    </div>
+    <div class="stat" style="border-left-color:var(--success)">
+      <div class="stat-val" style="color:var(--success)">22</div>
+      <div class="stat-label">Entregados</div>
+    </div>
+    <div class="stat" style="border-left-color:var(--error)">
+      <div class="stat-val" style="color:var(--error)">4</div>
+      <div class="stat-label">Cancelados</div>
+    </div>
+  </div>
+
+  <!-- TABS POR ESTADO -->
+  <div class="status-tabs">
+    <div class="tab active">Todos (42)</div>
+    <div class="tab">⏳ Pendientes (8)</div>
+    <div class="tab">💳 Pagados (5)</div>
+    <div class="tab">📦 Enviados (3)</div>
+    <div class="tab">✅ Entregados (22)</div>
+    <div class="tab">❌ Cancelados (4)</div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input class="search-input" type="text" placeholder="Buscar por N° de pedido o ID de usuario...">
+    <select class="filter-select">
+      <option>Ordenar: más recientes</option>
+      <option>Ordenar: más antiguos</option>
+      <option>Ordenar: total mayor</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pedido</th>
+          <th>Comprador</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th>Estado actual</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- PENDING → can advance to PAID or cancel -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1043</td>
+          <td>
+            <div class="user-cell">Ada Lovelace</div>
+            <div class="user-email">userId: 1</div>
+          </td>
+          <td style="color:var(--n600)">14/10/2026 11:48</td>
+          <td class="price-col">$953.600</td>
+          <td><span class="badge badge-pending">PENDIENTE</span></td>
+          <td>
+            <div class="status-action">
+              <div>
+                <div class="transition-label">→ Siguiente estado:</div>
+                <div class="transition-arrow">PAID</div>
+              </div>
+              <button class="btn-advance">Marcar pagado</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+        <!-- PENDING → can advance to PAID or cancel -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1042</td>
+          <td>
+            <div class="user-cell">Grace Tanner</div>
+            <div class="user-email">userId: 2</div>
+          </td>
+          <td style="color:var(--n600)">13/10/2026 09:15</td>
+          <td class="price-col">$45.000</td>
+          <td><span class="badge badge-pending">PENDIENTE</span></td>
+          <td>
+            <div class="status-action">
+              <div>
+                <div class="transition-label">→ Siguiente estado:</div>
+                <div class="transition-arrow">PAID</div>
+              </div>
+              <button class="btn-advance">Marcar pagado</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+        <!-- PAID → can advance to SHIPPED or cancel -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1041</td>
+          <td>
+            <div class="user-cell">Linus Torvalds</div>
+            <div class="user-email">userId: 3</div>
+          </td>
+          <td style="color:var(--n600)">12/10/2026 14:30</td>
+          <td class="price-col">$180.000</td>
+          <td><span class="badge badge-paid">PAGADO</span></td>
+          <td>
+            <div class="status-action">
+              <div>
+                <div class="transition-label">→ Siguiente estado:</div>
+                <div class="transition-arrow">SHIPPED</div>
+              </div>
+              <button class="btn-advance">Marcar enviado</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+        <!-- SHIPPED → can advance to DELIVERED only -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1040</td>
+          <td>
+            <div class="user-cell">Margaret Hamilton</div>
+            <div class="user-email">userId: 4</div>
+          </td>
+          <td style="color:var(--n600)">10/10/2026 08:00</td>
+          <td class="price-col">$65.000</td>
+          <td><span class="badge badge-shipped">ENVIADO</span></td>
+          <td>
+            <div class="status-action">
+              <div>
+                <div class="transition-label">→ Siguiente estado:</div>
+                <div class="transition-arrow">DELIVERED</div>
+              </div>
+              <button class="btn-advance">Marcar entregado</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+        <!-- DELIVERED → estado final, no acción -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1039</td>
+          <td>
+            <div class="user-cell">Ken Thompson</div>
+            <div class="user-email">userId: 5</div>
+          </td>
+          <td style="color:var(--n600)">05/10/2026 17:22</td>
+          <td class="price-col">$95.000</td>
+          <td><span class="badge badge-delivered">ENTREGADO</span></td>
+          <td>
+            <div class="status-action">
+              <button class="btn-advance" disabled>Estado final</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+        <!-- CANCELLED → estado final, no acción -->
+        <tr>
+          <td style="font-weight:var(--fw7);color:var(--brand)">#1038</td>
+          <td>
+            <div class="user-cell">Donald Knuth</div>
+            <div class="user-email">userId: 6</div>
+          </td>
+          <td style="color:var(--n600)">02/10/2026 10:05</td>
+          <td class="price-col">$8.000</td>
+          <td><span class="badge badge-cancelled">CANCELADO</span></td>
+          <td>
+            <div class="status-action">
+              <button class="btn-advance" disabled>Estado final</button>
+              <button class="btn-view-order">Ver</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <span class="page-info">Mostrando 1–6 de 42 pedidos</span>
+      <div class="page-btns">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">…</button>
+        <button class="page-btn">7</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAR CAMBIO DE ESTADO -->
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>Confirmar cambio de estado</h2>
+    <p>Estás por cambiar el estado del pedido <strong>#1043</strong> (Ada Lovelace). Esta acción actualiza el estado en el sistema.</p>
+    <div class="transition-visual">
+      <span class="state-box badge-pending">PENDIENTE</span>
+      <span style="font-size:1.5rem;color:var(--brand)">→</span>
+      <span class="state-box badge-paid">PAGADO</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-ok">Confirmar cambio</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

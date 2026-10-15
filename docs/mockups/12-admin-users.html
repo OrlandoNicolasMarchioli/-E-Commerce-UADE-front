@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Usuarios (Admin)</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --warning:#D97706;--warning-bg:#FEF3C7;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-badge{background:var(--accent);color:var(--n900);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);margin-left:8px}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-link.active{color:#fff;font-weight:var(--fw7)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:28px 32px}
+/* HEADER */
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-header h1{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;border-left:4px solid var(--brand)}
+.stat-val{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+.stat-label{font-size:var(--xs);color:var(--n600);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+/* TOOLBAR */
+.toolbar{background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:14px 20px;display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.search-input{flex:1;min-width:200px;padding:9px 14px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none}
+.search-input:focus{border-color:var(--brand2)}
+.filter-select{padding:9px 12px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);color:var(--n700);background:var(--n0);cursor:pointer}
+/* TABLE */
+.table-wrap{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--n50)}
+th{padding:12px 16px;font-size:var(--xs);font-weight:var(--fw6);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:1px solid var(--n200)}
+th:last-child{text-align:center}
+td{padding:14px 16px;font-size:var(--sm);color:var(--n700);border-bottom:1px solid var(--n200);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--n50)}
+/* AVATAR */
+.user-cell{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:var(--rfull);background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--sm);font-weight:var(--fw7);flex-shrink:0}
+.user-name{font-weight:var(--fw6);color:var(--n900);font-size:var(--sm)}
+.user-email{font-size:var(--xs);color:var(--n600)}
+/* BADGES */
+.badge{padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6);display:inline-block}
+.badge-admin{background:#EDE9FE;color:#7C3AED}
+.badge-user{background:var(--n100);color:var(--n700)}
+.badge-active{background:var(--success-bg);color:var(--success)}
+.badge-inactive{background:var(--error-bg);color:var(--error)}
+/* ACTIONS */
+.actions{display:flex;gap:6px;justify-content:center}
+.btn-view{padding:6px 14px;background:transparent;color:var(--brand2);border:1px solid var(--brand2);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.btn-del{padding:6px 14px;background:transparent;color:var(--error);border:1px solid var(--error);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+/* PAGINATION */
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--n0);border-top:1px solid var(--n200)}
+.page-info{font-size:var(--sm);color:var(--n600)}
+.page-btns{display:flex;gap:6px}
+.page-btn{width:34px;height:34px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r4);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* DELETE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:420px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:10px;color:var(--n900)}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:20px}
+.modal-user{background:var(--n50);border-radius:var(--r8);padding:14px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-delete{flex:1;padding:11px;background:var(--error);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* GAP BADGE */
+.gap-badge{background:var(--warning-bg);color:var(--warning);font-size:var(--xs);font-weight:var(--fw6);padding:2px 8px;border-radius:var(--rfull);border:1px solid var(--warning)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE <span class="nav-badge">ADMIN</span></span>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Categorías</a>
+    <a class="nav-link" href="#">Publicaciones</a>
+    <a class="nav-link active" href="#">Usuarios</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Admin › Usuarios</div>
+
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Usuarios</h1>
+      <p style="font-size:var(--sm);color:var(--n600);margin-top:4px">
+        Solo disponible para administradores ·
+        <span class="gap-badge">⚠ Gap G8: role no incluido en UserResponseDTO</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">47</div>
+      <div class="stat-label">Total usuarios</div>
+    </div>
+    <div class="stat" style="border-left-color:var(--success)">
+      <div class="stat-val" style="color:var(--success)">44</div>
+      <div class="stat-label">Activos</div>
+    </div>
+    <div class="stat" style="border-left-color:var(--error)">
+      <div class="stat-val" style="color:var(--error)">3</div>
+      <div class="stat-label">Inactivos</div>
+    </div>
+    <div class="stat" style="border-left-color:#7C3AED">
+      <div class="stat-val" style="color:#7C3AED">2</div>
+      <div class="stat-label">Admins</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <input class="search-input" type="text" placeholder="Buscar por nombre, email o legajo...">
+    <select class="filter-select">
+      <option>Todos los roles</option>
+      <option>Admin</option>
+      <option>Usuario</option>
+    </select>
+    <select class="filter-select">
+      <option>Todos los estados</option>
+      <option>Activo</option>
+      <option>Inactivo</option>
+    </select>
+    <select class="filter-select">
+      <option>Ordenar: más recientes</option>
+      <option>Ordenar: A-Z</option>
+      <option>Ordenar: Z-A</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Legajo</th>
+          <th>Rol</th>
+          <th>Registro</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar">AL</div>
+              <div>
+                <div class="user-name">Ada Lovelace</div>
+                <div class="user-email">ada@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">L1</td>
+          <td><span class="badge badge-admin">ADMIN</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">01/09/2026</td>
+          <td><span class="badge badge-active">Activo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del" disabled style="opacity:.4;cursor:not-allowed" title="No se puede eliminar a sí mismo">🗑️</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar" style="background:#7C3AED">GT</div>
+              <div>
+                <div class="user-name">Grace Tanner</div>
+                <div class="user-email">grace@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">GT22</td>
+          <td><span class="badge badge-user">USER</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">05/09/2026</td>
+          <td><span class="badge badge-active">Activo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del">🗑️</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar" style="background:var(--brand2)">LT</div>
+              <div>
+                <div class="user-name">Linus Torvalds</div>
+                <div class="user-email">linus@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">LT04</td>
+          <td><span class="badge badge-user">USER</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">10/09/2026</td>
+          <td><span class="badge badge-active">Activo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del">🗑️</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar" style="background:var(--success)">MH</div>
+              <div>
+                <div class="user-name">Margaret Hamilton</div>
+                <div class="user-email">mhamilton@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">MH69</td>
+          <td><span class="badge badge-user">USER</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">15/09/2026</td>
+          <td><span class="badge badge-active">Activo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del">🗑️</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar" style="background:var(--n500)">KT</div>
+              <div>
+                <div class="user-name">Ken Thompson</div>
+                <div class="user-email">ken@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">KT83</td>
+          <td><span class="badge badge-user">USER</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">20/09/2026</td>
+          <td><span class="badge badge-inactive">Inactivo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del">🗑️</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="user-cell">
+              <div class="avatar" style="background:#D97706">DK</div>
+              <div>
+                <div class="user-name">Donald Knuth</div>
+                <div class="user-email">dknuth@mail.com</div>
+              </div>
+            </div>
+          </td>
+          <td style="color:var(--n700);font-size:var(--sm)">DK38</td>
+          <td><span class="badge badge-user">USER</span></td>
+          <td style="color:var(--n600);font-size:var(--sm)">02/10/2026</td>
+          <td><span class="badge badge-active">Activo</span></td>
+          <td>
+            <div class="actions">
+              <button class="btn-view">👁 Ver</button>
+              <button class="btn-del">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <span class="page-info">Mostrando 1–6 de 47 usuarios</span>
+      <div class="page-btns">
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">…</button>
+        <button class="page-btn">8</button>
+        <button class="page-btn">›</button>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:var(--xs);color:var(--n500);margin-top:12px">
+    ⚠ El backend devuelve <code>GET /api/users</code> sin paginación ni filtros (Gap G9).
+    El filtrado y ordenamiento se hacen en el frontend sobre la lista completa.
+  </p>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>¿Eliminar usuario?</h2>
+    <p>Esta acción es permanente. El usuario perderá acceso y sus datos serán eliminados del sistema.</p>
+    <div class="modal-user">
+      <div class="avatar" style="background:var(--n500)">KT</div>
+      <div>
+        <div style="font-weight:var(--fw6);font-size:var(--sm)">Ken Thompson</div>
+        <div style="font-size:var(--xs);color:var(--n600)">ken@mail.com · Legajo: KT83</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-delete">Eliminar usuario</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

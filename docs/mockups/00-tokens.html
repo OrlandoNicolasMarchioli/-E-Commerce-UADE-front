@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Design Tokens</title>
+<style>
+  /* Tokens inline para el mockup */
+  :root {
+    --color-brand-primary:#002D62;--color-brand-secondary:#0070C0;--color-brand-accent:#FFB800;
+    --color-neutral-0:#fff;--color-neutral-50:#F8F9FA;--color-neutral-100:#F1F3F5;
+    --color-neutral-200:#E9ECEF;--color-neutral-300:#DEE2E6;--color-neutral-500:#ADB5BD;
+    --color-neutral-600:#6C757D;--color-neutral-900:#212529;
+    --color-success:#059669;--color-warning:#D97706;--color-error:#DC2626;--color-info:#2563EB;
+    --font-family-base:'Inter','Segoe UI',system-ui,sans-serif;
+    --font-size-sm:0.875rem;--font-size-base:1rem;--font-size-xl:1.5rem;--font-size-2xl:1.875rem;
+    --font-weight-regular:400;--font-weight-semibold:600;--font-weight-bold:700;
+    --space-2:8px;--space-4:16px;--space-6:24px;--space-8:32px;
+    --radius-sm:4px;--radius-md:8px;--radius-lg:12px;--radius-full:9999px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.10);--shadow-md:0 4px 6px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-family-base);background:var(--color-neutral-50);color:var(--color-neutral-900);padding:var(--space-8)}
+  h1{font-size:var(--font-size-2xl);font-weight:var(--font-weight-bold);margin-bottom:var(--space-6);color:var(--color-brand-primary)}
+  h2{font-size:var(--font-size-xl);font-weight:var(--font-weight-semibold);margin:var(--space-8) 0 var(--space-4);border-bottom:2px solid var(--color-brand-primary);padding-bottom:var(--space-2)}
+  .grid{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+  .swatch{width:120px;border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm)}
+  .swatch-color{height:64px}
+  .swatch-label{padding:var(--space-2);font-size:var(--font-size-sm);background:#fff}
+  .type-row{margin-bottom:var(--space-4)}
+  .btn-row{display:flex;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-6)}
+  .btn{padding:10px 20px;border:none;cursor:pointer;font-family:inherit;font-weight:var(--font-weight-semibold);border-radius:var(--radius-md);font-size:var(--font-size-base)}
+  .btn-primary{background:var(--color-brand-primary);color:#fff}
+  .btn-secondary{background:transparent;color:var(--color-brand-primary);border:2px solid var(--color-brand-primary)}
+  .btn-accent{background:var(--color-brand-accent);color:var(--color-neutral-900)}
+  .btn-ghost{background:transparent;color:var(--color-neutral-600);border:1px solid var(--color-neutral-300)}
+  .badge{display:inline-block;padding:2px 10px;border-radius:var(--radius-full);font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold)}
+  .badge-success{background:#D1FAE5;color:var(--color-success)}
+  .badge-warning{background:#FEF3C7;color:var(--color-warning)}
+  .badge-error{background:#FEE2E2;color:var(--color-error)}
+  .badge-info{background:#DBEAFE;color:var(--color-info)}
+  .input-demo{padding:10px 14px;border:1px solid var(--color-neutral-300);border-radius:var(--radius-sm);font-size:var(--font-size-base);font-family:inherit;width:260px;outline:none}
+  .input-demo:focus{border-color:var(--color-brand-secondary)}
+  .input-error{border-color:var(--color-error);background:#FEE2E2}
+</style>
+</head>
+<body>
+<h1>UADE E-Commerce — Design Tokens</h1>
+
+<h2>Brand Colors</h2>
+<div class="grid">
+  <div class="swatch"><div class="swatch-color" style="background:#002D62"></div><div class="swatch-label">primary<br>#002D62</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#004B9D"></div><div class="swatch-label">primary-light<br>#004B9D</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#0070C0"></div><div class="swatch-label">secondary<br>#0070C0</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#FFB800"></div><div class="swatch-label">accent<br>#FFB800</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#001F44"></div><div class="swatch-label">footer<br>#001F44</div></div>
+</div>
+
+<h2>Neutral Scale</h2>
+<div class="grid">
+  <div class="swatch"><div class="swatch-color" style="background:#F8F9FA;border:1px solid #eee"></div><div class="swatch-label">50 #F8F9FA</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#E9ECEF"></div><div class="swatch-label">200 #E9ECEF</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#ADB5BD"></div><div class="swatch-label">500 #ADB5BD</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#6C757D"></div><div class="swatch-label">600 #6C757D</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#495057"></div><div class="swatch-label">700 #495057</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#212529"></div><div class="swatch-label">900 #212529</div></div>
+</div>
+
+<h2>Semantic Colors</h2>
+<div class="grid">
+  <div class="swatch"><div class="swatch-color" style="background:#059669"></div><div class="swatch-label">success<br>#059669</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#D97706"></div><div class="swatch-label">warning<br>#D97706</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#DC2626"></div><div class="swatch-label">error<br>#DC2626</div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#2563EB"></div><div class="swatch-label">info<br>#2563EB</div></div>
+</div>
+
+<h2>Tipografía</h2>
+<div class="type-row" style="font-size:3rem;font-weight:700;line-height:1.2;letter-spacing:-0.025em">4XL Bold — Hero Heading</div>
+<div class="type-row" style="font-size:2.25rem;font-weight:700">3XL Bold — Título de sección</div>
+<div class="type-row" style="font-size:1.875rem;font-weight:700">2XL Bold — H2</div>
+<div class="type-row" style="font-size:1.5rem;font-weight:600">XL Semibold — H3 / Card title</div>
+<div class="type-row" style="font-size:1.125rem;font-weight:500">MD Medium — Sub-heading</div>
+<div class="type-row" style="font-size:1rem;font-weight:400;line-height:1.5">Base Regular — Texto de cuerpo con line-height 1.5. Lorem ipsum dolor sit amet.</div>
+<div class="type-row" style="font-size:0.875rem;color:#6C757D">SM — Texto secundario, subtítulos de inputs</div>
+<div class="type-row" style="font-size:0.75rem;letter-spacing:0.05em;text-transform:uppercase;color:#6C757D">XS WIDER — Labels / Caps</div>
+
+<h2>Botones</h2>
+<div class="btn-row">
+  <button class="btn btn-primary">Comprar ahora</button>
+  <button class="btn btn-secondary">Agregar al carrito</button>
+  <button class="btn btn-accent">Destacado</button>
+  <button class="btn btn-ghost">Cancelar</button>
+  <button class="btn btn-primary" disabled style="opacity:.5;cursor:not-allowed">Disabled</button>
+</div>
+
+<h2>Badges</h2>
+<div class="btn-row">
+  <span class="badge badge-success">PAGADO</span>
+  <span class="badge badge-warning">PENDIENTE</span>
+  <span class="badge badge-error">CANCELADO</span>
+  <span class="badge badge-info">ENVIADO</span>
+  <span class="badge" style="background:#E9ECEF;color:#495057">ENTREGADO</span>
+</div>
+
+<h2>Inputs</h2>
+<div style="display:flex;flex-direction:column;gap:16px">
+  <input class="input-demo" placeholder="Input normal">
+  <input class="input-demo" style="border-color:#002D62" placeholder="Input focused">
+  <input class="input-demo input-error" value="Error value" placeholder="Input con error">
+  <input class="input-demo" disabled placeholder="Input deshabilitado" style="opacity:.5;cursor:not-allowed">
+</div>
+
+<h2>Border Radius</h2>
+<div class="grid">
+  <div style="width:80px;height:40px;background:var(--color-brand-primary);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem">sm 4px</div>
+  <div style="width:80px;height:40px;background:var(--color-brand-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem">md 8px</div>
+  <div style="width:80px;height:40px;background:var(--color-brand-primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem">lg 12px</div>
+  <div style="width:80px;height:40px;background:var(--color-brand-primary);border-radius:24px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem">2xl 24px</div>
+  <div style="width:80px;height:40px;background:var(--color-brand-primary);border-radius:9999px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.75rem">full</div>
+</div>
+</body>
+</html>

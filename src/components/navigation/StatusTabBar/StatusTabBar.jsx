@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Tab bar for filtering a list by status; each tab optionally shows a count badge. */
 const StatusTabBar = ({ statuses = [], active, onChange }) => (
   <div className="ui-status-tabs" role="tablist">
     {statuses.map((s) => (

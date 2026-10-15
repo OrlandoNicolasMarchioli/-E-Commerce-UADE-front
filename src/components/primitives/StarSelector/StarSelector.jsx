@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Interactive star rating input; supports controlled/uncontrolled usage and a readOnly display mode. */
 const StarSelector = ({
   value: externalValue,
   onChange,
   defaultValue = 0,
   readOnly = false,
 }) => {
+  // isControlled: true when the parent supplies the rating via the value prop
   const isControlled = externalValue !== undefined;
   const [internal, setInternal] = useState(defaultValue);
   const [hovered, setHovered]   = useState(0);
   const rating  = isControlled ? externalValue : internal;
+  // Show hover preview while mousing over stars; fall back to committed rating
   const display = hovered || rating;
 
   const select = (star) => {

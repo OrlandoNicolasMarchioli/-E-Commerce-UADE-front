@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Read-only preview card that mirrors the product form fields; used as a live preview alongside ProductFormCard. */
 const ProductPreviewCard = ({ name, category, price, stock, description, imageUrl }) => (
   <div className="ui-card" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
     <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>

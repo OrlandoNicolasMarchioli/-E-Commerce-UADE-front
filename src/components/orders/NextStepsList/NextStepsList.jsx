@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Ordered list of instructional next-steps, each with an icon, title, and description. */
 const NextStepsList = ({ steps = [] }) => (
   <ul className="ui-next-steps">
     {steps.map((step, i) => (

@@ -1,3 +1,5 @@
+// Token class — each static property maps a semantic name to a CSS custom property string.
+// Import this class instead of hardcoding var(--...) strings across components.
 class ColorTokens {
   static brand = {
     primary:        'var(--color-brand-primary)',

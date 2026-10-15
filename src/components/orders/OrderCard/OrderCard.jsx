@@ -1,12 +1,14 @@
 import OrderStatusBadge from '../../primitives/Badge/OrderStatusBadge';
 import '../../ui.css';
 
+// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (p) =>
   p.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
 const formatDate = (d) =>
   new Date(d).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
 
+/** Summary card for an order showing its ID, date, status badge, item thumbnails (up to 5), and total. */
 const OrderCard = ({ order, onClick }) => {
   const { id, status, orderDate, items = [], total } = order;
 
@@ -20,6 +22,7 @@ const OrderCard = ({ order, onClick }) => {
         <OrderStatusBadge status={status} />
       </div>
       <div className="ui-oc-items">
+        {/* Show at most 5 thumbnails to keep the card compact */}
         {items.slice(0, 5).map((item, i) => (
           <div key={i} className="ui-oc-thumb">
             {item.imageUrl ? <img src={item.imageUrl} alt={item.productName} /> : '📷'}

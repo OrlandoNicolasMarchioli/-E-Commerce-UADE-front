@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Displays a main image with a clickable thumbnail strip; thumbnail strip is hidden when there is only one image. */
 const ProductImageGallery = ({ images = [] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = images[activeIndex];

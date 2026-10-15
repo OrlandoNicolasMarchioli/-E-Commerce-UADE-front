@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Displays the user's avatar, full name, email, optional registration number, and active/inactive status. */
 const ProfileHeader = ({ user }) => {
   const { firstName, lastName, email, regNumber, isEnabled } = user;
   return (

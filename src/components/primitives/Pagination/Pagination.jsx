@@ -1,5 +1,7 @@
 import '../../ui.css';
 
+// Builds the array of page numbers/ellipsis strings to render, capped at 7 items.
+// Ellipsis ('…') entries collapse the middle of long page ranges.
 const buildPages = (current, total) => {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, '…', total];
@@ -7,6 +9,7 @@ const buildPages = (current, total) => {
   return [1, '…', current - 1, current, current + 1, '…', total];
 };
 
+/** Renders page navigation with smart ellipsis collapsing for large page counts. */
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pages = buildPages(currentPage, totalPages);
   return (

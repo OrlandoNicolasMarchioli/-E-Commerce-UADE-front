@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import '../../ui.css';
 
+/** Drag-and-drop or click-to-browse image upload area; converts selected files to data URL previews via FileReader. */
 const ImageUploadArea = ({ images = [], onAdd, onRemove }) => {
   const inputRef = useRef(null);
 
+  // Reads each file as a data URL so it can be previewed locally before upload
   const handleFiles = (files) => {
     Array.from(files).forEach((file) => {
       const reader = new FileReader();

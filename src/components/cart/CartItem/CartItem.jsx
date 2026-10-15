@@ -1,9 +1,11 @@
 import QuantityStepper from '../../primitives/QuantityStepper/QuantityStepper';
 import '../../ui.css';
 
+// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (p) =>
   p.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
+/** Single cart line item with an editable quantity stepper and a subtotal; subtotal falls back to unitPrice × quantity. */
 const CartItem = ({ item, onQtyChange, onRemove }) => {
   const { productId, productName, productCategory, quantity, unitPrice, subtotal, imageUrl } = item;
 

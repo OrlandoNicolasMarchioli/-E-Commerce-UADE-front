@@ -1,6 +1,7 @@
 import OrderStatusBadge from '../../primitives/Badge/OrderStatusBadge';
 import '../../ui.css';
 
+/** Admin table row for a single order; the Update button is omitted when no onUpdateStatus handler is provided. */
 const OrderTableRow = ({ order, onView, onUpdateStatus }) => (
   <tr>
     <td>#{order.id}</td>

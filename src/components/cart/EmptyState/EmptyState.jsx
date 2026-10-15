@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Generic empty state with an icon, title, description, and an optional action button. */
 const EmptyState = ({ icon = '📦', title, description, action }) => (
   <div className="ui-empty-state">
     <div className="ui-es-icon">{icon}</div>

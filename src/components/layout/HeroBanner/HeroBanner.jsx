@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Full-width homepage hero section with a headline, subtitle, CTA button, and an optional image slot. */
 const HeroBanner = ({ title, subtitle, ctaLabel = 'Shop Now', onCta, imagePlaceholder }) => (
   <section className="ui-hero">
     <div className="ui-hero-content">

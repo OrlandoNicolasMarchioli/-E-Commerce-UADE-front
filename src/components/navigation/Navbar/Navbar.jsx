@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Top navigation bar; renders a simplified admin layout when isAdmin is true, otherwise the full storefront nav. */
 const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart, onLogin, onRegister }) => {
   const [query, setQuery] = useState('');
 
+  // Admin navbar omits search and cart; shows section links and the logged-in user name
   if (isAdmin) {
     return (
       <nav className="ui-navbar">

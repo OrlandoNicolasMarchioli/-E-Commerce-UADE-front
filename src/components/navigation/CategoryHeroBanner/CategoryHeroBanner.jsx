@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Hero banner for a category page showing its icon, title, description, and optional product count pill. */
 const CategoryHeroBanner = ({ icon, title, description, productCount }) => (
   <div className="ui-cat-hero">
     <div className="ui-cat-hero-icon">{icon}</div>

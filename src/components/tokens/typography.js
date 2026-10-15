@@ -1,3 +1,5 @@
+// Token class — maps semantic typography names to CSS custom property strings.
+// Import instead of hardcoding var(--font-...) values directly in component styles.
 class TypographyTokens {
   static fontFamily = {
     base:    'var(--font-family-base)',

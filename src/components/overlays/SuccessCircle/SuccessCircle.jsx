@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Animated success confirmation screen shown after a completed order; optionally displays the new order ID. */
 const SuccessCircle = ({ orderId }) => (
   <div style={{ textAlign: 'center', padding: '20px' }}>
     <div className="ui-success-circle" style={{ margin: '0 auto 16px' }}>✓</div>

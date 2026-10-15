@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import '../../ui.css';
 
+/** Product filter sidebar supporting controlled (externalFilters prop) and uncontrolled modes. */
 const FilterSidebar = ({ filters: externalFilters, onChange }) => {
+  // Local state is only used when no externalFilters are provided (uncontrolled mode)
   const [local, setLocal] = useState({
     types: ['PHYSICAL'],
     stock: 'all',
@@ -10,6 +12,7 @@ const FilterSidebar = ({ filters: externalFilters, onChange }) => {
     ...externalFilters,
   });
 
+  // In controlled mode, always read from externalFilters; skip local state updates
   const filters = externalFilters ?? local;
 
   const update = (patch) => {

@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Displays the active filters as removable tags; renders nothing when the filters array is empty. */
 const ActiveFilterTags = ({ filters = [], onRemove, onClearAll }) => {
   if (!filters.length) return null;
   return (

@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Base modal dialog with a title, slot for content, and confirm/cancel actions; variant="danger" styles the confirm button red. */
 const Modal = ({
   title,
   children,

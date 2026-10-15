@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Horizontal scrollable tab strip for selecting a category; null activeId means "All". */
 const CategoryStrip = ({ categories = [], activeId = null, onSelect }) => (
   <div className="ui-cat-strip" role="tablist" aria-label="Categories">
     <div

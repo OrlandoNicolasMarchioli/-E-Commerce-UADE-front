@@ -1,5 +1,6 @@
 import '../../ui.css';
 
+/** Admin table toolbar with an optional search input, optional children slot (e.g. filters), and an optional Add button. */
 const AdminToolbar = ({ searchPlaceholder = 'Search…', onSearch, onAdd, addLabel = 'Add', children }) => (
   <div className="ui-admin-toolbar">
     {onSearch && (

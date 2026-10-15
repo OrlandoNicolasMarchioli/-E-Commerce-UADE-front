@@ -812,7 +812,68 @@ The `AuthCard` renders `Sign In` as both a tab button and a form submit button. 
 
 ---
 
-## 9. Backend Integration Notes
+## 9. Networking Layer
+
+### Structure
+```
+src/services/
+  api/
+    client.js       ← generic HTTP client (fetch wrapper, JWT, error handling)
+    endpoints.js    ← API path constants grouped by entity
+```
+
+Future domain services (authService, productService, etc.) should import from `client.js` and `endpoints.js`.
+
+### `client.js` exports
+
+| Export | Description |
+|---|---|
+| `http.get(path, options?)` | GET request |
+| `http.post(path, body, options?)` | POST request |
+| `http.put(path, body, options?)` | PUT request |
+| `http.patch(path, body, options?)` | PATCH request |
+| `http.delete(path, options?)` | DELETE request |
+| `ApiError` | Structured error — `.status` (HTTP code), `.data` (server JSON body), `.message` |
+| `getToken()` | Read JWT from localStorage |
+| `setToken(token)` | Store JWT in localStorage |
+| `clearToken()` | Remove JWT (call on logout) |
+
+`options` object accepted by all `http.*` methods:
+```js
+{
+  params: { userId: 1, page: 0 }, // appended as ?userId=1&page=0
+  auth: false,                     // skip Authorization header (default: true)
+}
+```
+
+### Usage example
+```js
+import { http, ApiError, setToken, clearToken } from '../services/api/client';
+import { AUTH, PRODUCTS } from '../services/api/endpoints';
+
+// Public request — no token
+const products = await http.get(PRODUCTS.BASE, { auth: false });
+
+// Authenticated request with query params
+const cart = await http.get(CART.BASE, { params: { userId: 42 } });
+
+// POST with body
+const { token, user } = await http.post(AUTH.LOGIN, { email, password }, { auth: false });
+setToken(token);
+
+// Error handling
+try {
+  await http.delete(PRODUCTS.BY_ID(5));
+} catch (err) {
+  if (err instanceof ApiError) {
+    console.log(err.status, err.message, err.data);
+  }
+}
+```
+
+---
+
+## 10. Backend Integration Notes
 
 The following data shapes are assumed from the API (not yet implemented):
 

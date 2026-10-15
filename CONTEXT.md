@@ -21,7 +21,32 @@ Two entry points exist:
 
 ---
 
-## 2. Tech Stack
+## 2. Architecture
+
+This project follows **Feature-Sliced Design (FSD)**. Full details in `ARCHITECTURE.md`.
+
+### Layer hierarchy (imports flow downward only)
+```
+app → pages → features → entities → shared
+```
+
+| Layer | Path | Purpose |
+|---|---|---|
+| `app` | `src/app/` | Router, providers, global config |
+| `pages` | `src/pages/` | One folder per route — thin, composing layer |
+| `features` | `src/features/` | Self-contained user actions (auth, cart, review, product-search) |
+| `entities` | `src/entities/` | Domain models + their UI + service (product, order, user, category) |
+| `shared/ui` | `src/components/` | Primitive components (Button, Modal, Badge…) |
+| `shared/api` | `src/services/api/` | HTTP client + endpoint constants |
+| `shared/hooks` | `src/shared/hooks/` | Generic hooks (useDebounce, useLocalStorage…) |
+| `shared/utils` | `src/shared/utils/` | Pure functions (formatPrice, formatDate…) |
+
+> `src/components/` is the current `shared/ui/`. Migrate components into `entities/` as pages are built.
+> A **feature** must never import from another feature — extract shared logic to `entities/` or `shared/`.
+
+---
+
+## 3. Tech Stack
 
 | Tool | Version | Role |
 |---|---|---|

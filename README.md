@@ -28,14 +28,25 @@
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run build
-npm run preview
-npm run test       # run all tests
-npx vitest         # tests in watch mode
+npm run dev        # App principal  → http://localhost:5173
+npm run demo       # Component Library → http://localhost:5174/demo.html
+npm run test       # Correr los 198 tests (single run)
+npx vitest         # Tests en modo watch
+npm run build      # Build de producción
+npm run build:demo # Build de la demo
+npm run preview    # Preview del build
 ```
 
 > The backend runs at `http://localhost:8080`. See [endpoint inventory](docs/01-inventario-backend.md).
+
+### App vs Demo
+
+| Comando | Puerto | Descripción |
+|---|---|---|
+| `npm run dev` | 5173 | App principal (React Router + páginas) |
+| `npm run demo` | 5174 | Catálogo interactivo de todos los componentes |
+
+Ambos servidores pueden correr en paralelo.
 
 ---
 

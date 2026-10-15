@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce — Component Library</title>
+<style>
+/* ─── TOKENS ─────────────────────────────────────────────────────────── */
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n400:#CED4DA;--n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;--success-dark:#047857;
+  --warning:#D97706;--warning-bg:#FEF3C7;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --info:#2563EB;--info-bg:#DBEAFE;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --ffmono:'Fira Code','Cascadia Code',monospace;
+  --xs:.75rem;--sm:.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;--3xl:2.25rem;--4xl:3rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowmd:0 4px 6px rgba(0,0,0,.08);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+  --sidebar-w:220px;
+}
+/* ─── RESET ───────────────────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900);display:flex;min-height:100vh}
+/* ─── SHELL ───────────────────────────────────────────────────────────── */
+.sidebar{width:var(--sidebar-w);background:var(--brand);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;padding:0 0 32px}
+.sidebar-logo{padding:20px 16px 12px;font-size:var(--base);font-weight:var(--fw7);color:#fff;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:8px}
+.sidebar-logo span{background:var(--accent);color:var(--n900);padding:1px 8px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);margin-left:6px}
+.nav-group{padding:8px 0}
+.nav-group-label{padding:6px 16px;font-size:0.65rem;font-weight:var(--fw7);color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em}
+.nav-item{display:block;padding:7px 16px;font-size:var(--sm);color:rgba(255,255,255,.75);text-decoration:none;transition:all .12s;cursor:pointer}
+.nav-item:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.15);color:#fff;font-weight:var(--fw6)}
+.main{margin-left:var(--sidebar-w);flex:1;padding:0}
+/* ─── PAGE HEADER ─────────────────────────────────────────────────────── */
+.page-hero{background:linear-gradient(135deg,var(--brand) 0%,#004B9D 100%);padding:40px 48px;color:#fff}
+.page-hero h1{font-size:var(--3xl);font-weight:var(--fw7);margin-bottom:8px}
+.page-hero p{font-size:var(--base);opacity:.8;max-width:600px;line-height:1.6}
+.page-hero .meta{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap}
+.page-hero .meta span{background:rgba(255,255,255,.15);padding:4px 14px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6)}
+/* ─── SECTION WRAPPER ─────────────────────────────────────────────────── */
+.section{padding:40px 48px;border-bottom:2px solid var(--n200)}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}
+.section-header h2{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand)}
+.section-count{background:var(--n100);color:var(--n600);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6)}
+/* ─── COMPONENT BLOCK ─────────────────────────────────────────────────── */
+.comp{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);margin-bottom:28px;overflow:hidden}
+.comp-head{padding:16px 20px;border-bottom:1px solid var(--n200);display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.comp-name{font-size:var(--base);font-weight:var(--fw7);color:var(--brand);font-family:var(--ffmono)}
+.comp-desc{font-size:var(--sm);color:var(--n600)}
+.comp-tokens{display:flex;gap:6px;flex-wrap:wrap}
+.token-chip{background:var(--n50);border:1px solid var(--n200);border-radius:var(--r4);padding:2px 8px;font-size:.7rem;font-family:var(--ffmono);color:var(--n700)}
+.comp-props{padding:14px 20px;background:var(--n50);border-bottom:1px solid var(--n200);font-size:var(--xs);color:var(--n600)}
+.comp-props table{width:100%;border-collapse:collapse}
+.comp-props th{text-align:left;padding:4px 8px 4px 0;font-weight:var(--fw6);color:var(--n700);width:160px}
+.comp-props td{padding:4px 0;color:var(--n600)}
+.comp-props td code{background:var(--n100);padding:1px 5px;border-radius:var(--r4);font-family:var(--ffmono);color:var(--brand2)}
+.comp-demo{padding:24px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.demo-label{font-size:var(--xs);color:var(--n500);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;font-weight:var(--fw6)}
+.demo-col{display:flex;flex-direction:column;gap:8px}
+.demo-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* ─── 1. BUTTONS ─────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:var(--r8);font-family:var(--ff);font-weight:var(--fw6);cursor:pointer;transition:all .15s;text-decoration:none}
+.btn-sm{padding:7px 14px;font-size:var(--xs)}
+.btn-md{padding:10px 20px;font-size:var(--sm)}
+.btn-lg{padding:13px 28px;font-size:var(--base)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:#001F44}
+.btn-secondary{background:var(--brand2);color:#fff}
+.btn-secondary:hover{background:#005FA3}
+.btn-accent{background:var(--accent);color:var(--n900)}
+.btn-outline{background:transparent;color:var(--brand);border:2px solid var(--brand)}
+.btn-outline:hover{background:var(--brand);color:#fff}
+.btn-ghost{background:transparent;color:var(--n600);border:1px solid var(--n300)}
+.btn-ghost:hover{background:var(--n100)}
+.btn-danger{background:var(--error);color:#fff}
+.btn-danger:hover{background:#B91C1C}
+.btn-danger-outline{background:transparent;color:var(--error);border:1.5px solid var(--error)}
+.btn[disabled],.btn.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+.btn-icon{width:36px;height:36px;padding:0;border-radius:var(--r8)}
+.btn-icon-round{width:36px;height:36px;padding:0;border-radius:var(--rfull)}
+/* ─── 2. BADGES ──────────────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6)}
+.badge-physical{background:var(--n100);color:var(--n700)}
+.badge-service{background:#EDE9FE;color:#7C3AED}
+.badge-admin{background:var(--accent);color:var(--n900)}
+.badge-pending{background:var(--warning-bg);color:var(--warning)}
+.badge-paid{background:var(--info-bg);color:var(--info)}
+.badge-shipped{background:#EDE9FE;color:#7C3AED}
+.badge-delivered{background:var(--success-bg);color:var(--success)}
+.badge-cancelled{background:var(--error-bg);color:var(--error)}
+.badge-stock-ok{background:var(--success-bg);color:var(--success)}
+.badge-stock-low{background:var(--warning-bg);color:var(--warning)}
+.badge-stock-out{background:var(--error-bg);color:var(--error)}
+.badge-mine{background:var(--brand);color:#fff}
+.badge-cat{background:var(--n100);color:var(--n700)}
+/* ─── 3. FORM ELEMENTS ───────────────────────────────────────────────── */
+.form-group{display:flex;flex-direction:column;gap:4px;width:260px}
+.form-label{font-size:var(--sm);font-weight:var(--fw5);color:var(--n700)}
+.required{color:var(--error)}
+.form-input,.form-select,.form-textarea{padding:10px 14px;border:1.5px solid var(--n300);border-radius:var(--r4);font-size:var(--base);font-family:var(--ff);outline:none;transition:border-color .15s;background:var(--n0);color:var(--n900);width:100%}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--brand2)}
+.form-input.error,.form-select.error{border-color:var(--error);background:var(--error-bg)}
+.form-input:disabled{background:var(--n100);color:var(--n500);cursor:not-allowed}
+.form-textarea{resize:vertical;min-height:80px}
+.form-hint{font-size:var(--xs);color:var(--n600)}
+.form-error-msg{font-size:var(--xs);color:var(--error)}
+/* Checkbox / Radio */
+.check-group{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:center;gap:8px;font-size:var(--sm);cursor:pointer;color:var(--n700)}
+.check-item input{accent-color:var(--brand);width:16px;height:16px}
+/* QuantityStepper */
+.qty-ctrl{display:inline-flex;align-items:center;border:1.5px solid var(--n300);border-radius:var(--r8);overflow:hidden}
+.qty-btn{width:36px;height:36px;background:var(--n50);border:none;cursor:pointer;font-size:var(--lg);color:var(--n700);font-family:var(--ff)}
+.qty-btn:hover{background:var(--n200)}
+.qty-val{min-width:44px;text-align:center;font-size:var(--base);font-weight:var(--fw6);border:none;background:var(--n0);padding:0 4px}
+/* StarSelector */
+.star-selector{display:flex;gap:4px;font-size:1.6rem;cursor:pointer}
+.star-selector .s{color:var(--n300);line-height:1}
+.star-selector .s.on{color:var(--accent)}
+/* SearchInput */
+.search-wrap{position:relative;width:280px}
+.search-wrap input{width:100%;padding:10px 46px 10px 16px;border:1.5px solid var(--n300);border-radius:var(--r12);font-size:var(--sm);font-family:var(--ff);outline:none;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--brand2)}
+.search-wrap .search-btn{position:absolute;right:0;top:0;height:100%;padding:0 14px;background:var(--accent);border:none;border-radius:0 var(--r12) var(--r12) 0;cursor:pointer}
+/* PriceInput */
+.price-wrap{position:relative;width:180px}
+.price-wrap .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--n600);font-size:var(--sm);font-weight:var(--fw5)}
+.price-wrap input{padding-left:24px}
+/* TypeToggle */
+.type-toggle{display:flex;gap:12px}
+.type-opt{flex:1;padding:14px 16px;border:2px solid var(--n300);border-radius:var(--r8);cursor:pointer;text-align:center;transition:all .15s;min-width:140px}
+.type-opt.active{border-color:var(--brand);background:#EFF6FF}
+.type-opt-icon{font-size:1.4rem;margin-bottom:6px}
+.type-opt-label{font-size:var(--sm);font-weight:var(--fw6);color:var(--n700)}
+.type-opt.active .type-opt-label{color:var(--brand)}
+.type-opt-sub{font-size:var(--xs);color:var(--n600);margin-top:2px}
+/* ─── 4. NAVBAR ──────────────────────────────────────────────────────── */
+.navbar{background:var(--brand);padding:0 24px;height:56px;display:flex;align-items:center;gap:20px;border-radius:var(--r8)}
+.navbar-logo{color:#fff;font-weight:var(--fw7);font-size:var(--lg);flex-shrink:0}
+.navbar-search{flex:1;position:relative;max-width:360px}
+.navbar-search input{width:100%;padding:8px 40px 8px 14px;border:none;border-radius:var(--r8);font-size:var(--sm);font-family:var(--ff);outline:none}
+.navbar-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 12px;background:var(--accent);border:none;border-radius:0 var(--r8) var(--r8) 0;cursor:pointer}
+.navbar-actions{display:flex;gap:10px;align-items:center;margin-left:auto}
+.navbar-link{color:rgba(255,255,255,.8);font-size:var(--xs);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.navbar-cart{background:var(--accent);color:var(--n900);padding:6px 14px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--xs);font-weight:var(--fw6);position:relative}
+.cart-badge{position:absolute;top:-5px;right:-5px;background:var(--error);color:#fff;border-radius:var(--rfull);font-size:.6rem;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-weight:var(--fw7);border:2px solid #fff}
+.admin-badge{background:var(--accent);color:var(--n900);padding:1px 8px;border-radius:var(--rfull);font-size:.65rem;font-weight:var(--fw7);margin-left:6px}
+/* ─── 5. BREADCRUMB ──────────────────────────────────────────────────── */
+.bc{display:flex;align-items:center;gap:6px;font-size:var(--sm);color:var(--n600);flex-wrap:wrap}
+.bc a{color:var(--brand2);text-decoration:none}
+.bc a:hover{text-decoration:underline}
+.bc-sep{color:var(--n400)}
+/* ─── 6. CATEGORY STRIP ──────────────────────────────────────────────── */
+.cat-strip{display:flex;gap:2px;background:var(--n0);border-radius:var(--r8);padding:4px;box-shadow:var(--shadow);overflow-x:auto}
+.cat-chip{padding:8px 16px;font-size:var(--sm);font-weight:var(--fw5);color:var(--n600);cursor:pointer;border-radius:var(--r4);border-bottom:3px solid transparent;white-space:nowrap;transition:all .12s}
+.cat-chip:hover{color:var(--brand);background:var(--n50)}
+.cat-chip.active{color:var(--brand);font-weight:var(--fw7);background:var(--n50);border-bottom-color:var(--brand)}
+/* ─── 7. PRODUCT CARD ────────────────────────────────────────────────── */
+.product-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:box-shadow .15s;width:210px}
+.product-card:hover{box-shadow:var(--shadowlg)}
+.pc-img{width:100%;height:130px;background:var(--n100);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--sm);position:relative}
+.pc-type-badge{position:absolute;top:8px;left:8px}
+.pc-out-overlay{position:absolute;inset:0;background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center}
+.pc-out-label{background:var(--error);color:#fff;padding:4px 12px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7)}
+.pc-body{padding:12px}
+.pc-cat{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.pc-name{font-size:var(--sm);font-weight:var(--fw6);color:var(--n900);margin-bottom:4px;line-height:1.35}
+.pc-rating{font-size:var(--xs);color:var(--n600);margin-bottom:6px}
+.pc-price{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand)}
+.pc-stock{font-size:var(--xs);color:var(--n600);margin-top:2px}
+/* ─── 8. PRODUCT IMAGE GALLERY ───────────────────────────────────────── */
+.gallery{width:280px}
+.gallery-main{width:100%;height:200px;background:var(--n100);border-radius:var(--r12);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--sm);margin-bottom:10px}
+.gallery-thumbs{display:flex;gap:8px}
+.gallery-thumb{width:60px;height:60px;background:var(--n100);border-radius:var(--r8);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs);border:2px solid transparent;transition:border-color .12s}
+.gallery-thumb.active{border-color:var(--brand2)}
+.gallery-thumb:hover{border-color:var(--n400)}
+/* ─── 9. BUY PANEL ───────────────────────────────────────────────────── */
+.buy-panel{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:20px;width:260px}
+.bp-price{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand);margin-bottom:10px}
+.bp-stock{font-size:var(--sm);color:var(--success);font-weight:var(--fw5);margin-bottom:12px;display:flex;align-items:center;gap:5px}
+.bp-qty-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bp-qty-label{font-size:var(--sm);color:var(--n600)}
+.bp-actions{display:flex;flex-direction:column;gap:8px}
+.bp-seller{margin-top:14px;padding-top:14px;border-top:1px solid var(--n200)}
+.bp-seller-label{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.bp-seller-name{font-size:var(--sm);font-weight:var(--fw6);color:var(--brand2)}
+/* ─── 10. CART ITEM ──────────────────────────────────────────────────── */
+.cart-item{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:16px;display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;width:100%;max-width:580px}
+.ci-img{width:64px;height:64px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs)}
+.ci-cat{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.ci-name{font-size:var(--sm);font-weight:var(--fw6);margin-bottom:4px;line-height:1.3}
+.ci-unit{font-size:var(--xs);color:var(--n600)}
+.ci-controls{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.ci-subtotal{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand)}
+.ci-remove{background:none;border:none;color:var(--n500);cursor:pointer;font-size:var(--xs);font-family:var(--ff)}
+.ci-remove:hover{color:var(--error)}
+/* ─── 11. ORDER SUMMARY ──────────────────────────────────────────────── */
+.order-summary{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:20px;width:260px}
+.os-title{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand);margin-bottom:14px}
+.os-row{display:flex;justify-content:space-between;font-size:var(--sm);color:var(--n600);margin-bottom:10px}
+.os-total{display:flex;justify-content:space-between;font-size:var(--xl);font-weight:var(--fw7);color:var(--brand);margin:12px 0 16px;padding-top:12px;border-top:2px solid var(--n200)}
+.os-secure{display:flex;align-items:center;justify-content:center;gap:6px;font-size:var(--xs);color:var(--n500);margin-top:10px}
+/* ─── 12. EMPTY STATE ────────────────────────────────────────────────── */
+.empty-state{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:48px 32px;text-align:center;width:300px}
+.es-icon{font-size:3rem;margin-bottom:12px}
+.es-title{font-size:var(--lg);font-weight:var(--fw7);color:var(--n700);margin-bottom:6px}
+.es-sub{font-size:var(--sm);color:var(--n600);margin-bottom:20px;line-height:1.5}
+/* ─── 13. ORDER CARD ─────────────────────────────────────────────────── */
+.order-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:16px 20px;max-width:520px;width:100%}
+.oc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.oc-id{font-size:var(--base);font-weight:var(--fw7);color:var(--brand)}
+.oc-date{font-size:var(--xs);color:var(--n600);margin-top:2px}
+.oc-items{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.oc-thumb{width:48px;height:48px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs)}
+.oc-foot{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--n200)}
+.oc-total{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand)}
+/* ─── 14. ORDER TIMELINE ─────────────────────────────────────────────── */
+.timeline{display:flex;justify-content:space-between;align-items:center;position:relative;background:var(--n0);padding:20px 24px;border-radius:var(--r12);box-shadow:var(--shadow);max-width:480px}
+.timeline::before{content:'';position:absolute;top:31px;left:60px;right:60px;height:3px;background:var(--n200);z-index:0}
+.tl-progress{position:absolute;top:31px;left:60px;height:3px;background:var(--brand);z-index:1;width:60%}
+.tl-step{display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;position:relative}
+.tl-dot{width:24px;height:24px;border-radius:var(--rfull);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:var(--fw7)}
+.tl-dot.done{background:var(--brand);color:#fff}
+.tl-dot.active{background:var(--brand2);color:#fff;box-shadow:0 0 0 4px rgba(0,112,192,.2)}
+.tl-dot.pending{background:var(--n200);color:var(--n500)}
+.tl-label{font-size:var(--xs);font-weight:var(--fw5);text-align:center;color:var(--n600);white-space:nowrap}
+.tl-label.done{color:var(--brand);font-weight:var(--fw6)}
+.tl-label.active{color:var(--brand2);font-weight:var(--fw7)}
+/* ─── 15. REVIEW COMPONENTS ──────────────────────────────────────────── */
+.review-summary{display:flex;gap:24px;background:var(--n0);padding:20px;border-radius:var(--r12);box-shadow:var(--shadow);align-items:center;max-width:420px}
+.rs-big{font-size:3.5rem;font-weight:var(--fw7);color:var(--brand);line-height:1;text-align:center}
+.rs-stars{color:var(--accent);font-size:1.2rem;margin-top:4px}
+.rs-count{font-size:var(--xs);color:var(--n600);margin-top:2px}
+.rs-bars{flex:1}
+.rs-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:var(--xs)}
+.rs-bar-label{width:20px;color:var(--n600)}
+.rs-bar{flex:1;height:7px;background:var(--n200);border-radius:var(--rfull);overflow:hidden}
+.rs-fill{height:100%;background:var(--accent);border-radius:var(--rfull)}
+.rs-num{width:20px;color:var(--n600);text-align:right}
+.review-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:16px;max-width:420px;width:100%}
+.rc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rc-avatar{width:32px;height:32px;border-radius:var(--rfull);background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--xs);font-weight:var(--fw7);flex-shrink:0}
+.rc-user{font-weight:var(--fw6);font-size:var(--sm)}
+.rc-date{font-size:var(--xs);color:var(--n600)}
+.rc-stars{margin-left:auto;color:var(--accent);font-size:var(--sm)}
+.rc-comment{font-size:var(--sm);color:var(--n700);line-height:1.6;margin-bottom:8px}
+.rc-actions{display:flex;gap:8px;justify-content:flex-end}
+.rc-action{font-size:var(--xs);background:none;border:none;cursor:pointer;font-family:var(--ff);font-weight:var(--fw5);padding:4px 8px;border-radius:var(--r4)}
+.rc-action.edit{color:var(--brand2)}
+.rc-action.del{color:var(--error)}
+/* ─── 16. PROFILE COMPONENTS ─────────────────────────────────────────── */
+.profile-header{background:linear-gradient(135deg,var(--brand) 0%,#004B9D 100%);border-radius:var(--r12);padding:24px;color:#fff;display:flex;align-items:center;gap:20px;max-width:520px}
+.ph-avatar{width:72px;height:72px;border-radius:var(--rfull);background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.ph-name{font-size:var(--xl);font-weight:var(--fw7);margin-bottom:3px}
+.ph-meta{font-size:var(--xs);opacity:.75;margin-bottom:8px}
+.ph-badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:2px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6);display:inline-block}
+.profile-nav{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden;width:200px}
+.pn-item{padding:12px 16px;font-size:var(--sm);font-weight:var(--fw5);color:var(--n700);cursor:pointer;display:flex;align-items:center;gap:8px;border-left:3px solid transparent;transition:all .12s}
+.pn-item:hover{background:var(--n50);color:var(--brand)}
+.pn-item.active{background:#EFF6FF;color:var(--brand);border-left-color:var(--brand);font-weight:var(--fw7)}
+.pn-item+.pn-item{border-top:1px solid var(--n200)}
+.user-avatar{border-radius:var(--rfull);display:inline-flex;align-items:center;justify-content:center;font-weight:var(--fw7);flex-shrink:0;color:#fff}
+.avatar-sm{width:32px;height:32px;font-size:var(--xs)}
+.avatar-md{width:44px;height:44px;font-size:var(--sm)}
+.avatar-lg{width:64px;height:64px;font-size:var(--lg)}
+/* ─── 17. STAT CARD ──────────────────────────────────────────────────── */
+.stat-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:18px 20px;border-left:4px solid var(--brand);min-width:140px}
+.sc-val{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand)}
+.sc-label{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+/* ─── 18. MODALS ─────────────────────────────────────────────────────── */
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:28px;width:380px}
+.modal h3{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:8px;color:var(--n900)}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:20px}
+.modal-actions{display:flex;gap:10px}
+.modal-preview{background:var(--n50);border-radius:var(--r8);padding:12px;margin-bottom:16px;font-size:var(--sm)}
+.mp-row{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--n700)}
+.mp-row.total{font-weight:var(--fw7);color:var(--brand);padding-top:8px;border-top:1px solid var(--n200);margin-bottom:0}
+/* ─── 19. TOAST ──────────────────────────────────────────────────────── */
+.toast{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-radius:var(--r8);box-shadow:var(--shadowlg);max-width:320px}
+.toast-success{background:var(--success);color:#fff}
+.toast-error{background:var(--error);color:#fff}
+.toast-warning{background:var(--warning);color:#fff}
+.toast-info{background:var(--info);color:#fff}
+.toast-icon{font-size:1.2rem;flex-shrink:0}
+.toast-title{font-size:var(--sm);font-weight:var(--fw7);margin-bottom:2px}
+.toast-sub{font-size:var(--xs);opacity:.85}
+.toast-actions{display:flex;gap:6px;margin-top:8px}
+.toast-act{padding:4px 12px;border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw6);background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.35)}
+/* ─── 20. PAGINATION ─────────────────────────────────────────────────── */
+.pagination{display:flex;align-items:center;gap:6px}
+.pg-btn{width:36px;height:36px;border:1.5px solid var(--n300);background:var(--n0);border-radius:var(--r4);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700);font-family:var(--ff);transition:all .12s}
+.pg-btn:hover{background:var(--n100);border-color:var(--n400)}
+.pg-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.pg-btn.ellipsis{border:none;background:none;color:var(--n500);cursor:default}
+/* ─── 21. FILTER SIDEBAR ─────────────────────────────────────────────── */
+.filter-sidebar{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:18px;width:200px}
+.fs-title{font-size:var(--base);font-weight:var(--fw7);color:var(--brand);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--n200)}
+.fs-section{margin-bottom:18px}
+.fs-label{font-size:var(--xs);font-weight:var(--fw6);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.fs-price{display:flex;gap:6px}
+.fs-price input{width:100%;padding:7px 10px;border:1px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none}
+.fs-apply{width:100%;margin-top:8px;padding:8px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+/* ─── 22. STATUS TABS ────────────────────────────────────────────────── */
+.status-tabs{display:flex;gap:4px;background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:5px;flex-wrap:wrap}
+.st-tab{padding:7px 14px;border-radius:var(--r4);font-size:var(--sm);font-weight:var(--fw5);cursor:pointer;color:var(--n600);transition:all .12s}
+.st-tab:hover{background:var(--n100)}
+.st-tab.active{background:var(--brand);color:#fff;font-weight:var(--fw6)}
+/* ─── 23. SUCCESS PAGE ───────────────────────────────────────────────── */
+.success-circle{width:80px;height:80px;background:var(--success-bg);border-radius:var(--rfull);display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:4px solid var(--success)}
+/* ─── 24. ADMIN ORDER ACTION ─────────────────────────────────────────── */
+.order-action{display:flex;gap:8px;align-items:center}
+.oa-info{display:flex;flex-direction:column;gap:2px}
+.oa-from{font-size:var(--xs);color:var(--n600)}
+.oa-to{font-size:var(--xs);font-weight:var(--fw7);color:var(--brand2)}
+/* ─── UTILITY ─────────────────────────────────────────────────────────── */
+.gap-4{gap:4px!important}
+.gap-8{gap:8px!important}
+.gap-16{gap:16px!important}
+.flex{display:flex}
+.flex-col{display:flex;flex-direction:column}
+.w-full{width:100%}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">Components <span>React</span></div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Primitivos</div>
+    <a class="nav-item" href="#buttons">Button</a>
+    <a class="nav-item" href="#badges">Badge</a>
+    <a class="nav-item" href="#forms">Form Elements</a>
+    <a class="nav-item" href="#type-toggle">TypeToggle</a>
+    <a class="nav-item" href="#pagination">Pagination</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Navegación</div>
+    <a class="nav-item" href="#navbar">Navbar</a>
+    <a class="nav-item" href="#breadcrumb">Breadcrumb</a>
+    <a class="nav-item" href="#category-strip">CategoryStrip</a>
+    <a class="nav-item" href="#status-tabs">StatusTabBar</a>
+    <a class="nav-item" href="#filter-sidebar">FilterSidebar</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Productos</div>
+    <a class="nav-item" href="#product-card">ProductCard</a>
+    <a class="nav-item" href="#gallery">ProductImageGallery</a>
+    <a class="nav-item" href="#buy-panel">BuyPanel</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Carrito</div>
+    <a class="nav-item" href="#cart-item">CartItem</a>
+    <a class="nav-item" href="#order-summary">OrderSummary</a>
+    <a class="nav-item" href="#empty-state">EmptyState</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Pedidos</div>
+    <a class="nav-item" href="#order-card">OrderCard</a>
+    <a class="nav-item" href="#order-timeline">OrderTimeline</a>
+    <a class="nav-item" href="#order-action">OrderStatusAction</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Reseñas</div>
+    <a class="nav-item" href="#review-summary">ReviewSummary</a>
+    <a class="nav-item" href="#review-card">ReviewCard</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Usuario</div>
+    <a class="nav-item" href="#profile-header">ProfileHeader</a>
+    <a class="nav-item" href="#profile-nav">ProfileNav</a>
+    <a class="nav-item" href="#user-avatar">UserAvatar</a>
+    <a class="nav-item" href="#stat-card">StatCard</a>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-label">Overlays</div>
+    <a class="nav-item" href="#modal">Modal</a>
+    <a class="nav-item" href="#toast">Toast</a>
+    <a class="nav-item" href="#success-page">SuccessCircle</a>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <h1>Component Library</h1>
+    <p>Todos los componentes del proyecto UADE E-Commerce, extráidos de los 18 mockups. Cada uno usa exclusivamente tokens CSS — sin colores ni tamaños hardcodeados.</p>
+    <div class="meta">
+      <span>React 19 + JSX</span>
+      <span>CSS Custom Properties</span>
+      <span>18 mockups · 33 endpoints</span>
+      <span>WCAG AA ✓</span>
+    </div>
+  </div>
+
+  <!-- ══════════ BUTTONS ══════════ -->
+  <div class="section" id="buttons">
+    <div class="section-header"><h2>Button</h2><span class="section-count">7 variantes · 3 tamaños</span></div>
+
+    <!-- Primary -->
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Button variant="primary" /&gt;</div><div class="comp-desc">Acción principal de la pantalla — checkout, guardar, publicar</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--r8</span><span class="token-chip">--fw6</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>prop</th><td><code>variant</code> "primary" | "secondary" | "accent" | "outline" | "ghost" | "danger" | "danger-outline"</td></tr>
+        <tr><th></th><td><code>size</code> "sm" | "md"(default) | "lg"</td></tr>
+        <tr><th></th><td><code>disabled</code> boolean</td></tr>
+        <tr><th></th><td><code>loading</code> boolean — muestra spinner y bloquea click</td></tr>
+        <tr><th></th><td><code>icon</code> ReactNode — icono a la izquierda del texto</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Tamaños</div>
+          <div class="demo-group">
+            <button class="btn btn-primary btn-sm">Pequeño</button>
+            <button class="btn btn-primary btn-md">Mediano</button>
+            <button class="btn btn-primary btn-lg">Grande</button>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Variantes</div>
+          <div class="demo-group">
+            <button class="btn btn-primary btn-md">Primary</button>
+            <button class="btn btn-secondary btn-md">Secondary</button>
+            <button class="btn btn-accent btn-md">Accent</button>
+            <button class="btn btn-outline btn-md">Outline</button>
+            <button class="btn btn-ghost btn-md">Ghost</button>
+            <button class="btn btn-danger btn-md">Danger</button>
+            <button class="btn btn-danger-outline btn-md">Danger outline</button>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Estados</div>
+          <div class="demo-group">
+            <button class="btn btn-primary btn-md">Normal</button>
+            <button class="btn btn-primary btn-md disabled">Disabled</button>
+            <button class="btn btn-primary btn-md" style="opacity:.6;cursor:wait">⟳ Loading</button>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Icon Button</div>
+          <div class="demo-group">
+            <button class="btn btn-primary btn-icon">✏️</button>
+            <button class="btn btn-ghost btn-icon">🗑️</button>
+            <button class="btn btn-secondary btn-icon-round">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BADGES ══════════ -->
+  <div class="section" id="badges">
+    <div class="section-header"><h2>Badge</h2><span class="section-count">12 variantes</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Badge /&gt; · &lt;OrderStatusBadge /&gt; · &lt;StockBadge /&gt;</div><div class="comp-desc">Etiquetas de estado, tipo y stock</div></div>
+        <div class="comp-tokens"><span class="token-chip">--rfull</span><span class="token-chip">--xs</span><span class="token-chip">--fw6</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>Badge</th><td><code>variant</code> "physical" | "service" | "admin" | "cat"</td></tr>
+        <tr><th>OrderStatusBadge</th><td><code>status</code> "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELLED"</td></tr>
+        <tr><th>StockBadge</th><td><code>status</code> "ok" | "low" | "out" — <code>count</code> number</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Tipo de producto</div>
+          <div class="demo-group">
+            <span class="badge badge-physical">FÍSICO</span>
+            <span class="badge badge-service">SERVICIO</span>
+            <span class="badge badge-admin">ADMIN</span>
+            <span class="badge badge-mine">Mi reseña</span>
+            <span class="badge badge-cat">Tecnología</span>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Estado de pedido</div>
+          <div class="demo-group">
+            <span class="badge badge-pending">PENDIENTE</span>
+            <span class="badge badge-paid">PAGADO</span>
+            <span class="badge badge-shipped">ENVIADO</span>
+            <span class="badge badge-delivered">ENTREGADO</span>
+            <span class="badge badge-cancelled">CANCELADO</span>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Stock</div>
+          <div class="demo-group">
+            <span class="badge badge-stock-ok">✓ 10 u.</span>
+            <span class="badge badge-stock-low">⚠ 2 u.</span>
+            <span class="badge badge-stock-out">Sin stock</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ FORM ELEMENTS ══════════ -->
+  <div class="section" id="forms">
+    <div class="section-header"><h2>Form Elements</h2><span class="section-count">9 componentes</span></div>
+
+    <!-- Input -->
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Input /&gt;</div><div class="comp-desc">Campo de texto — estados: default, focus, error, disabled</div></div>
+        <div class="comp-tokens"><span class="token-chip">--n300</span><span class="token-chip">--brand2</span><span class="token-chip">--error</span><span class="token-chip">--r4</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>type</th><td><code>"text"</code> | <code>"email"</code> | <code>"password"</code> | <code>"number"</code></td></tr>
+        <tr><th>label</th><td>string — etiqueta visible</td></tr>
+        <tr><th>hint</th><td>string — texto de ayuda debajo del input</td></tr>
+        <tr><th>error</th><td>string — mensaje de error (aplica estilo rojo)</td></tr>
+        <tr><th>disabled</th><td>boolean</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Default</div>
+          <div class="form-group">
+            <label class="form-label">Email <span class="required">*</span></label>
+            <input class="form-input" type="email" placeholder="ada@mail.com">
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Con hint</div>
+          <div class="form-group">
+            <label class="form-label">Legajo</label>
+            <input class="form-input" type="text" value="L1234">
+            <span class="form-hint">Tu número de legajo UADE</span>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Error</div>
+          <div class="form-group">
+            <label class="form-label">Contraseña <span class="required">*</span></label>
+            <input class="form-input error" type="password" value="123">
+            <span class="form-error-msg">Mínimo 8 caracteres</span>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Disabled</div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" value="ada@mail.com" disabled>
+            <span class="form-hint">No editable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Textarea + Select -->
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Textarea /&gt; · &lt;Select /&gt;</div></div>
+        <div class="comp-tokens"><span class="token-chip">--n300</span><span class="token-chip">--brand2</span><span class="token-chip">--r4</span></div>
+      </div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Textarea</div>
+          <div class="form-group">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-textarea" placeholder="Describí el producto...">Notebook de alto rendimiento para estudiantes...</textarea>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Select</div>
+          <div class="form-group">
+            <label class="form-label">Categoría <span class="required">*</span></label>
+            <select class="form-select">
+              <option>Seleccioná una categoría</option>
+              <option selected>Tecnología</option>
+              <option>Librería</option>
+              <option>Servicios</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkbox + Radio -->
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Checkbox /&gt; · &lt;RadioGroup /&gt;</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand (accent-color)</span></div>
+      </div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Checkboxes</div>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" checked> Físico</label>
+            <label class="check-item"><input type="checkbox"> Servicio</label>
+            <label class="check-item"><input type="checkbox" disabled> (deshabilitado)</label>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Radio</div>
+          <div class="check-group">
+            <label class="check-item"><input type="radio" name="r" checked> Todos</label>
+            <label class="check-item"><input type="radio" name="r"> Con stock</label>
+            <label class="check-item"><input type="radio" name="r"> Sin stock</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QuantityStepper + StarSelector + SearchInput -->
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;QuantityStepper /&gt; · &lt;StarSelector /&gt; · &lt;SearchInput /&gt;</div></div>
+        <div class="comp-tokens"><span class="token-chip">--n300</span><span class="token-chip">--accent</span><span class="token-chip">--r8</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>QuantityStepper</th><td><code>value</code> number · <code>min</code> number · <code>max</code> number · <code>onChange</code> fn</td></tr>
+        <tr><th>StarSelector</th><td><code>value</code> 1-5 · <code>onChange</code> fn — interactivo, click en estrella</td></tr>
+        <tr><th>SearchInput</th><td><code>value</code> · <code>placeholder</code> · <code>onSearch</code> fn</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">QuantityStepper</div>
+          <div class="qty-ctrl">
+            <button class="qty-btn">−</button>
+            <span class="qty-val">2</span>
+            <button class="qty-btn">+</button>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">StarSelector (4 de 5)</div>
+          <div class="star-selector">
+            <span class="s on">★</span><span class="s on">★</span><span class="s on">★</span><span class="s on">★</span><span class="s">★</span>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">SearchInput</div>
+          <div class="search-wrap">
+            <input type="text" value="notebook lenovo">
+            <button class="search-btn">🔍</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ TYPE TOGGLE ══════════ -->
+  <div class="section" id="type-toggle">
+    <div class="section-header"><h2>ProductTypeToggle</h2><span class="section-count">ProductForm</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ProductTypeToggle /&gt;</div><div class="comp-desc">Selector PHYSICAL / SERVICE — controla campos condicionales del formulario</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n300</span><span class="token-chip">--r8</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>value</th><td><code>"PHYSICAL"</code> | <code>"SERVICE"</code></td></tr>
+        <tr><th>onChange</th><td>fn(type) — alterna campos: stock (PHYSICAL) o minutesDuration + attendanceType (SERVICE)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="type-toggle">
+          <div class="type-opt active">
+            <div class="type-opt-icon">📦</div>
+            <div class="type-opt-label">Producto físico</div>
+            <div class="type-opt-sub">Tiene stock · Se envía</div>
+          </div>
+          <div class="type-opt">
+            <div class="type-opt-icon">🎓</div>
+            <div class="type-opt-label">Servicio</div>
+            <div class="type-opt-sub">Clase, tutoría, consultoría</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PAGINATION ══════════ -->
+  <div class="section" id="pagination">
+    <div class="section-header"><h2>Pagination</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Pagination /&gt;</div><div class="comp-desc">Navegación de páginas — usado en listas de productos, órdenes y usuarios</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n300</span><span class="token-chip">--r4</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>currentPage</th><td>number</td></tr>
+        <tr><th>totalPages</th><td>number</td></tr>
+        <tr><th>onPageChange</th><td>fn(page)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="pagination">
+          <button class="pg-btn">‹</button>
+          <button class="pg-btn">1</button>
+          <button class="pg-btn active">2</button>
+          <button class="pg-btn">3</button>
+          <button class="pg-btn ellipsis">…</button>
+          <button class="pg-btn">8</button>
+          <button class="pg-btn">›</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ NAVBAR ══════════ -->
+  <div class="section" id="navbar">
+    <div class="section-header"><h2>Navbar</h2><span class="section-count">2 variantes</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Navbar /&gt; · &lt;NavbarAdmin /&gt;</div><div class="comp-desc">Barra de navegación sticky — con buscador, carrito con badge y menú de usuario</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--accent</span><span class="token-chip">--error (cart badge)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>cartCount</th><td>number — cantidad de ítems en el carrito</td></tr>
+        <tr><th>user</th><td><code>&#123; firstName, role &#125;</code> | null — null muestra "Ingresar / Registrarse"</td></tr>
+        <tr><th>isAdmin</th><td>boolean — muestra el badge ADMIN y links de administración</td></tr>
+      </table></div>
+      <div class="comp-demo" style="flex-direction:column;gap:16px">
+        <div>
+          <div class="demo-label">Navbar usuario</div>
+          <nav class="navbar">
+            <span class="navbar-logo">UADE</span>
+            <div class="navbar-search"><input type="text" placeholder="Buscar productos..."><button class="navbar-search-btn">🔍</button></div>
+            <div class="navbar-actions">
+              <a class="navbar-link">Mis compras</a>
+              <a class="navbar-link" style="color:#fff;font-weight:700">Ada L. ▾</a>
+              <button class="navbar-cart">🛒 <span class="cart-badge">3</span></button>
+            </div>
+          </nav>
+        </div>
+        <div>
+          <div class="demo-label">NavbarAdmin</div>
+          <nav class="navbar">
+            <span class="navbar-logo">UADE <span class="admin-badge">ADMIN</span></span>
+            <div class="navbar-actions">
+              <a class="navbar-link">Categorías</a>
+              <a class="navbar-link">Publicaciones</a>
+              <a class="navbar-link">Pedidos</a>
+              <a class="navbar-link">Usuarios</a>
+              <a class="navbar-link" style="color:#fff;font-weight:700">Ada L. ▾</a>
+            </div>
+          </nav>
+        </div>
+        <div>
+          <div class="demo-label">Navbar sin sesión</div>
+          <nav class="navbar">
+            <span class="navbar-logo">UADE</span>
+            <div class="navbar-search"><input type="text" placeholder="Buscar productos..."><button class="navbar-search-btn">🔍</button></div>
+            <div class="navbar-actions">
+              <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.3)">Ingresar</button>
+              <button class="btn btn-accent btn-sm">Registrarse</button>
+              <button class="navbar-cart">🛒</button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BREADCRUMB ══════════ -->
+  <div class="section" id="breadcrumb">
+    <div class="section-header"><h2>Breadcrumb</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Breadcrumb /&gt;</div><div class="comp-desc">Ruta de navegación — construido desde el array de rutas activas</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand2</span><span class="token-chip">--n600</span><span class="token-chip">--sm</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>items</th><td><code>Array&lt;&#123; label: string, href?: string &#125;&gt;</code> — último ítem sin href es el actual</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <nav class="bc">
+          <a href="#">Inicio</a><span class="bc-sep">›</span>
+          <a href="#">Tecnología</a><span class="bc-sep">›</span>
+          <span>Notebook Lenovo IdeaPad 15"</span>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CATEGORY STRIP ══════════ -->
+  <div class="section" id="category-strip">
+    <div class="section-header"><h2>CategoryStrip</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;CategoryStrip /&gt;</div><div class="comp-desc">Barra horizontal de categorías — llama GET /api/category al montar</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n200 (border-bottom)</span><span class="token-chip">--sm</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>categories</th><td><code>CategoryResponseDTO[]</code></td></tr>
+        <tr><th>activeId</th><td>number | null</td></tr>
+        <tr><th>onSelect</th><td>fn(categoryId) — dispara GET /api/products/category/{'{id}'}</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="cat-strip">
+          <div class="cat-chip active">Todos</div>
+          <div class="cat-chip">💻 Tecnología</div>
+          <div class="cat-chip">📚 Librería</div>
+          <div class="cat-chip">🏃 Deportes</div>
+          <div class="cat-chip">🎓 Servicios</div>
+          <div class="cat-chip">🎧 Electrónica</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STATUS TABS ══════════ -->
+  <div class="section" id="status-tabs">
+    <div class="section-header"><h2>StatusTabBar</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;StatusTabBar /&gt;</div><div class="comp-desc">Filtro de pedidos por estado — usado en Mis Compras y Admin Pedidos</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n100</span><span class="token-chip">--r4</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>statuses</th><td><code>Array&lt;&#123; label: string, value: string, count: number &#125;&gt;</code></td></tr>
+        <tr><th>active</th><td>string — status value activo</td></tr>
+        <tr><th>onChange</th><td>fn(status)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="status-tabs">
+          <div class="st-tab active">Todos (42)</div>
+          <div class="st-tab">⏳ Pendientes (8)</div>
+          <div class="st-tab">💳 Pagados (5)</div>
+          <div class="st-tab">📦 Enviados (3)</div>
+          <div class="st-tab">✅ Entregados (22)</div>
+          <div class="st-tab">❌ Cancelados (4)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ FILTER SIDEBAR ══════════ -->
+  <div class="section" id="filter-sidebar">
+    <div class="section-header"><h2>FilterSidebar</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;FilterSidebar /&gt;</div><div class="comp-desc">Panel de filtros para Search y Category Results — tipo, stock, precio</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n200</span><span class="token-chip">--r8</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>filters</th><td><code>&#123; types: string[], stock: string, priceMin: number, priceMax: number &#125;</code></td></tr>
+        <tr><th>onChange</th><td>fn(filters) — aplica filtros client-side (no hay endpoint de búsqueda)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="filter-sidebar">
+          <div class="fs-title">Filtros</div>
+          <div class="fs-section">
+            <div class="fs-label">Tipo</div>
+            <div class="check-group">
+              <label class="check-item"><input type="checkbox" checked> Físico</label>
+              <label class="check-item"><input type="checkbox"> Servicio</label>
+            </div>
+          </div>
+          <div class="fs-section">
+            <div class="fs-label">Stock</div>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="fs" checked> Todos</label>
+              <label class="check-item"><input type="radio" name="fs"> Con stock</label>
+            </div>
+          </div>
+          <div class="fs-section">
+            <div class="fs-label">Precio</div>
+            <div class="fs-price">
+              <input type="number" placeholder="Mín">
+              <input type="number" placeholder="Máx">
+            </div>
+            <button class="fs-apply">Aplicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PRODUCT CARD ══════════ -->
+  <div class="section" id="product-card">
+    <div class="section-header"><h2>ProductCard</h2><span class="section-count">3 estados</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ProductCard /&gt;</div><div class="comp-desc">Tarjeta de producto en grilla — variantes: físico, servicio, sin stock</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n100 (img bg)</span><span class="token-chip">--r12</span><span class="token-chip">--shadowlg (hover)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>product</th><td><code>ProductResponseDTO</code> — id, name, price, type, stock, category, images[0]</td></tr>
+        <tr><th>onClick</th><td>fn(id) — navega a /products/{'{id}'}</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col">
+          <div class="demo-label">Físico · en stock</div>
+          <div class="product-card">
+            <div class="pc-img">📷<span class="pc-type-badge badge badge-physical">FÍSICO</span></div>
+            <div class="pc-body">
+              <div class="pc-cat">Tecnología</div>
+              <div class="pc-name">Notebook Lenovo IdeaPad 15" 16GB</div>
+              <div class="pc-rating">⭐⭐⭐⭐★ 4.8 (24)</div>
+              <div class="pc-price">$950.000</div>
+              <div class="pc-stock" style="color:var(--success)">✓ 10 en stock</div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Servicio</div>
+          <div class="product-card">
+            <div class="pc-img">📷<span class="pc-type-badge badge badge-service">SERVICIO</span></div>
+            <div class="pc-body">
+              <div class="pc-cat">Servicios</div>
+              <div class="pc-name">Clases Python · Data Science</div>
+              <div class="pc-rating">⭐⭐⭐⭐⭐ 5.0 (8)</div>
+              <div class="pc-price">$12.000</div>
+              <div class="pc-stock" style="color:var(--n600)">60 min · Virtual</div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-col">
+          <div class="demo-label">Sin stock</div>
+          <div class="product-card">
+            <div class="pc-img">📷
+              <div class="pc-out-overlay"><span class="pc-out-label">Sin stock</span></div>
+            </div>
+            <div class="pc-body">
+              <div class="pc-cat">Librería</div>
+              <div class="pc-name">Cuaderno Rivadavia A4 Rayado</div>
+              <div class="pc-rating">⭐⭐⭐☆☆ 3.2 (5)</div>
+              <div class="pc-price">$1.200</div>
+              <div class="pc-stock" style="color:var(--error)">Sin stock</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PRODUCT IMAGE GALLERY ══════════ -->
+  <div class="section" id="gallery">
+    <div class="section-header"><h2>ProductImageGallery</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ProductImageGallery /&gt;</div><div class="comp-desc">Imagen principal + miniaturas — llama GET /api/products/{'{id}'}/images</div></div>
+        <div class="comp-tokens"><span class="token-chip">--n100</span><span class="token-chip">--brand2 (active thumb border)</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>images</th><td><code>ProductImageResponseDTO[]</code> ordenadas por imageOrder</td></tr>
+        <tr><th>activeIndex</th><td>number — índice de la imagen activa</td></tr>
+        <tr><th>onThumbClick</th><td>fn(index)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="gallery">
+          <div class="gallery-main">📷 Imagen principal</div>
+          <div class="gallery-thumbs">
+            <div class="gallery-thumb active">1</div>
+            <div class="gallery-thumb">2</div>
+            <div class="gallery-thumb">3</div>
+            <div class="gallery-thumb">4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ BUY PANEL ══════════ -->
+  <div class="section" id="buy-panel">
+    <div class="section-header"><h2>BuyPanel</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;BuyPanel /&gt;</div><div class="comp-desc">Panel de compra sticky — cantidad, comprar ahora, agregar al carrito, info del vendedor</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--success</span><span class="token-chip">--shadowlg</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>product</th><td><code>ProductResponseDTO</code></td></tr>
+        <tr><th>onBuy</th><td>fn(qty) — llama POST /api/orders</td></tr>
+        <tr><th>onAddToCart</th><td>fn(qty) — llama POST /api/cart/items</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="buy-panel">
+          <div class="bp-price">$950.000</div>
+          <div class="bp-stock">✓ Stock disponible (10 u.)</div>
+          <div class="bp-qty-row">
+            <span class="bp-qty-label">Cantidad:</span>
+            <div class="qty-ctrl"><button class="qty-btn">−</button><span class="qty-val">1</span><button class="qty-btn">+</button></div>
+          </div>
+          <div class="bp-actions">
+            <button class="btn btn-primary btn-md w-full">Comprar ahora</button>
+            <button class="btn btn-outline btn-md w-full">Agregar al carrito</button>
+          </div>
+          <div class="bp-seller">
+            <div class="bp-seller-label">Vendido por</div>
+            <div class="bp-seller-name">Ada Lovelace</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CART ITEM ══════════ -->
+  <div class="section" id="cart-item">
+    <div class="section-header"><h2>CartItem</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;CartItem /&gt;</div><div class="comp-desc">Ítem en el carrito — cantidad editable, eliminar individual</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--error (remove hover)</span><span class="token-chip">--n300</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>item</th><td><code>CartItemResponseDTO</code> — productId, productName, quantity, unitPrice, subtotal</td></tr>
+        <tr><th>onQtyChange</th><td>fn(productId, qty) — no hay PATCH qty, se usa DELETE + POST</td></tr>
+        <tr><th>onRemove</th><td>fn(productId) — DELETE /api/cart/items/{'{productId}'}?userId=</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="cart-item">
+          <div class="ci-img">📷</div>
+          <div>
+            <div class="ci-cat">Tecnología</div>
+            <div class="ci-name">Notebook Lenovo IdeaPad 15" 16GB RAM</div>
+            <div class="ci-unit">$950.000 por unidad</div>
+          </div>
+          <div class="ci-controls">
+            <div class="qty-ctrl"><button class="qty-btn">−</button><span class="qty-val">1</span><button class="qty-btn">+</button></div>
+            <div class="ci-subtotal">$950.000</div>
+            <button class="ci-remove">🗑️ Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ORDER SUMMARY ══════════ -->
+  <div class="section" id="order-summary">
+    <div class="section-header"><h2>OrderSummary</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;OrderSummary /&gt;</div><div class="comp-desc">Resumen sticky del carrito — total calculado, botón checkout</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--shadowlg</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-demo">
+        <div class="order-summary">
+          <div class="os-title">Resumen del pedido</div>
+          <div class="os-row"><span>Notebook Lenovo (×1)</span><span>$950.000</span></div>
+          <div class="os-row"><span>Cuaderno Rivadavia (×3)</span><span>$3.600</span></div>
+          <div class="os-total"><span>Total</span><span>$953.600</span></div>
+          <button class="btn btn-primary btn-lg w-full">Confirmar compra</button>
+          <button class="btn btn-outline btn-md w-full" style="margin-top:8px">Seguir comprando</button>
+          <div class="os-secure">🔒 Pago seguro</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ EMPTY STATE ══════════ -->
+  <div class="section" id="empty-state">
+    <div class="section-header"><h2>EmptyState</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;EmptyState /&gt;</div><div class="comp-desc">Estado vacío genérico — carrito, lista de órdenes, resultados sin match</div></div>
+        <div class="comp-tokens"><span class="token-chip">--n700</span><span class="token-chip">--n600</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>icon</th><td>string — emoji o SVG</td></tr>
+        <tr><th>title</th><td>string</td></tr>
+        <tr><th>description</th><td>string</td></tr>
+        <tr><th>action</th><td><code>&#123; label: string, onClick: fn &#125;</code> — opcional</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-group">
+          <div class="empty-state">
+            <div class="es-icon">🛒</div>
+            <div class="es-title">Tu carrito está vacío</div>
+            <p class="es-sub">Explorá las categorías y encontrá lo que buscás.</p>
+            <button class="btn btn-primary btn-md">Ir al inicio</button>
+          </div>
+          <div class="empty-state">
+            <div class="es-icon">📦</div>
+            <div class="es-title">Sin pedidos aún</div>
+            <p class="es-sub">Cuando realices una compra, aparecerá aquí.</p>
+            <button class="btn btn-outline btn-md">Explorar productos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ORDER CARD ══════════ -->
+  <div class="section" id="order-card">
+    <div class="section-header"><h2>OrderCard</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;OrderCard /&gt;</div><div class="comp-desc">Tarjeta de pedido en lista Mis Compras — estado, miniaturas y total</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--n200 (divider)</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>order</th><td><code>OrderResponseDTO</code> — id, status, orderDate, items, total</td></tr>
+        <tr><th>onClick</th><td>fn(id) — navega a /orders/{'{id}'}</td></tr>
+      </table></div>
+      <div class="comp-demo" style="flex-direction:column">
+        <div class="order-card">
+          <div class="oc-head">
+            <div><div class="oc-id">Pedido #1042</div><div class="oc-date">14 oct 2026 · 10:32 hs</div></div>
+            <span class="badge badge-paid">PAGADO</span>
+          </div>
+          <div class="oc-items">
+            <div class="oc-thumb">📷</div>
+            <div class="oc-thumb">📷</div>
+            <div class="oc-thumb">📷</div>
+          </div>
+          <div class="oc-foot">
+            <div class="oc-total">$998.600</div>
+            <button class="btn btn-outline btn-sm">Ver detalle →</button>
+          </div>
+        </div>
+        <div class="order-card" style="margin-top:12px">
+          <div class="oc-head">
+            <div><div class="oc-id">Pedido #1041</div><div class="oc-date">10 oct 2026 · 14:20 hs</div></div>
+            <span class="badge badge-delivered">ENTREGADO</span>
+          </div>
+          <div class="oc-items"><div class="oc-thumb">📷</div></div>
+          <div class="oc-foot">
+            <div class="oc-total">$45.000</div>
+            <button class="btn btn-outline btn-sm">Ver detalle →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ORDER TIMELINE ══════════ -->
+  <div class="section" id="order-timeline">
+    <div class="section-header"><h2>OrderTimeline</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;OrderTimeline /&gt;</div><div class="comp-desc">Progreso visual del pedido — 4 pasos, estado activo resaltado</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--brand2 (active)</span><span class="token-chip">--n200 (track)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>status</th><td><code>"PENDING"</code> | <code>"PAID"</code> | <code>"SHIPPED"</code> | <code>"DELIVERED"</code> | <code>"CANCELLED"</code></td></tr>
+      </table></div>
+      <div class="comp-demo" style="flex-direction:column;gap:16px">
+        <div>
+          <div class="demo-label">Estado: SHIPPED</div>
+          <div class="timeline">
+            <div class="tl-progress" style="width:60%"></div>
+            <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pedido</div></div>
+            <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-label done">Pagado</div></div>
+            <div class="tl-step"><div class="tl-dot active">📦</div><div class="tl-label active">Enviado</div></div>
+            <div class="tl-step"><div class="tl-dot pending">🏠</div><div class="tl-label">Entregado</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="demo-label">Estado: PENDING</div>
+          <div class="timeline">
+            <div class="tl-progress" style="width:0%"></div>
+            <div class="tl-step"><div class="tl-dot active">📋</div><div class="tl-label active">Pedido</div></div>
+            <div class="tl-step"><div class="tl-dot pending">💳</div><div class="tl-label">Pagado</div></div>
+            <div class="tl-step"><div class="tl-dot pending">📦</div><div class="tl-label">Enviado</div></div>
+            <div class="tl-step"><div class="tl-dot pending">🏠</div><div class="tl-label">Entregado</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ ORDER STATUS ACTION ══════════ -->
+  <div class="section" id="order-action">
+    <div class="section-header"><h2>OrderStatusAction</h2><span class="section-count">Admin</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;OrderStatusAction /&gt;</div><div class="comp-desc">Botón de avance de estado para admin — muestra transición posible según state machine</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--brand2</span><span class="token-chip">--n300 (disabled)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>orderId</th><td>number</td></tr>
+        <tr><th>currentStatus</th><td><code>OrderStatus</code></td></tr>
+        <tr><th>onAdvance</th><td>fn(orderId, nextStatus) — PUT /api/orders/{'{id}'}/status</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-group">
+          <div>
+            <div class="demo-label">PENDING → PAID</div>
+            <div class="order-action">
+              <div class="oa-info"><span class="oa-from">PENDIENTE</span><span class="oa-to">→ PAGADO</span></div>
+              <button class="btn btn-primary btn-sm">Marcar pagado</button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">PAID → SHIPPED</div>
+            <div class="order-action">
+              <div class="oa-info"><span class="oa-from">PAGADO</span><span class="oa-to">→ ENVIADO</span></div>
+              <button class="btn btn-primary btn-sm">Marcar enviado</button>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">DELIVERED (final)</div>
+            <div class="order-action">
+              <button class="btn btn-ghost btn-sm disabled">Estado final</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ REVIEW SUMMARY ══════════ -->
+  <div class="section" id="review-summary">
+    <div class="section-header"><h2>ReviewSummary</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ReviewSummary /&gt;</div><div class="comp-desc">Resumen de calificaciones con barras proporcionales</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--accent (stars/bars)</span><span class="token-chip">--n200 (track)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>reviews</th><td><code>ReviewResponseDTO[]</code> — se calcula el promedio y distribución</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="review-summary">
+          <div>
+            <div class="rs-big">4.8</div>
+            <div class="rs-stars">★★★★★</div>
+            <div class="rs-count">24 reseñas</div>
+          </div>
+          <div class="rs-bars">
+            <div class="rs-bar-row"><span class="rs-bar-label">5★</span><div class="rs-bar"><div class="rs-fill" style="width:80%"></div></div><span class="rs-num">19</span></div>
+            <div class="rs-bar-row"><span class="rs-bar-label">4★</span><div class="rs-bar"><div class="rs-fill" style="width:12%"></div></div><span class="rs-num">3</span></div>
+            <div class="rs-bar-row"><span class="rs-bar-label">3★</span><div class="rs-bar"><div class="rs-fill" style="width:4%"></div></div><span class="rs-num">1</span></div>
+            <div class="rs-bar-row"><span class="rs-bar-label">2★</span><div class="rs-bar"><div class="rs-fill" style="width:4%"></div></div><span class="rs-num">1</span></div>
+            <div class="rs-bar-row"><span class="rs-bar-label">1★</span><div class="rs-bar"><div class="rs-fill" style="width:0%"></div></div><span class="rs-num">0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ REVIEW CARD ══════════ -->
+  <div class="section" id="review-card">
+    <div class="section-header"><h2>ReviewCard</h2><span class="section-count">2 variantes</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ReviewCard /&gt;</div><div class="comp-desc">Reseña individual — variante con acciones de editar/eliminar para el autor</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--accent (stars)</span><span class="token-chip">--brand2 (edit action)</span><span class="token-chip">--error (delete action)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>review</th><td><code>ReviewResponseDTO</code> — id, rating, comment, date, userId</td></tr>
+        <tr><th>isOwner</th><td>boolean — muestra botones editar/eliminar</td></tr>
+        <tr><th>onEdit</th><td>fn(review) — abre inline edit form</td></tr>
+        <tr><th>onDelete</th><td>fn(reviewId) — DELETE /api/products/{'{id}'}/reviews/{'{reviewId}'}</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-col" style="gap:12px">
+          <div>
+            <div class="demo-label">Reseña de otro usuario</div>
+            <div class="review-card">
+              <div class="rc-head">
+                <div class="rc-avatar">GT</div>
+                <div><div class="rc-user">Grace Tanner</div><div class="rc-date">12 oct 2026</div></div>
+                <div class="rc-stars">★★★★★</div>
+              </div>
+              <div class="rc-comment">Excelente producto. Llegó en perfectas condiciones, muy conforme.</div>
+            </div>
+          </div>
+          <div>
+            <div class="demo-label">Mi reseña (isOwner=true)</div>
+            <div class="review-card">
+              <div class="rc-head">
+                <div class="rc-avatar" style="background:var(--brand2)">AL</div>
+                <div>
+                  <div class="rc-user">Ada Lovelace <span class="badge badge-mine" style="font-size:.6rem;padding:1px 6px">Mi reseña</span></div>
+                  <div class="rc-date">10 oct 2026</div>
+                </div>
+                <div class="rc-stars">★★★★☆</div>
+              </div>
+              <div class="rc-comment">Muy buena relación precio-calidad. La pantalla podría ser mejor.</div>
+              <div class="rc-actions">
+                <button class="rc-action edit">✏️ Editar</button>
+                <button class="rc-action del">🗑️ Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PROFILE HEADER ══════════ -->
+  <div class="section" id="profile-header">
+    <div class="section-header"><h2>ProfileHeader</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ProfileHeader /&gt;</div><div class="comp-desc">Header de perfil con gradiente UADE, avatar y datos del usuario</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand (gradient from)</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>user</th><td><code>UserResponseDTO</code> — firstName, lastName, email, regNumber, isEnabled</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="profile-header">
+          <div class="ph-avatar">👤</div>
+          <div>
+            <div class="ph-name">Ada Lovelace</div>
+            <div class="ph-meta">ada@mail.com · Legajo: L1</div>
+            <span class="ph-badge">Usuario activo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PROFILE NAV ══════════ -->
+  <div class="section" id="profile-nav">
+    <div class="section-header"><h2>ProfileNav</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;ProfileNav /&gt;</div><div class="comp-desc">Navegación lateral del perfil — secciones con borde activo</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--brand (border-left active)</span><span class="token-chip">--error (logout)</span></div>
+      </div>
+      <div class="comp-demo">
+        <div class="profile-nav">
+          <div class="pn-item active">✏️ Editar perfil</div>
+          <div class="pn-item">🔒 Cambiar contraseña</div>
+          <div class="pn-item">📦 Mis compras</div>
+          <div class="pn-item">🏷️ Mis publicaciones</div>
+          <div class="pn-item" style="color:var(--error)">🚪 Cerrar sesión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ USER AVATAR ══════════ -->
+  <div class="section" id="user-avatar">
+    <div class="section-header"><h2>UserAvatar</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;UserAvatar /&gt;</div><div class="comp-desc">Avatar circular con iniciales — color de fondo calculado del nombre</div></div>
+        <div class="comp-tokens"><span class="token-chip">--rfull</span><span class="token-chip">--fw7</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>user</th><td><code>&#123; firstName, lastName &#125;</code></td></tr>
+        <tr><th>size</th><td><code>"sm"</code> (32px) | <code>"md"</code> (44px) | <code>"lg"</code> (64px)</td></tr>
+        <tr><th>color</th><td>string — color de fondo (derivado del nombre si no se pasa)</td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-group">
+          <div class="user-avatar avatar-sm" style="background:var(--brand)">AL</div>
+          <div class="user-avatar avatar-md" style="background:#7C3AED">GT</div>
+          <div class="user-avatar avatar-md" style="background:var(--brand2)">LT</div>
+          <div class="user-avatar avatar-md" style="background:var(--success)">MH</div>
+          <div class="user-avatar avatar-lg" style="background:var(--brand)">AL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAT CARD ══════════ -->
+  <div class="section" id="stat-card">
+    <div class="section-header"><h2>StatCard</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;StatCard /&gt;</div><div class="comp-desc">Tarjeta de métrica admin — valor numérico + etiqueta + borde de color</div></div>
+        <div class="comp-tokens"><span class="token-chip">--brand</span><span class="token-chip">--success/--warning/--error (variants)</span><span class="token-chip">--r12</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>value</th><td>number | string</td></tr>
+        <tr><th>label</th><td>string</td></tr>
+        <tr><th>color</th><td><code>"brand"</code> | <code>"success"</code> | <code>"warning"</code> | <code>"error"</code></td></tr>
+      </table></div>
+      <div class="comp-demo">
+        <div class="demo-group">
+          <div class="stat-card"><div class="sc-val">18</div><div class="sc-label">Publicaciones</div></div>
+          <div class="stat-card" style="border-left-color:var(--success)"><div class="sc-val" style="color:var(--success)">14</div><div class="sc-label">Con stock</div></div>
+          <div class="stat-card" style="border-left-color:var(--warning)"><div class="sc-val" style="color:var(--warning)">2</div><div class="sc-label">Stock bajo</div></div>
+          <div class="stat-card" style="border-left-color:var(--error)"><div class="sc-val" style="color:var(--error)">2</div><div class="sc-label">Sin stock</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL ══════════ -->
+  <div class="section" id="modal">
+    <div class="section-header"><h2>Modal</h2><span class="section-count">3 variantes</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Modal /&gt; · &lt;ConfirmDeleteModal /&gt; · &lt;CheckoutModal /&gt;</div><div class="comp-desc">Overlay con fondo oscuro — acción primaria + secundaria</div></div>
+        <div class="comp-tokens"><span class="token-chip">--shadowlg</span><span class="token-chip">--r12</span><span class="token-chip">--error (delete variant)</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>title</th><td>string</td></tr>
+        <tr><th>onConfirm</th><td>fn</td></tr>
+        <tr><th>onCancel</th><td>fn</td></tr>
+        <tr><th>variant</th><td><code>"default"</code> | <code>"danger"</code> — cambia color del botón de confirmación</td></tr>
+      </table></div>
+      <div class="comp-demo" style="flex-wrap:wrap;gap:20px">
+        <div>
+          <div class="demo-label">Modal genérico</div>
+          <div class="modal">
+            <h3>Confirmar compra</h3>
+            <p>Al confirmar se generará tu pedido y el stock se descontará.</p>
+            <div class="modal-preview">
+              <div class="mp-row"><span>Notebook Lenovo (×1)</span><span>$950.000</span></div>
+              <div class="mp-row total"><span>Total</span><span>$950.000</span></div>
+            </div>
+            <div class="modal-actions">
+              <button class="btn btn-ghost btn-md" style="flex:1">Cancelar</button>
+              <button class="btn btn-primary btn-md" style="flex:1">Confirmar</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="demo-label">ConfirmDeleteModal</div>
+          <div class="modal">
+            <h3>¿Eliminar producto?</h3>
+            <p>Estás por eliminar <strong>"Cuaderno Rivadavia"</strong>. Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+              <button class="btn btn-ghost btn-md" style="flex:1">Cancelar</button>
+              <button class="btn btn-danger btn-md" style="flex:1">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ TOAST ══════════ -->
+  <div class="section" id="toast">
+    <div class="section-header"><h2>Toast</h2><span class="section-count">4 variantes</span></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;Toast /&gt;</div><div class="comp-desc">Notificación flotante — posición fixed bottom-right, auto-dismiss en 4s</div></div>
+        <div class="comp-tokens"><span class="token-chip">--success/--error/--warning/--info</span><span class="token-chip">--shadowlg</span><span class="token-chip">--r8</span></div>
+      </div>
+      <div class="comp-props"><table>
+        <tr><th>variant</th><td><code>"success"</code> | <code>"error"</code> | <code>"warning"</code> | <code>"info"</code></td></tr>
+        <tr><th>title</th><td>string</td></tr>
+        <tr><th>description</th><td>string — opcional</td></tr>
+        <tr><th>actions</th><td><code>Array&lt;&#123; label, onClick &#125;&gt;</code> — botones inline</td></tr>
+        <tr><th>duration</th><td>number — ms, default 4000</td></tr>
+      </table></div>
+      <div class="comp-demo" style="flex-direction:column;gap:12px">
+        <div class="toast toast-success">
+          <div class="toast-icon">✅</div>
+          <div><div class="toast-title">¡Agregado al carrito!</div><div class="toast-sub">Monitor LG 24" Full HD · ×1</div>
+          <div class="toast-actions"><button class="toast-act">Ver carrito</button><button class="toast-act" style="background:transparent;border-color:transparent">Seguir comprando</button></div></div>
+        </div>
+        <div class="toast toast-error">
+          <div class="toast-icon">❌</div>
+          <div><div class="toast-title">Error al procesar</div><div class="toast-sub">No hay suficiente stock disponible</div></div>
+        </div>
+        <div class="toast toast-warning">
+          <div class="toast-icon">⚠️</div>
+          <div><div class="toast-title">Stock bajo</div><div class="toast-sub">Solo quedan 2 unidades</div></div>
+        </div>
+        <div class="toast toast-info">
+          <div class="toast-icon">ℹ️</div>
+          <div><div class="toast-title">Perfil actualizado</div><div class="toast-sub">Los cambios se guardaron correctamente</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SUCCESS CIRCLE ══════════ -->
+  <div class="section" id="success-page">
+    <div class="section-header"><h2>SuccessCircle</h2></div>
+    <div class="comp">
+      <div class="comp-head">
+        <div><div class="comp-name">&lt;SuccessCircle /&gt;</div><div class="comp-desc">Ícono central de confirmación — usado en la pantalla post-checkout</div></div>
+        <div class="comp-tokens"><span class="token-chip">--success</span><span class="token-chip">--success-bg</span><span class="token-chip">--rfull</span></div>
+      </div>
+      <div class="comp-demo">
+        <div style="text-align:center;padding:20px">
+          <div class="success-circle" style="margin:0 auto 16px">✓</div>
+          <div style="font-size:var(--2xl);font-weight:var(--fw7);color:var(--success);margin-bottom:6px">¡Pedido confirmado!</div>
+          <div style="font-size:var(--sm);color:var(--n600)">Tu compra fue registrada correctamente.</div>
+          <div style="margin-top:12px"><span style="background:var(--brand);color:#fff;padding:8px 24px;border-radius:var(--rfull);font-size:var(--sm);font-weight:var(--fw7)">Pedido #1043</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

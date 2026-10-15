@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Pedido confirmado</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;--3xl:2.25rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+/* SUCCESS WRAPPER */
+.page-wrapper{max-width:640px;margin:0 auto;padding:48px 32px;text-align:center}
+/* SUCCESS ICON */
+.success-circle{width:100px;height:100px;background:var(--success-bg);border-radius:var(--rfull);display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 24px;border:4px solid var(--success)}
+.success-title{font-size:var(--3xl);font-weight:var(--fw7);color:var(--success);margin-bottom:8px}
+.success-sub{font-size:var(--base);color:var(--n600);margin-bottom:32px;line-height:1.6}
+/* ORDER NUMBER PILL */
+.order-number{background:var(--brand);color:#fff;padding:10px 28px;border-radius:var(--rfull);font-size:var(--lg);font-weight:var(--fw7);display:inline-block;margin-bottom:32px;letter-spacing:.03em}
+/* ORDER CARD */
+.order-card{background:var(--n0);border-radius:var(--r16);box-shadow:var(--shadowlg);padding:28px;text-align:left;margin-bottom:24px}
+.card-section-title{font-size:var(--base);font-weight:var(--fw7);color:var(--brand);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--n200)}
+/* ITEM LIST */
+.order-items{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.order-item{display:flex;align-items:center;gap:14px}
+.item-img{width:50px;height:50px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs);flex-shrink:0}
+.item-info{flex:1}
+.item-name{font-size:var(--sm);font-weight:var(--fw6);color:var(--n900);margin-bottom:2px}
+.item-qty{font-size:var(--xs);color:var(--n600)}
+.item-subtotal{font-size:var(--sm);font-weight:var(--fw7);color:var(--brand)}
+.divider{border:none;border-top:1px solid var(--n200);margin:16px 0}
+/* TOTALS */
+.total-row{display:flex;justify-content:space-between;font-size:var(--sm);color:var(--n600);margin-bottom:8px}
+.total-row.grand{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand);margin-top:4px}
+/* META */
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.meta-item{}
+.meta-label{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.meta-value{font-size:var(--sm);font-weight:var(--fw5);color:var(--n900)}
+.badge-pending{background:#FEF3C7;color:#D97706;padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6)}
+/* ACTIONS */
+.actions{display:flex;flex-direction:column;gap:12px}
+.btn-primary{padding:14px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw7);cursor:pointer;font-family:var(--ff)}
+.btn-secondary{padding:14px;background:transparent;color:var(--brand);border:2px solid var(--brand);border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-ghost{padding:12px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* NEXT STEPS */
+.next-steps{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;margin-bottom:24px}
+.next-step{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--n200)}
+.next-step:last-child{border-bottom:none}
+.step-icon{width:36px;height:36px;background:var(--n100);border-radius:var(--rfull);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.step-text{flex:1}
+.step-title{font-size:var(--sm);font-weight:var(--fw6);color:var(--n900);margin-bottom:2px}
+.step-desc{font-size:var(--xs);color:var(--n600)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Mis compras</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <!-- ÉXITO -->
+  <div class="success-circle">✓</div>
+  <div class="success-title">¡Pedido confirmado!</div>
+  <p class="success-sub">
+    Tu compra fue registrada correctamente.<br>
+    Guardá el número de pedido para hacer seguimiento.
+  </p>
+  <div class="order-number">Pedido #1043</div>
+
+  <!-- RESUMEN DEL PEDIDO -->
+  <div class="order-card">
+    <div class="card-section-title">Resumen de tu compra</div>
+    <div class="order-items">
+      <div class="order-item">
+        <div class="item-img">📷</div>
+        <div class="item-info">
+          <div class="item-name">Notebook Lenovo IdeaPad 15" 16GB RAM</div>
+          <div class="item-qty">×1 · Tecnología · Físico</div>
+        </div>
+        <div class="item-subtotal">$950.000</div>
+      </div>
+      <div class="order-item">
+        <div class="item-img">📷</div>
+        <div class="item-info">
+          <div class="item-name">Cuaderno Rivadavia A4 Rayado</div>
+          <div class="item-qty">×3 · Librería · Físico</div>
+        </div>
+        <div class="item-subtotal">$3.600</div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="total-row"><span>Subtotal</span><span>$953.600</span></div>
+    <div class="total-row grand"><span>Total</span><span>$953.600</span></div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Estado</div>
+        <div class="meta-value"><span class="badge-pending">PENDIENTE</span></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Fecha</div>
+        <div class="meta-value">14 oct 2026 · 11:48 hs</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Comprador</div>
+        <div class="meta-value">Ada Lovelace</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Productos</div>
+        <div class="meta-value">2 ítems</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRÓXIMOS PASOS -->
+  <div class="next-steps">
+    <div class="next-step">
+      <div class="step-icon">📦</div>
+      <div class="step-text">
+        <div class="step-title">Tu pedido está pendiente de pago</div>
+        <div class="step-desc">El vendedor procesará tu pago y cambiará el estado a "Pagado".</div>
+      </div>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">🚚</div>
+      <div class="step-text">
+        <div class="step-title">Seguimiento de envío</div>
+        <div class="step-desc">Podés ver el estado de tu pedido en "Mis compras" en cualquier momento.</div>
+      </div>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">❌</div>
+      <div class="step-text">
+        <div class="step-title">Podés cancelar mientras esté pendiente o pagado</div>
+        <div class="step-desc">Ingresá al detalle del pedido y usá el botón "Cancelar pedido".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCIONES -->
+  <div class="actions">
+    <button class="btn-primary">Ver mis compras</button>
+    <button class="btn-secondary">Ver detalle del pedido #1043</button>
+    <button class="btn-ghost">Seguir comprando</button>
+  </div>
+</div>
+
+</body>
+</html>

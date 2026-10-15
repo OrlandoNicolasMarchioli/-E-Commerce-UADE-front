@@ -1,0 +1,155 @@
+/* =============================================================
+   UADE E-Commerce — Design Tokens
+   Generado a partir de docs/04-design-system.md
+   ⚠️  Valores de color marcados con (*) son inferidos de la
+       identidad institucional UADE; verificar con DevTools.
+   ============================================================= */
+
+:root {
+  /* ── BRAND ──────────────────────────────────────────────── */
+  --color-brand-primary:        #002D62; /* (*) Navy institucional UADE */
+  --color-brand-primary-hover:  #00234e;
+  --color-brand-primary-light:  #004B9D;
+  --color-brand-secondary:      #0070C0;
+  --color-brand-secondary-hover:#005A9E;
+  --color-brand-accent:         #FFB800;
+
+  /* ── NEUTRAL ────────────────────────────────────────────── */
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #F8F9FA;
+  --color-neutral-100: #F1F3F5;
+  --color-neutral-200: #E9ECEF;
+  --color-neutral-300: #DEE2E6;
+  --color-neutral-400: #CED4DA;
+  --color-neutral-500: #ADB5BD;
+  --color-neutral-600: #6C757D;
+  --color-neutral-700: #495057;
+  --color-neutral-800: #343A40;
+  --color-neutral-900: #212529;
+
+  /* ── SEMANTIC ───────────────────────────────────────────── */
+  --color-success-bg:   #D1FAE5;
+  --color-success:      #059669;
+  --color-success-dark: #047857;
+  --color-warning-bg:   #FEF3C7;
+  --color-warning:      #D97706;
+  --color-warning-dark: #B45309;
+  --color-error-bg:     #FEE2E2;
+  --color-error:        #DC2626;
+  --color-error-dark:   #B91C1C;
+  --color-info-bg:      #DBEAFE;
+  --color-info:         #2563EB;
+  --color-info-dark:    #1D4ED8;
+
+  /* ── SURFACE ────────────────────────────────────────────── */
+  --color-surface-page:    #F8F9FA;
+  --color-surface-card:    #FFFFFF;
+  --color-surface-overlay: rgba(0, 0, 0, 0.5);
+  --color-surface-navbar:  #002D62;
+  --color-surface-footer:  #001F44;
+
+  /* ── TEXT ───────────────────────────────────────────────── */
+  --color-text-primary:   #212529;
+  --color-text-secondary: #6C757D;
+  --color-text-disabled:  #ADB5BD;
+  --color-text-inverse:   #FFFFFF;
+  --color-text-link:      #0070C0;
+  --color-text-link-hover:#005A9E;
+
+  /* ── BORDER ─────────────────────────────────────────────── */
+  --color-border-default: #DEE2E6;
+  --color-border-strong:  #ADB5BD;
+  --color-border-brand:   #002D62;
+  --color-border-error:   #DC2626;
+
+  /* ── TYPOGRAPHY — FAMILY ────────────────────────────────── */
+  --font-family-base:    'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-family-mono:    'Fira Code', 'Cascadia Code', monospace;
+
+  /* ── TYPOGRAPHY — SIZE ──────────────────────────────────── */
+  --font-size-xs:   0.75rem;   /* 12px */
+  --font-size-sm:   0.875rem;  /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-md:   1.125rem;  /* 18px */
+  --font-size-lg:   1.25rem;   /* 20px */
+  --font-size-xl:   1.5rem;    /* 24px */
+  --font-size-2xl:  1.875rem;  /* 30px */
+  --font-size-3xl:  2.25rem;   /* 36px */
+  --font-size-4xl:  3rem;      /* 48px */
+
+  /* ── TYPOGRAPHY — WEIGHT ────────────────────────────────── */
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* ── TYPOGRAPHY — LINE-HEIGHT ───────────────────────────── */
+  --line-height-tight:   1.2;
+  --line-height-snug:    1.375;
+  --line-height-base:    1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ── TYPOGRAPHY — LETTER-SPACING ───────────────────────── */
+  --letter-spacing-tight:  -0.025em;
+  --letter-spacing-normal:  0;
+  --letter-spacing-wide:    0.025em;
+  --letter-spacing-wider:   0.05em;
+
+  /* ── SPACING (escala 4px) ───────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ── BORDER RADIUS ──────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ── SHADOWS ────────────────────────────────────────────── */
+  --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md:    0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg:    0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl:    0 20px 25px rgba(0, 0, 0, 0.10), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-brand: 0 4px 14px rgba(0, 45, 98, 0.30);
+
+  /* ── Z-INDEX ─────────────────────────────────────────────── */
+  --z-base:    0;
+  --z-raised:  10;
+  --z-dropdown:100;
+  --z-sticky:  200;
+  --z-overlay: 300;
+  --z-modal:   400;
+  --z-toast:   500;
+
+  /* ── TRANSITIONS ─────────────────────────────────────────── */
+  --duration-fast:   100ms;
+  --duration-base:   150ms;
+  --duration-slow:   250ms;
+  --duration-slower: 400ms;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+
+  /* ── BREAKPOINTS (como custom properties para JS; en CSS usar media queries) */
+  --bp-xs:  480px;
+  --bp-sm:  640px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+}

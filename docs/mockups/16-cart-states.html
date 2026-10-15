@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Estados del Carrito</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative;max-width:480px}
+.nav-search input{width:100%;padding:10px 46px 10px 16px;border:none;border-radius:var(--r12);font-size:var(--sm);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 14px;background:var(--accent);border:none;border-radius:0 var(--r12) var(--r12) 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6);position:relative}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--error);color:#fff;border-radius:var(--rfull);width:18px;height:18px;font-size:0.65rem;font-weight:var(--fw7);display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.page-label{font-size:var(--xs);font-weight:var(--fw7);text-transform:uppercase;letter-spacing:.1em;color:var(--n500);margin:0 32px 12px;padding-top:28px}
+/* ===================== ESTADO 1: CARRITO VACÍO ===================== */
+.empty-cart-wrapper{max-width:500px;margin:0 auto 48px;padding:48px 32px;text-align:center}
+.empty-icon{font-size:4rem;margin-bottom:16px}
+.empty-title{font-size:var(--2xl);font-weight:var(--fw7);color:var(--n700);margin-bottom:8px}
+.empty-sub{font-size:var(--base);color:var(--n600);margin-bottom:28px;line-height:1.6}
+.btn-primary{padding:13px 32px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw7);cursor:pointer;font-family:var(--ff)}
+/* ===================== ESTADO 2: ADD TO CART TOAST ===================== */
+.toast-demo{position:relative;max-width:800px;margin:0 auto 48px;padding:0 32px}
+/* Simulated product detail context */
+.mini-product{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.mini-img{width:64px;height:64px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.mini-info{flex:1}
+.mini-name{font-weight:var(--fw6);font-size:var(--base);margin-bottom:4px}
+.mini-price{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand)}
+.qty-control{display:flex;align-items:center;gap:8px;margin-top:8px}
+.qty-btn{width:32px;height:32px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r4);font-size:var(--lg);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qty-value{min-width:32px;text-align:center;font-weight:var(--fw6);font-size:var(--base)}
+.btn-add-cart{padding:11px 24px;background:var(--brand2);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+/* TOAST */
+.toast-success{background:var(--success);color:#fff;padding:14px 20px;border-radius:var(--r8);box-shadow:var(--shadowlg);font-size:var(--sm);font-weight:var(--fw5);display:flex;align-items:flex-start;gap:12px;max-width:340px;position:fixed;bottom:28px;right:28px;z-index:400}
+.toast-icon{font-size:1.3rem;flex-shrink:0}
+.toast-body{}
+.toast-title{font-weight:var(--fw7);margin-bottom:4px;font-size:var(--base)}
+.toast-sub{font-size:var(--xs);opacity:.9}
+.toast-actions{display:flex;gap:8px;margin-top:10px}
+.toast-btn-primary{padding:6px 14px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw6)}
+.toast-btn-ghost{padding:6px 14px;background:transparent;color:rgba(255,255,255,.8);border:1px solid transparent;border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff)}
+/* ===================== ESTADO 3: CARRITO CON ITEMS + VACIAR ===================== */
+.cart-wrapper{max-width:900px;margin:0 auto 48px;padding:0 32px;display:grid;grid-template-columns:1fr 280px;gap:20px}
+.cart-items-col{}
+.cart-item{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.item-img{width:60px;height:60px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.item-info{flex:1}
+.item-name{font-weight:var(--fw6);font-size:var(--sm);margin-bottom:4px}
+.item-meta{font-size:var(--xs);color:var(--n600)}
+.item-qty-control{display:flex;align-items:center;gap:6px;margin-top:8px}
+.item-qty-btn{width:26px;height:26px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r4);font-size:var(--base);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.item-qty-val{min-width:24px;text-align:center;font-weight:var(--fw6);font-size:var(--sm)}
+.item-price{text-align:right}
+.item-subtotal{font-weight:var(--fw7);color:var(--brand);font-size:var(--base)}
+.item-unit{font-size:var(--xs);color:var(--n600);margin-bottom:6px}
+.btn-remove{padding:4px 10px;background:transparent;color:var(--error);border:none;font-size:var(--xs);cursor:pointer;font-family:var(--ff)}
+/* CLEAR CART BUTTON */
+.clear-cart-row{display:flex;justify-content:flex-end;margin-bottom:4px}
+.btn-clear-cart{padding:8px 16px;background:transparent;color:var(--error);border:1px solid var(--error);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+/* SUMMARY */
+.order-summary{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:20px;position:sticky;top:88px}
+.summary-title{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand);margin-bottom:16px}
+.summary-row{display:flex;justify-content:space-between;font-size:var(--sm);color:var(--n600);margin-bottom:10px}
+.summary-total{display:flex;justify-content:space-between;font-size:var(--xl);font-weight:var(--fw7);color:var(--brand);margin-top:12px;padding-top:12px;border-top:1px solid var(--n200)}
+.btn-checkout{width:100%;padding:13px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw7);cursor:pointer;font-family:var(--ff);margin-top:16px}
+/* CLEAR CONFIRM MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:380px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:10px}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:24px}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-ok{flex:1;padding:11px;background:var(--error);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" placeholder="Buscar..."><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒 Carrito <span class="cart-badge">3</span></button>
+  </div>
+</nav>
+
+<!-- ============ ESTADO 1: CARRITO VACÍO ============ -->
+<div class="page-label">Estado 1 — Carrito vacío · GET /api/cart → items: []</div>
+<div class="empty-cart-wrapper">
+  <div class="empty-icon">🛒</div>
+  <div class="empty-title">Tu carrito está vacío</div>
+  <p class="empty-sub">
+    Todavía no agregaste ningún producto.<br>
+    Explorá las categorías y encontrá lo que buscás.
+  </p>
+  <button class="btn-primary">Ir al inicio</button>
+</div>
+
+<!-- ============ ESTADO 2: ADD TO CART + TOAST ============ -->
+<div class="page-label">Estado 2 — Agregar al carrito · POST /api/cart/items → toast de confirmación</div>
+<div class="toast-demo">
+  <div class="mini-product">
+    <div class="mini-img">📷</div>
+    <div class="mini-info">
+      <div class="mini-name">Monitor LG 24" Full HD IPS</div>
+      <div class="mini-price">$180.000</div>
+      <div class="qty-control">
+        <button class="qty-btn">−</button>
+        <span class="qty-value">1</span>
+        <button class="qty-btn">+</button>
+        <button class="btn-add-cart" style="margin-left:12px">Agregar al carrito</button>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:var(--xs);color:var(--n600);text-align:center">↓ Toast que aparece en la esquina inferior derecha tras llamar POST /api/cart/items</p>
+</div>
+
+<!-- Toast flotante simulado (posición fija visual) -->
+<div class="toast-success" style="position:relative;bottom:auto;right:auto;max-width:100%;margin:0 32px 48px">
+  <div class="toast-icon">✅</div>
+  <div class="toast-body">
+    <div class="toast-title">¡Agregado al carrito!</div>
+    <div class="toast-sub">Monitor LG 24" Full HD IPS · ×1</div>
+    <div class="toast-actions">
+      <button class="toast-btn-primary">Ver carrito</button>
+      <button class="toast-btn-ghost">Seguir comprando</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ESTADO 3: CARRITO CON ITEMS + VACIAR ============ -->
+<div class="page-label">Estado 3 — Carrito con productos · DELETE /api/cart → "Vaciar carrito"</div>
+<div class="cart-wrapper">
+  <div class="cart-items-col">
+    <div class="clear-cart-row">
+      <button class="btn-clear-cart">🗑️ Vaciar carrito</button>
+    </div>
+
+    <div class="cart-item">
+      <div class="item-img">📷</div>
+      <div class="item-info">
+        <div class="item-name">Notebook Lenovo IdeaPad 15" 16GB</div>
+        <div class="item-meta">Físico · Tecnología</div>
+        <div class="item-qty-control">
+          <button class="item-qty-btn">−</button>
+          <span class="item-qty-val">1</span>
+          <button class="item-qty-btn">+</button>
+          <button class="btn-remove">Eliminar</button>
+        </div>
+      </div>
+      <div class="item-price">
+        <div class="item-unit">$950.000/u</div>
+        <div class="item-subtotal">$950.000</div>
+      </div>
+    </div>
+
+    <div class="cart-item">
+      <div class="item-img">📷</div>
+      <div class="item-info">
+        <div class="item-name">Cuaderno Rivadavia A4 Rayado</div>
+        <div class="item-meta">Físico · Librería</div>
+        <div class="item-qty-control">
+          <button class="item-qty-btn">−</button>
+          <span class="item-qty-val">3</span>
+          <button class="item-qty-btn">+</button>
+          <button class="btn-remove">Eliminar</button>
+        </div>
+      </div>
+      <div class="item-price">
+        <div class="item-unit">$1.200/u</div>
+        <div class="item-subtotal">$3.600</div>
+      </div>
+    </div>
+
+    <div class="cart-item">
+      <div class="item-img">📷</div>
+      <div class="item-info">
+        <div class="item-name">Monitor LG 24" Full HD IPS</div>
+        <div class="item-meta">Físico · Tecnología</div>
+        <div class="item-qty-control">
+          <button class="item-qty-btn">−</button>
+          <span class="item-qty-val">1</span>
+          <button class="item-qty-btn">+</button>
+          <button class="btn-remove">Eliminar</button>
+        </div>
+      </div>
+      <div class="item-price">
+        <div class="item-unit">$180.000/u</div>
+        <div class="item-subtotal">$180.000</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="order-summary">
+    <div class="summary-title">Resumen</div>
+    <div class="summary-row"><span>Productos (5)</span><span>$1.133.600</span></div>
+    <div class="summary-total"><span>Total</span><span>$1.133.600</span></div>
+    <button class="btn-checkout">Finalizar compra</button>
+  </div>
+</div>
+
+<!-- MODAL VACIAR CARRITO -->
+<div class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>¿Vaciar el carrito?</h2>
+    <p>Se eliminarán todos los productos del carrito. Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-ok">Vaciar carrito</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

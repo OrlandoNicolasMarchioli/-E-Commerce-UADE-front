@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Detalle de Producto</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;--error:#DC2626;--error-bg:#FEE2E2;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;--3xl:2.25rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowmd:0 4px 6px rgba(0,0,0,.07);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+/* NAVBAR */
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative}
+.nav-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:12px;font-size:var(--base);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 16px;background:var(--accent);border:none;border-radius:0 12px 12px 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;font-weight:var(--fw5);text-decoration:none}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6);position:relative}
+.cart-dot{position:absolute;top:-5px;right:-5px;background:var(--brand2);color:#fff;border-radius:var(--rfull);font-size:10px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:700}
+/* BREADCRUMB */
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+/* LAYOUT */
+.container{max-width:1200px;margin:0 auto;padding:28px 32px}
+.product-layout{display:grid;grid-template-columns:1fr 1fr 320px;gap:32px;align-items:start}
+/* GALERÍA */
+.gallery{}
+.main-img{width:100%;height:360px;background:var(--n100);border-radius:var(--r12);display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--sm);margin-bottom:12px;overflow:hidden}
+.thumbnails{display:flex;gap:10px}
+.thumb{width:72px;height:72px;background:var(--n100);border-radius:var(--r8);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--n500);font-size:var(--xs);border:2px solid transparent}
+.thumb.active{border-color:var(--brand2)}
+/* INFO */
+.info{}
+.product-badges{display:flex;gap:8px;margin-bottom:12px}
+.badge{display:inline-block;padding:3px 10px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw6)}
+.badge-type{background:#DBEAFE;color:var(--brand)}
+.badge-cat{background:var(--n100);color:var(--n700)}
+.badge-stock{background:var(--success-bg);color:var(--success)}
+.badge-nostock{background:var(--error-bg);color:var(--error)}
+h1.product-title{font-size:var(--2xl);font-weight:var(--fw7);line-height:1.25;margin-bottom:12px}
+.product-rating{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.stars{color:var(--accent);font-size:var(--lg)}
+.rating-val{font-size:var(--base);font-weight:var(--fw6);color:var(--n900)}
+.rating-count{font-size:var(--sm);color:var(--n600)}
+.divider{border:none;border-top:1px solid var(--n200);margin:16px 0}
+.price-section{margin-bottom:16px}
+.price-label{font-size:var(--sm);color:var(--n600);margin-bottom:4px}
+.price{font-size:var(--3xl);font-weight:var(--fw7);color:var(--brand)}
+.description{font-size:var(--base);color:var(--n700);line-height:1.65;margin-bottom:16px}
+.detail-table{width:100%;border-collapse:collapse;font-size:var(--sm)}
+.detail-table tr{border-bottom:1px solid var(--n200)}
+.detail-table td{padding:10px 0;color:var(--n600)}
+.detail-table td:first-child{font-weight:var(--fw5);color:var(--n900);width:140px}
+/* BUY PANEL */
+.buy-panel{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:24px;position:sticky;top:88px}
+.buy-price{font-size:var(--2xl);font-weight:var(--fw7);color:var(--brand);margin-bottom:16px}
+.buy-stock{font-size:var(--sm);color:var(--success);font-weight:var(--fw5);margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.qty-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.qty-label{font-size:var(--sm);color:var(--n600)}
+.qty-ctrl{display:flex;align-items:center;border:1px solid var(--n300);border-radius:var(--r8);overflow:hidden}
+.qty-btn{width:36px;height:36px;background:var(--n50);border:none;cursor:pointer;font-size:var(--lg);color:var(--n700)}
+.qty-val{width:48px;text-align:center;font-size:var(--base);font-weight:var(--fw6);border:none;background:var(--n0)}
+.btn-buy{width:100%;padding:14px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw7);cursor:pointer;font-family:var(--ff);margin-bottom:10px}
+.btn-buy-outline{width:100%;padding:12px;background:transparent;color:var(--brand);border:2px solid var(--brand);border-radius:var(--r8);font-size:var(--base);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.buy-seller{margin-top:16px;padding-top:16px;border-top:1px solid var(--n200)}
+.buy-seller-label{font-size:var(--xs);color:var(--n600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.buy-seller-name{font-size:var(--sm);font-weight:var(--fw6);color:var(--brand2)}
+/* REVIEWS */
+.reviews-section{margin-top:32px}
+.reviews-section h2{font-size:var(--xl);font-weight:var(--fw7);margin-bottom:20px;color:var(--brand)}
+.review-summary{display:flex;gap:32px;background:var(--n0);padding:24px;border-radius:var(--r12);box-shadow:var(--shadow);margin-bottom:24px;align-items:center}
+.big-rating{font-size:56px;font-weight:var(--fw7);color:var(--brand);line-height:1}
+.rating-bars{flex:1}
+.rating-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:var(--sm)}
+.bar{flex:1;height:8px;background:var(--n200);border-radius:var(--rfull);overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:var(--rfull)}
+.review-form{background:var(--n0);padding:24px;border-radius:var(--r12);box-shadow:var(--shadow);margin-bottom:24px}
+.review-form h3{font-size:var(--lg);font-weight:var(--fw6);margin-bottom:16px}
+.star-select{display:flex;gap:4px;margin-bottom:16px;font-size:28px;color:var(--n300);cursor:pointer}
+.star-select .filled{color:var(--accent)}
+.review-textarea{width:100%;padding:12px;border:1.5px solid var(--n300);border-radius:var(--r8);font-size:var(--base);font-family:var(--ff);resize:vertical;min-height:100px;margin-bottom:12px;outline:none}
+.review-textarea:focus{border-color:var(--brand2)}
+.btn-review{padding:10px 24px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.review-list{display:flex;flex-direction:column;gap:16px}
+.review-item{background:var(--n0);padding:20px;border-radius:var(--r12);box-shadow:var(--shadow)}
+.review-header{display:flex;justify-content:space-between;margin-bottom:10px}
+.reviewer-name{font-weight:var(--fw6);font-size:var(--sm)}
+.review-date{font-size:var(--xs);color:var(--n500)}
+.review-stars{color:var(--accent);font-size:var(--sm);margin-bottom:8px}
+.review-comment{font-size:var(--sm);color:var(--n700);line-height:1.6}
+.review-actions{margin-top:10px;display:flex;gap:8px}
+.review-action-btn{font-size:var(--xs);color:var(--brand2);background:none;border:none;cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" value="notebook lenovo"><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Mis compras</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒 <span class="cart-dot">2</span></button>
+  </div>
+</nav>
+
+<div class="bc">
+  <a href="#">Inicio</a> ›
+  <a href="#">Tecnología</a> ›
+  <span>Notebook Lenovo IdeaPad 15"</span>
+</div>
+
+<div class="container">
+  <div class="product-layout">
+
+    <!-- GALERÍA -->
+    <div class="gallery">
+      <div class="main-img">📷 Imagen principal del producto</div>
+      <div class="thumbnails">
+        <div class="thumb active">📷 1</div>
+        <div class="thumb">📷 2</div>
+        <div class="thumb">📷 3</div>
+        <div class="thumb">📷 4</div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info">
+      <div class="product-badges">
+        <span class="badge badge-type">FÍSICO</span>
+        <span class="badge badge-cat">Tecnología</span>
+        <span class="badge badge-stock">✓ En stock</span>
+      </div>
+
+      <h1 class="product-title">Notebook Lenovo IdeaPad 15" 16GB RAM 512GB SSD Intel Core i7</h1>
+
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-val">4.8</span>
+        <span class="rating-count">24 reseñas</span>
+      </div>
+
+      <hr class="divider">
+
+      <div class="price-section">
+        <div class="price-label">Precio</div>
+        <div class="price">$950.000</div>
+      </div>
+
+      <p class="description">
+        Notebook de alto rendimiento ideal para estudiantes y profesionales. Procesador Intel Core i7 de 11ª generación, 16GB RAM DDR4, 512GB SSD NVMe. Pantalla Full HD IPS antirreflejo. Batería de 52Wh con autonomía de hasta 8 horas.
+      </p>
+
+      <hr class="divider">
+
+      <table class="detail-table">
+        <tr><td>Tipo</td><td>Producto físico</td></tr>
+        <tr><td>Categoría</td><td>Tecnología</td></tr>
+        <tr><td>Stock disponible</td><td>10 unidades</td></tr>
+        <tr><td>Publicado por</td><td>Ada Lovelace</td></tr>
+      </table>
+    </div>
+
+    <!-- PANEL DE COMPRA -->
+    <div class="buy-panel">
+      <div class="buy-price">$950.000</div>
+      <div class="buy-stock">✓ Stock disponible (10 u.)</div>
+
+      <div class="qty-row">
+        <span class="qty-label">Cantidad:</span>
+        <div class="qty-ctrl">
+          <button class="qty-btn">−</button>
+          <span class="qty-val">1</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+
+      <button class="btn-buy">Comprar ahora</button>
+      <button class="btn-buy-outline">Agregar al carrito</button>
+
+      <div class="buy-seller">
+        <div class="buy-seller-label">Vendido por</div>
+        <div class="buy-seller-name">Ada Lovelace</div>
+      </div>
+    </div>
+
+  </div><!-- /product-layout -->
+
+  <!-- RESEÑAS -->
+  <div class="reviews-section">
+    <h2>Reseñas del producto</h2>
+
+    <div class="review-summary">
+      <div>
+        <div class="big-rating">4.8</div>
+        <div style="color:var(--accent);font-size:1.5rem;margin-top:4px">★★★★★</div>
+        <div style="font-size:var(--xs);color:var(--n600);margin-top:4px">24 reseñas</div>
+      </div>
+      <div class="rating-bars">
+        <div class="rating-bar"><span style="width:20px">5★</span><div class="bar"><div class="bar-fill" style="width:80%"></div></div><span>19</span></div>
+        <div class="rating-bar"><span style="width:20px">4★</span><div class="bar"><div class="bar-fill" style="width:15%"></div></div><span>3</span></div>
+        <div class="rating-bar"><span style="width:20px">3★</span><div class="bar"><div class="bar-fill" style="width:5%"></div></div><span>1</span></div>
+        <div class="rating-bar"><span style="width:20px">2★</span><div class="bar"><div class="bar-fill" style="width:5%"></div></div><span>1</span></div>
+        <div class="rating-bar"><span style="width:20px">1★</span><div class="bar"><div class="bar-fill" style="width:0%"></div></div><span>0</span></div>
+      </div>
+    </div>
+
+    <!-- FORM NUEVA RESEÑA -->
+    <div class="review-form">
+      <h3>Escribir una reseña</h3>
+      <div class="star-select">
+        <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
+      </div>
+      <textarea class="review-textarea" placeholder="Contá tu experiencia con el producto..."></textarea>
+      <button class="btn-review">Publicar reseña</button>
+    </div>
+
+    <!-- LISTA DE RESEÑAS -->
+    <div class="review-list">
+      <div class="review-item">
+        <div class="review-header">
+          <span class="reviewer-name">Grace Hopper</span>
+          <span class="review-date">14 oct 2026</span>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-comment">Excelente notebook, la recomiendo totalmente. Anda muy rápido y la batería dura bastante. La entrega fue rápida y bien embalada.</div>
+        <div class="review-actions">
+          <button class="review-action-btn">✏️ Editar</button>
+          <button class="review-action-btn" style="color:var(--error)">🗑️ Eliminar</button>
+        </div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="reviewer-name">Nahuel Kapusta</span>
+          <span class="review-date">10 oct 2026</span>
+        </div>
+        <div class="review-stars">★★★★☆</div>
+        <div class="review-comment">Muy buena relación precio-calidad. Le faltaría un poco más de RAM para tareas pesadas, pero para el uso diario está perfecta.</div>
+      </div>
+
+      <div class="review-item">
+        <div class="review-header">
+          <span class="reviewer-name">María García</span>
+          <span class="review-date">5 oct 2026</span>
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-comment">La uso para la facultad todos los días. Liviana, rápida y la pantalla es muy clara. Muy conforme con la compra.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>

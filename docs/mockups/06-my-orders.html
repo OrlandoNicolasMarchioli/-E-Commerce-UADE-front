@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Mis Compras</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --warning:#D97706;--warning-bg:#FEF3C7;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --info:#2563EB;--info-bg:#DBEAFE;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowmd:0 4px 6px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative}
+.nav-search input{width:100%;padding:10px 44px 10px 16px;border:none;border-radius:12px;font-size:var(--base);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 16px;background:var(--accent);border:none;border-radius:0 12px 12px 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none;font-weight:var(--fw5)}
+.nav-link.active{color:#fff;font-weight:var(--fw7);border-bottom:2px solid var(--accent)}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:28px 32px}
+h1.page-title{font-size:var(--2xl);font-weight:var(--fw7);margin-bottom:8px;color:var(--brand)}
+.page-subtitle{font-size:var(--sm);color:var(--n600);margin-bottom:28px}
+/* FILTER BAR */
+.filter-bar{background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:14px 20px;display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-pill{padding:6px 16px;border-radius:var(--rfull);font-size:var(--sm);font-weight:var(--fw5);cursor:pointer;border:1.5px solid var(--n300);background:var(--n0);color:var(--n700);font-family:var(--ff)}
+.filter-pill.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* ORDER CARD */
+.order-list{display:flex;flex-direction:column;gap:16px}
+.order-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:box-shadow .15s}
+.order-card:hover{box-shadow:var(--shadowmd)}
+.order-card-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--n200)}
+.order-id{font-size:var(--sm);font-weight:var(--fw6);color:var(--n900)}
+.order-date{font-size:var(--xs);color:var(--n600)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:var(--rfull);font-size:var(--xs);font-weight:var(--fw7);letter-spacing:.03em;text-transform:uppercase}
+.badge-pending{background:var(--warning-bg);color:var(--warning)}
+.badge-paid{background:var(--info-bg);color:var(--info)}
+.badge-shipped{background:#EDE9FE;color:#7C3AED}
+.badge-delivered{background:var(--success-bg);color:var(--success)}
+.badge-cancelled{background:var(--error-bg);color:var(--error)}
+.order-card-body{padding:16px 20px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.order-items-preview{display:flex;gap:10px;align-items:center}
+.item-thumb{width:52px;height:52px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:var(--xs);color:var(--n500);flex-shrink:0}
+.item-more{font-size:var(--xs);color:var(--n600);background:var(--n100);width:52px;height:52px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-weight:var(--fw6)}
+.order-desc{margin-left:4px}
+.order-items-text{font-size:var(--sm);color:var(--n700);margin-bottom:4px}
+.order-items-text strong{color:var(--n900)}
+.order-meta{font-size:var(--xs);color:var(--n600)}
+.order-total-col{text-align:right}
+.order-total-label{font-size:var(--xs);color:var(--n600);margin-bottom:4px}
+.order-total{font-size:var(--xl);font-weight:var(--fw7);color:var(--brand)}
+.btn-view-order{padding:8px 18px;background:transparent;color:var(--brand);border:1.5px solid var(--brand);border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw5);cursor:pointer;font-family:var(--ff);margin-top:8px}
+/* EMPTY STATE */
+.orders-empty{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:64px 32px;text-align:center}
+.orders-empty-icon{font-size:56px;margin-bottom:16px}
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;gap:8px;margin-top:28px}
+.page-btn{width:38px;height:38px;border:1px solid var(--n300);background:var(--n0);border-radius:var(--r8);cursor:pointer;font-size:var(--sm);display:flex;align-items:center;justify-content:center;color:var(--n700)}
+.page-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" placeholder="Buscar..."><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link active" href="#">Mis compras</a>
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒</button>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › Mis compras</div>
+
+<div class="container">
+  <h1 class="page-title">Mis compras</h1>
+  <p class="page-subtitle">Historial completo de pedidos realizados por Ada Lovelace</p>
+
+  <div class="filter-bar">
+    <button class="filter-pill active">Todos</button>
+    <button class="filter-pill">Pendiente</button>
+    <button class="filter-pill">Pagado</button>
+    <button class="filter-pill">Enviado</button>
+    <button class="filter-pill">Entregado</button>
+    <button class="filter-pill">Cancelado</button>
+  </div>
+
+  <div class="order-list">
+
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">Pedido #1042</div>
+          <div class="order-date">14 oct 2026 · 10:32 hs</div>
+        </div>
+        <span class="badge badge-pending">⏳ Pendiente</span>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-preview">
+          <div class="item-thumb">📷</div>
+          <div class="item-thumb">📷</div>
+          <div class="order-desc">
+            <div class="order-items-text"><strong>Notebook Lenovo IdeaPad 15"</strong> + 2 productos más</div>
+            <div class="order-meta">3 artículos</div>
+          </div>
+        </div>
+        <div class="order-total-col">
+          <div class="order-total-label">Total</div>
+          <div class="order-total">$998.600</div>
+          <button class="btn-view-order">Ver detalle →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">Pedido #1033</div>
+          <div class="order-date">10 oct 2026 · 15:08 hs</div>
+        </div>
+        <span class="badge badge-delivered">✓ Entregado</span>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-preview">
+          <div class="item-thumb">📷</div>
+          <div class="order-desc">
+            <div class="order-items-text"><strong>Mouse Inalámbrico Logitech M185</strong></div>
+            <div class="order-meta">1 artículo</div>
+          </div>
+        </div>
+        <div class="order-total-col">
+          <div class="order-total-label">Total</div>
+          <div class="order-total">$15.000</div>
+          <button class="btn-view-order">Ver detalle →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">Pedido #1019</div>
+          <div class="order-date">1 oct 2026 · 09:21 hs</div>
+        </div>
+        <span class="badge badge-shipped">📦 Enviado</span>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-preview">
+          <div class="item-thumb">📷</div>
+          <div class="item-thumb">📷</div>
+          <div class="item-more">+1</div>
+          <div class="order-desc">
+            <div class="order-items-text"><strong>Cuaderno Rivadavia A4</strong> + 2 productos</div>
+            <div class="order-meta">3 artículos</div>
+          </div>
+        </div>
+        <div class="order-total-col">
+          <div class="order-total-label">Total</div>
+          <div class="order-total">$6.400</div>
+          <button class="btn-view-order">Ver detalle →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">Pedido #0998</div>
+          <div class="order-date">20 sep 2026 · 14:55 hs</div>
+        </div>
+        <span class="badge badge-cancelled">✕ Cancelado</span>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-preview">
+          <div class="item-thumb">📷</div>
+          <div class="order-desc">
+            <div class="order-items-text"><strong>Auriculares Bluetooth JBL Tune 510</strong></div>
+            <div class="order-meta">1 artículo</div>
+          </div>
+        </div>
+        <div class="order-total-col">
+          <div class="order-total-label">Total</div>
+          <div class="order-total">$45.000</div>
+          <button class="btn-view-order">Ver detalle →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-card-header">
+        <div>
+          <div class="order-id">Pedido #0981</div>
+          <div class="order-date">5 sep 2026 · 11:00 hs</div>
+        </div>
+        <span class="badge badge-paid">💳 Pagado</span>
+      </div>
+      <div class="order-card-body">
+        <div class="order-items-preview">
+          <div class="item-thumb">📷</div>
+          <div class="order-desc">
+            <div class="order-items-text"><strong>Clases de Matemática – Online</strong></div>
+            <div class="order-meta">1 artículo · Servicio 60 min</div>
+          </div>
+        </div>
+        <div class="order-total-col">
+          <div class="order-total-label">Total</div>
+          <div class="order-total">$8.000</div>
+          <button class="btn-view-order">Ver detalle →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn">‹</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">›</button>
+  </div>
+</div>
+
+</body>
+</html>

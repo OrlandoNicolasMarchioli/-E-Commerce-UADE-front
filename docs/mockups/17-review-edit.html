@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UADE E-Commerce – Editar / Confirmar reseña</title>
+<style>
+:root{
+  --brand:#002D62;--brand2:#0070C0;--accent:#FFB800;
+  --n0:#fff;--n50:#F8F9FA;--n100:#F1F3F5;--n200:#E9ECEF;--n300:#DEE2E6;
+  --n500:#ADB5BD;--n600:#6C757D;--n700:#495057;--n900:#212529;
+  --success:#059669;--success-bg:#D1FAE5;
+  --error:#DC2626;--error-bg:#FEE2E2;
+  --ff:'Inter','Segoe UI',system-ui,sans-serif;
+  --xs:0.75rem;--sm:0.875rem;--base:1rem;--lg:1.25rem;--xl:1.5rem;--2xl:1.875rem;
+  --fw4:400;--fw5:500;--fw6:600;--fw7:700;
+  --r4:4px;--r8:8px;--r12:12px;--rfull:9999px;
+  --shadow:0 1px 3px rgba(0,0,0,.10);--shadowlg:0 10px 15px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--ff);background:var(--n50);color:var(--n900)}
+.nav{background:var(--brand);padding:0 32px;height:64px;display:flex;align-items:center;gap:24px;position:sticky;top:0;z-index:200}
+.nav-logo{color:#fff;font-weight:var(--fw7);font-size:var(--xl)}
+.nav-search{flex:1;position:relative;max-width:480px}
+.nav-search input{width:100%;padding:10px 46px 10px 16px;border:none;border-radius:var(--r12);font-size:var(--sm);font-family:var(--ff);outline:none}
+.nav-search-btn{position:absolute;right:0;top:0;height:100%;padding:0 14px;background:var(--accent);border:none;border-radius:0 var(--r12) var(--r12) 0;cursor:pointer}
+.nav-actions{display:flex;gap:12px;align-items:center;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.8);font-size:var(--sm);cursor:pointer;text-decoration:none}
+.nav-cart{background:var(--accent);color:var(--n900);padding:8px 16px;border:none;border-radius:var(--r8);cursor:pointer;font-family:var(--ff);font-size:var(--sm);font-weight:var(--fw6)}
+.bc{background:var(--n0);border-bottom:1px solid var(--n200);padding:12px 32px;font-size:var(--sm);color:var(--n600);display:flex;gap:8px}
+.bc a{color:var(--brand2);text-decoration:none}
+.container{max-width:760px;margin:0 auto;padding:28px 32px}
+.page-label{font-size:var(--xs);font-weight:var(--fw7);text-transform:uppercase;letter-spacing:.1em;color:var(--n500);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--n200)}
+/* PRODUCT CONTEXT STRIP */
+.product-strip{background:var(--n0);border-radius:var(--r8);box-shadow:var(--shadow);padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.product-thumb{width:48px;height:48px;background:var(--n100);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.product-info{flex:1}
+.product-name{font-weight:var(--fw6);font-size:var(--sm);color:var(--n900);margin-bottom:2px}
+.product-cat{font-size:var(--xs);color:var(--n600)}
+/* REVIEW LIST ITEM with edit/delete states */
+.reviews-section{margin-bottom:36px}
+.section-title{font-size:var(--lg);font-weight:var(--fw7);color:var(--brand);margin-bottom:16px}
+.review-card{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadow);padding:18px;margin-bottom:12px}
+.review-card.editing{border:2px solid var(--brand2);background:#F0F7FF}
+.review-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.review-avatar{width:34px;height:34px;border-radius:var(--rfull);background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--xs);font-weight:var(--fw7);flex-shrink:0}
+.review-user{font-weight:var(--fw6);font-size:var(--sm);color:var(--n900)}
+.review-date{font-size:var(--xs);color:var(--n600)}
+.review-stars{margin-left:auto;font-size:var(--sm)}
+.review-comment{font-size:var(--sm);color:var(--n700);line-height:1.6;margin-bottom:10px}
+.review-actions{display:flex;gap:8px;justify-content:flex-end}
+.btn-edit-review{padding:5px 12px;background:transparent;color:var(--brand2);border:1px solid var(--brand2);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.btn-delete-review{padding:5px 12px;background:transparent;color:var(--error);border:1px solid var(--error);border-radius:var(--r4);font-size:var(--xs);cursor:pointer;font-family:var(--ff);font-weight:var(--fw5)}
+.mine-badge{background:var(--brand);color:#fff;padding:2px 8px;border-radius:var(--rfull);font-size:0.65rem;font-weight:var(--fw7);margin-left:6px}
+/* INLINE EDIT FORM */
+.edit-form{background:var(--n50);border-radius:var(--r8);padding:14px;margin-top:10px;border:1px solid var(--brand2)}
+.edit-form-label{font-size:var(--xs);font-weight:var(--fw6);color:var(--n700);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.star-selector{display:flex;gap:6px;margin-bottom:12px}
+.star{font-size:1.4rem;cursor:pointer;filter:grayscale(1);transition:filter .1s}
+.star.filled{filter:grayscale(0)}
+.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--n300);border-radius:var(--r4);font-size:var(--sm);font-family:var(--ff);outline:none;resize:vertical;min-height:80px;transition:border-color .15s}
+.form-textarea:focus{border-color:var(--brand2)}
+.edit-form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.btn-save-review{padding:7px 18px;background:var(--brand);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-cancel-edit{padding:7px 14px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* DELETE CONFIRM MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--n0);border-radius:var(--r12);box-shadow:var(--shadowlg);padding:32px;width:380px}
+.modal h2{font-size:var(--lg);font-weight:var(--fw7);margin-bottom:10px}
+.modal p{color:var(--n600);font-size:var(--sm);line-height:1.6;margin-bottom:8px}
+.review-preview{background:var(--n50);border-radius:var(--r8);padding:12px;margin-bottom:20px;border-left:3px solid var(--error)}
+.review-preview .stars{font-size:var(--sm);margin-bottom:4px}
+.review-preview .comment{font-size:var(--sm);color:var(--n700);font-style:italic}
+.modal-actions{display:flex;gap:12px}
+.btn-modal-delete{flex:1;padding:11px;background:var(--error);color:#fff;border:none;border-radius:var(--r8);font-size:var(--sm);font-weight:var(--fw6);cursor:pointer;font-family:var(--ff)}
+.btn-modal-cancel{flex:1;padding:11px;background:transparent;color:var(--n600);border:1px solid var(--n300);border-radius:var(--r8);font-size:var(--sm);cursor:pointer;font-family:var(--ff)}
+/* SUCCESS TOAST */
+.toast{background:var(--success);color:#fff;padding:12px 18px;border-radius:var(--r8);box-shadow:var(--shadowlg);font-size:var(--sm);font-weight:var(--fw5);display:flex;align-items:center;gap:10px;margin-bottom:24px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">UADE</span>
+  <div class="nav-search"><input type="text" placeholder="Buscar..."><button class="nav-search-btn">🔍</button></div>
+  <div class="nav-actions">
+    <a class="nav-link" href="#">Ada L. ▾</a>
+    <button class="nav-cart">🛒</button>
+  </div>
+</nav>
+<div class="bc"><a href="#">Inicio</a> › <a href="#">Notebook Lenovo</a> › Reseñas</div>
+
+<div class="container">
+
+  <!-- CONTEXTO DEL PRODUCTO -->
+  <div class="product-strip">
+    <div class="product-thumb">📷</div>
+    <div class="product-info">
+      <div class="product-name">Notebook Lenovo IdeaPad 15" 16GB RAM</div>
+      <div class="product-cat">Tecnología · Producto físico · ID #1</div>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST (post-edit) -->
+  <div class="toast">✓ Tu reseña fue actualizada correctamente</div>
+
+  <!-- ======= ESTADO A: Lista de reseñas con acciones edit/delete ======= -->
+  <div class="page-label">Estado A — Lista de reseñas · GET /api/products/{id}/reviews · el usuario ve sus propias con acciones</div>
+  <div class="reviews-section">
+    <div class="section-title">Reseñas (3)</div>
+
+    <!-- Reseña ajena — sin acciones -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">GT</div>
+        <div>
+          <div class="review-user">Grace Tanner</div>
+          <div class="review-date">12 oct 2026</div>
+        </div>
+        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      </div>
+      <div class="review-comment">Excelente producto, llegó en perfectas condiciones. La batería dura más de lo esperado.</div>
+    </div>
+
+    <!-- Reseña propia — con acciones -->
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar" style="background:var(--brand2)">AL</div>
+        <div>
+          <div class="review-user">Ada Lovelace <span class="mine-badge">Mi reseña</span></div>
+          <div class="review-date">10 oct 2026</div>
+        </div>
+        <div class="review-stars">⭐⭐⭐⭐☆</div>
+      </div>
+      <div class="review-comment">Muy buena relación precio-calidad. La pantalla podría ser mejor, pero para el precio está perfecto.</div>
+      <div class="review-actions">
+        <button class="btn-edit-review">✏️ Editar</button>
+        <button class="btn-delete-review">🗑️ Eliminar</button>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar" style="background:var(--success)">LT</div>
+        <div>
+          <div class="review-user">Linus Torvalds</div>
+          <div class="review-date">8 oct 2026</div>
+        </div>
+        <div class="review-stars">⭐⭐⭐☆☆</div>
+      </div>
+      <div class="review-comment">Funciona bien para tareas básicas. Se calienta un poco con programas pesados.</div>
+    </div>
+  </div>
+
+  <!-- ======= ESTADO B: Inline edit form abierto ======= -->
+  <div class="page-label">Estado B — Inline edit form · PUT /api/products/{id}/reviews/{reviewId}</div>
+  <div class="reviews-section">
+    <div class="section-title">Reseñas (3)</div>
+
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">GT</div>
+        <div>
+          <div class="review-user">Grace Tanner</div>
+          <div class="review-date">12 oct 2026</div>
+        </div>
+        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      </div>
+      <div class="review-comment">Excelente producto, llegó en perfectas condiciones.</div>
+    </div>
+
+    <!-- Reseña propia con formulario de edición abierto -->
+    <div class="review-card editing">
+      <div class="review-header">
+        <div class="review-avatar" style="background:var(--brand2)">AL</div>
+        <div>
+          <div class="review-user">Ada Lovelace <span class="mine-badge">Mi reseña</span></div>
+          <div class="review-date">10 oct 2026</div>
+        </div>
+        <div class="review-stars">⭐⭐⭐⭐☆</div>
+      </div>
+      <div class="review-comment" style="opacity:.5;text-decoration:line-through">Muy buena relación precio-calidad...</div>
+      <!-- EDIT FORM INLINE -->
+      <div class="edit-form">
+        <div class="edit-form-label">Editando tu reseña</div>
+        <div class="edit-form-label" style="margin-top:8px">Calificación</div>
+        <div class="star-selector">
+          <span class="star filled">⭐</span>
+          <span class="star filled">⭐</span>
+          <span class="star filled">⭐</span>
+          <span class="star filled">⭐</span>
+          <span class="star">⭐</span>
+        </div>
+        <div class="edit-form-label">Comentario</div>
+        <textarea class="form-textarea">Muy buena relación precio-calidad. La pantalla podría ser mejor pero la batería supera las expectativas.</textarea>
+        <div class="edit-form-actions">
+          <button class="btn-cancel-edit">Cancelar</button>
+          <button class="btn-save-review">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL CONFIRMAR ELIMINACIÓN -->
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>¿Eliminar reseña?</h2>
+    <p>Estás por eliminar tu reseña del producto <strong>"Notebook Lenovo IdeaPad 15""</strong>.</p>
+    <div class="review-preview">
+      <div class="stars">⭐⭐⭐⭐☆</div>
+      <div class="comment">"Muy buena relación precio-calidad. La pantalla podría ser mejor..."</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel">Cancelar</button>
+      <button class="btn-modal-delete">Eliminar reseña</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

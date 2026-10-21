@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Notebook+Lenovo+1",
+    "imageOrder": 1,
+    "productId": 1
+  },
+  {
+    "id": 2,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Notebook+Lenovo+2",
+    "imageOrder": 2,
+    "productId": 1
+  },
+  {
+    "id": 3,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Notebook+Lenovo+3",
+    "imageOrder": 3,
+    "productId": 1
+  },
+  {
+    "id": 4,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Cuaderno+Rivadavia+1",
+    "imageOrder": 1,
+    "productId": 2
+  },
+  {
+    "id": 5,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Cuaderno+Rivadavia+2",
+    "imageOrder": 2,
+    "productId": 2
+  },
+  {
+    "id": 6,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Clase+particular+1",
+    "imageOrder": 1,
+    "productId": 3
+  }
+]

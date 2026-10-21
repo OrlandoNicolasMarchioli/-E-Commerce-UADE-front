@@ -1,0 +1,36 @@
+/* Detalle de producto. Layout: galería | información | panel de compra (desktop); en una columna en mobile. */
+
+.pd-page    { padding-top: var(--space-4); padding-bottom: var(--space-12); }
+.pd-layout  { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(0, 1.3fr) 280px; gap: var(--space-8); align-items: start; margin: var(--space-4) 0 var(--space-12); }
+.pd-buy     { position: sticky; top: var(--space-4); }
+
+.pd-layout .ui-gallery-main { height: auto; aspect-ratio: 1 / 1; }
+
+.pd-badges  { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-3); }
+.pd-title   { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-brand-primary); margin: 0 0 var(--space-3); line-height: 1.25; }
+.pd-rating  { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-sm); }
+.pd-stars   { color: var(--color-brand-accent); font-size: 1.1rem; }
+.pd-muted   { color: var(--color-neutral-600); }
+.pd-divider { border: none; border-top: 1px solid var(--color-neutral-200); margin: var(--space-4) 0; }
+.pd-description { line-height: 1.6; margin: 0; color: var(--color-neutral-800, var(--color-neutral-900)); }
+
+.pd-table       { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
+.pd-table th,
+.pd-table td    { text-align: left; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-neutral-100); }
+.pd-table th    { width: 40%; font-weight: var(--font-weight-medium); color: var(--color-neutral-600); }
+
+.pd-section-title { font-size: var(--font-size-xl, 1.25rem); font-weight: var(--font-weight-bold); color: var(--color-brand-primary); margin: 0 0 var(--space-4); }
+.pd-review-list   { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
+
+/* Tablet: la galería y la info arriba, el panel de compra debajo a ancho completo */
+@media (max-width: 960px) {
+  .pd-layout { grid-template-columns: 1fr 1fr; }
+  .pd-buy    { grid-column: 1 / -1; position: static; }
+}
+
+/* Mobile: una sola columna */
+@media (max-width: 600px) {
+  .pd-layout { grid-template-columns: 1fr; gap: var(--space-6); }
+  .pd-title  { font-size: var(--font-size-xl, 1.25rem); }
+  .ui-review-summary { flex-direction: column; gap: var(--space-4); }
+}

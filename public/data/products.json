@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "Notebook Lenovo IdeaPad 15\"",
+    "description": "Notebook de 15 pulgadas, 16 GB de RAM y SSD de 512 GB. Ideal para cursar y programar.",
+    "price": 950000.0,
+    "type": "PHYSICAL",
+    "stock": 10,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 1,
+      "name": "Tecnología"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 2,
+    "name": "Cuaderno Rivadavia A4 rayado",
+    "description": "Cuaderno A4 tapa dura, 84 hojas rayadas.",
+    "price": 1000.0,
+    "type": "PHYSICAL",
+    "stock": 120,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 2,
+      "name": "Librería"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 3,
+    "name": "Calculadora científica Casio fx-82",
+    "description": "Calculadora científica con 240 funciones, permitida en parciales.",
+    "price": 28500.0,
+    "type": "PHYSICAL",
+    "stock": 35,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 1,
+      "name": "Tecnología"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 4,
+    "name": "Mochila porta notebook",
+    "description": "Mochila con compartimento acolchado para notebook de hasta 15,6 pulgadas.",
+    "price": 32000.0,
+    "type": "PHYSICAL",
+    "stock": 0,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 3,
+      "name": "Accesorios"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 5,
+    "name": "Pack de lapiceras BIC x12",
+    "description": "Caja de 12 lapiceras BIC Cristal azules, trazo medio.",
+    "price": 3800.0,
+    "type": "PHYSICAL",
+    "stock": 200,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 2,
+      "name": "Librería"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 6,
+    "name": "Clases particulares de Análisis Matemático",
+    "description": "Clases individuales de Análisis Matemático I y II con un estudiante avanzado.",
+    "price": 12000.0,
+    "type": "SERVICE",
+    "stock": null,
+    "minutesDuration": 60,
+    "attendanceType": "VIRTUAL",
+    "category": {
+      "id": 4,
+      "name": "Clases y cursos"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 7,
+    "name": "Curso de Introducción a SQL",
+    "description": "Curso intensivo de consultas, joins y modelado básico de datos.",
+    "price": 45000.0,
+    "type": "SERVICE",
+    "stock": null,
+    "minutesDuration": 480,
+    "attendanceType": "PRESENCIAL",
+    "category": {
+      "id": 4,
+      "name": "Clases y cursos"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 8,
+    "name": "Resaltadores Stabilo x6",
+    "description": "Set de 6 resaltadores Stabilo Boss en colores surtidos.",
+    "price": 7200.0,
+    "type": "PHYSICAL",
+    "stock": 8,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 2,
+      "name": "Librería"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 9,
+    "name": "Apunte de Probabilidad y Estadística",
+    "description": "Apunte impreso y anillado con teoría y guía de ejercicios resueltos.",
+    "price": 9500.0,
+    "type": "PHYSICAL",
+    "stock": 40,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 5,
+      "name": "Material de estudio"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 10,
+    "name": "Tutoría de Programación en Java",
+    "description": "Tutoría personalizada sobre POO, colecciones y Spring Boot.",
+    "price": 18000.0,
+    "type": "SERVICE",
+    "stock": null,
+    "minutesDuration": 90,
+    "attendanceType": "VIRTUAL",
+    "category": {
+      "id": 4,
+      "name": "Clases y cursos"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 11,
+    "name": "Auriculares Bluetooth con micrófono",
+    "description": "Auriculares inalámbricos con cancelación de ruido y 20 horas de batería.",
+    "price": 54000.0,
+    "type": "PHYSICAL",
+    "stock": 15,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 1,
+      "name": "Tecnología"
+    },
+    "publisherId": 1
+  },
+  {
+    "id": 12,
+    "name": "Agenda universitaria 2027",
+    "description": "Agenda semanal con calendario académico y espacio para notas.",
+    "price": 6800.0,
+    "type": "PHYSICAL",
+    "stock": 60,
+    "minutesDuration": null,
+    "attendanceType": null,
+    "category": {
+      "id": 2,
+      "name": "Librería"
+    },
+    "publisherId": 1
+  }
+]

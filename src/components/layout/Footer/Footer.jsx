@@ -1,14 +1,25 @@
 import '../../ui.css';
 
-/** Renders the site footer with configurable link columns and a copyright bar below. */
-const Footer = ({ columns = [], copyright = '© 2024 E-Commerce. All rights reserved.' }) => (
+const Footer = ({ columns = [], copyright = '© 2024 E-Commerce. All rights reserved.', onNavigate }) => (
   <>
     <footer className="ui-footer">
       {columns.map((col, i) => (
         <div key={i}>
           <h4>{col.heading}</h4>
           {col.links.map((link, j) => (
-            <a key={j} href={link.href ?? '#'}>{link.label}</a>
+            <a
+              key={j}
+              href={link.href ?? '#'}
+              onClick={(e) => {
+                // Con router: los links internos (que empiezan con "/") navegan sin recargar la página
+                if (onNavigate && link.href?.startsWith('/')) {
+                  e.preventDefault();
+                  onNavigate(link.href);
+                }
+              }}
+            >
+              {link.label}
+            </a>
           ))}
         </div>
       ))}

@@ -6,7 +6,8 @@
     "email": "nicolasmarchioli@uade.edu.ar",
     "regNumber": "1000001",
     "registrationDate": "2026-08-01T09:00:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "ADMIN"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "email": "francoparodi@uade.edu.ar",
     "regNumber": "1100002",
     "registrationDate": "2026-08-05T10:12:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "email": "nahuelkapusta@uade.edu.ar",
     "regNumber": "1100003",
     "registrationDate": "2026-08-07T15:30:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "email": "pedrostella@uade.edu.ar",
     "regNumber": "1100004",
     "registrationDate": "2026-08-12T11:45:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "email": "martingarcia@uade.edu.ar",
     "regNumber": "1100005",
     "registrationDate": "2026-08-15T18:20:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   },
   {
     "id": 6,
@@ -51,6 +56,7 @@
     "email": "tomasromero@uade.edu.ar",
     "regNumber": "1100006",
     "registrationDate": "2026-08-20T08:05:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   }
 ]

@@ -198,8 +198,21 @@ describe('contrato JSON ↔ DTOs del backend', () => {
 
   it('UserResponseDTO (sin password, como el back)', async () => {
     for (const u of await getUsers()) {
-      expect(keys(u)).toEqual(['email', 'firstName', 'id', 'isEnabled', 'lastName', 'regNumber', 'registrationDate']);
+      expect(keys(u)).toEqual(['email', 'firstName', 'id', 'isEnabled', 'lastName', 'regNumber', 'registrationDate', 'role']);
+      expect(typeof u.isEnabled).toBe('boolean');
+      expect(['USER', 'ADMIN']).toContain(u.role);
     }
+  });
+
+  it('hay al menos un usuario ADMIN para el panel /admin', async () => {
+    expect((await getUsers()).some((u) => u.role === 'ADMIN')).toBe(true);
+  });
+
+  it('AuthResponseDTO: auth.json es { token, user } con un usuario de users.json', async () => {
+    const auth = await getJson('auth');
+    expect(keys(auth)).toEqual(['token', 'user']);
+    expect(typeof auth.token).toBe('string');
+    expect(auth.user).toEqual((await getUsers()).find((u) => u.id === auth.user.id));
   });
 
   it('ReviewResponseDTO', async () => {
@@ -223,5 +236,34 @@ describe('contrato JSON ↔ DTOs del backend', () => {
     for (const i of await getJson('images')) expect(ids.has(i.productId)).toBe(true);
     for (const r of reviews) expect(ids.has(r.productId)).toBe(true);
     expect(new Set(reviews.map((r) => `${r.productId}-${r.userId}`)).size).toBe(reviews.length);
+  });
+
+  it('las fechas tienen el formato de LocalDateTime del back (ISO sin zona)', async () => {
+    const localDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?$/;
+    for (const u of await getUsers()) expect(u.registrationDate).toMatch(localDateTime);
+    for (const r of await getJson('reviews')) expect(r.date).toMatch(localDateTime);
+  });
+
+  it('la categoría embebida en cada producto es la misma de category.json', async () => {
+    const byId = new Map((await getCategories()).map((c) => [c.id, c]));
+    for (const p of await getProducts()) expect(p.category).toEqual(byId.get(p.category.id));
+  });
+
+  it('los servicios tienen duración y modalidad (VIRTUAL o PRESENCIAL) y los físicos no', async () => {
+    for (const p of await getProducts()) {
+      if (p.type === 'SERVICE') {
+        expect(p.minutesDuration).toBeGreaterThan(0);
+        expect(['VIRTUAL', 'PRESENCIAL']).toContain(p.attendanceType);
+      } else {
+        expect(p.minutesDuration).toBeNull();
+        expect(p.attendanceType).toBeNull();
+      }
+    }
+  });
+
+  it('ids únicos en cada JSON y emails únicos en users.json', async () => {
+    const unique = (list, field = 'id') => new Set(list.map((x) => x[field])).size === list.length;
+    for (const name of ['products', 'category', 'images', 'reviews', 'users']) expect(unique(await getJson(name))).toBe(true);
+    expect(unique(await getUsers(), 'email')).toBe(true);
   });
 });

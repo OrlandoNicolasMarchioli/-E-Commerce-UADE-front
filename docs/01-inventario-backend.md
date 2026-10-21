@@ -215,10 +215,13 @@ OrderStatus values: `PENDING → PAID → SHIPPED → DELIVERED`, `PENDING/PAID 
     "email": "ada@test.com",
     "regNumber": "L1",
     "registrationDate": "2026-10-14T10:00:00",
-    "isEnabled": true
+    "isEnabled": true,
+    "role": "USER"
   }
 }
 ```
+
+> `role` y la clave `isEnabled` los agrega el PR #15 del back. Hasta que se mergee, la API real devuelve `IsEnabled` (con I mayúscula, por cómo está declarado el campo en `UserResponseDTO`) y no manda el rol.
 
 ### ProductResponseDTO
 ```json
@@ -353,5 +356,5 @@ OrderStatus values: `PENDING → PAID → SHIPPED → DELIVERED`, `PENDING/PAID 
 | G5 | `POST /api/products` requiere rol ADMIN para publicar | Un usuario normal (USER) no puede publicar productos. Si el TPO requiere que cualquier usuario venda, hay un gap de diseño en la seguridad |
 | G6 | `PUT /api/orders/{id}/status` requiere rol ADMIN | Un comprador no puede cambiar su propio estado de pedido (ej. pagar). Si el flujo requiere que el comprador "pague", hay un gap |
 | G7 | No hay endpoint de perfil propio (`/api/users/me`) | El front usa `GET /api/users/{id}` con el id guardado en estado local |
-| G8 | `RegisterRequestDTO` no retorna el rol en `AuthResponseDTO` | El front no puede distinguir USER vs ADMIN solo con el token salvo decodificando el JWT |
+| G8 | `UserResponseDTO` (y por lo tanto `AuthResponseDTO`) no trae el rol. Lo agrega el PR #15 del back | El JWT tampoco lo trae (solo `sub`, `iat` y `exp`). Los mocks de `/public/data` ya incluyen `role` |
 | G9 | No hay upload de imágenes; `ProductImageRequestDTO.url` es solo una URL string | No hay CDN ni storage; el front envía URLs externas |

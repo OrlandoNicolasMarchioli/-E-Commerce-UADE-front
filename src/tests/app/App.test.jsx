@@ -85,13 +85,23 @@ describe('App · navegación desde el layout', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Búsqueda de productos' })).toBeInTheDocument();
     expect(screen.getByText('/search?q=notebook')).toBeInTheDocument();
   });
+  
+it('el carrito sin sesión redirige a login', async () => {
+  const user = userEvent.setup();
 
-  it('el carrito sin sesión redirige a login', async () => {
-    const user = userEvent.setup();
-    renderAt('/');
-    await user.click(screen.getByRole('button', { name: /Cart/ }));
-    expect(screen.getByRole('heading', { level: 1, name: 'Carrito' })).toBeInTheDocument();
-  });
+  renderAt('/');
+
+  // Un usuario sin sesión intenta ingresar al carrito.
+  await user.click(screen.getByRole('button', { name: /Cart/ }));
+
+  // La ruta protegida debe mostrar el login, no el carrito.
+  expect(
+    await screen.findByRole('heading', {
+      level: 1,
+      name: 'Iniciar sesión',
+    })
+  ).toBeInTheDocument();
+});
 
   it('Sign in y Sign up van a /login y /register', async () => {
     const user = userEvent.setup();

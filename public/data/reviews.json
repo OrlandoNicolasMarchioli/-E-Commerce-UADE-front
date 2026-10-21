@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "rating": 5,
+    "comment": "Muy rápida y liviana, la uso todos los días en la facu.",
+    "date": "2026-09-02T14:21:08",
+    "productId": 1,
+    "userId": 2
+  },
+  {
+    "id": 2,
+    "rating": 4,
+    "comment": "Buena relación precio-calidad, la batería podría durar más.",
+    "date": "2026-09-10T09:45:33",
+    "productId": 1,
+    "userId": 3
+  },
+  {
+    "id": 3,
+    "rating": 5,
+    "comment": "Llegó rápido y bien embalada. Recomendable.",
+    "date": "2026-09-18T19:02:51",
+    "productId": 1,
+    "userId": 4
+  },
+  {
+    "id": 4,
+    "rating": 4,
+    "comment": "Buen papel, no traspasa la tinta.",
+    "date": "2026-08-21T11:10:00",
+    "productId": 2,
+    "userId": 3
+  },
+  {
+    "id": 5,
+    "rating": 3,
+    "comment": "Cumple, aunque la tapa se dobla fácil.",
+    "date": "2026-08-29T16:34:12",
+    "productId": 2,
+    "userId": 5
+  },
+  {
+    "id": 6,
+    "rating": 5,
+    "comment": "Me ayudó a aprobar el final, explica muy claro.",
+    "date": "2026-09-15T20:12:44",
+    "productId": 3,
+    "userId": 3
+  }
+]

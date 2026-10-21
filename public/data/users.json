@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "firstName": "Nicolas",
+    "lastName": "Marchioli",
+    "email": "nicolasmarchioli@uade.edu.ar",
+    "regNumber": "1000001",
+    "registrationDate": "2026-08-01T09:00:00",
+    "isEnabled": true
+  },
+  {
+    "id": 2,
+    "firstName": "Franco",
+    "lastName": "Parodi",
+    "email": "francoparodi@uade.edu.ar",
+    "regNumber": "1100002",
+    "registrationDate": "2026-08-05T10:12:00",
+    "isEnabled": true
+  },
+  {
+    "id": 3,
+    "firstName": "Nahuel",
+    "lastName": "Kapusta",
+    "email": "nahuelkapusta@uade.edu.ar",
+    "regNumber": "1100003",
+    "registrationDate": "2026-08-07T15:30:00",
+    "isEnabled": true
+  },
+  {
+    "id": 4,
+    "firstName": "Pedro",
+    "lastName": "Stella",
+    "email": "pedrostella@uade.edu.ar",
+    "regNumber": "1100004",
+    "registrationDate": "2026-08-12T11:45:00",
+    "isEnabled": true
+  },
+  {
+    "id": 5,
+    "firstName": "Martin",
+    "lastName": "Garcia",
+    "email": "martingarcia@uade.edu.ar",
+    "regNumber": "1100005",
+    "registrationDate": "2026-08-15T18:20:00",
+    "isEnabled": true
+  },
+  {
+    "id": 6,
+    "firstName": "Tomas",
+    "lastName": "Romero",
+    "email": "tomasromero@uade.edu.ar",
+    "regNumber": "1100006",
+    "registrationDate": "2026-08-20T08:05:00",
+    "isEnabled": true
+  }
+]

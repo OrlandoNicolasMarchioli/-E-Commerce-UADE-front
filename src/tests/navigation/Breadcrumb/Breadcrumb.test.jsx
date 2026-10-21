@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Breadcrumb from '../../../components/navigation/Breadcrumb/Breadcrumb';
 
 describe('Breadcrumb', () => {
@@ -25,5 +26,13 @@ describe('Breadcrumb', () => {
     render(<Breadcrumb items={items} />);
     const homeLink = screen.getByRole('link', { name: 'Home' });
     expect(homeLink).toBeInTheDocument();
+  });
+
+  it('con onNavigate los links avisan la ruta en vez de recargar', async () => {
+    const onNavigate = vi.fn();
+    const user = userEvent.setup();
+    render(<Breadcrumb items={[{ label: 'Inicio', href: '/' }, { label: 'Actual' }]} onNavigate={onNavigate} />);
+    await user.click(screen.getByRole('link', { name: 'Inicio' }));
+    expect(onNavigate).toHaveBeenCalledWith('/');
   });
 });

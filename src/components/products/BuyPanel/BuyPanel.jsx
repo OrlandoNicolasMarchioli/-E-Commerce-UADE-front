@@ -2,15 +2,12 @@ import { useState } from 'react';
 import QuantityStepper from '../../primitives/QuantityStepper/QuantityStepper';
 import '../../ui.css';
 
-// Formats a numeric price using Argentine peso locale and currency symbol
 const formatPrice = (price) =>
   price.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
-/** Purchase panel showing price, stock status, quantity selector (physical products only), and buy/cart actions. */
 const BuyPanel = ({ product, onBuy, onAddToCart }) => {
   const [qty, setQty]          = useState(1);
   const { price, stock, type, seller } = product;
-  // Services are never out of stock; only physical products check stock count
   const outOfStock             = type === 'PHYSICAL' && stock === 0;
 
   return (
@@ -18,7 +15,7 @@ const BuyPanel = ({ product, onBuy, onAddToCart }) => {
       <div className="ui-bp-price">{formatPrice(price)}</div>
 
       <div className={`ui-bp-stock${outOfStock ? ' ui-bp-stock--out' : ''}`}>
-        {outOfStock ? '✗ Out of stock' : `✓ Available (${stock} u.)`}
+        {outOfStock ? '✗ Out of stock' : type === 'SERVICE' ? '✓ Available' : `✓ Available (${stock} u.)`}
       </div>
 
       {!outOfStock && type === 'PHYSICAL' && (

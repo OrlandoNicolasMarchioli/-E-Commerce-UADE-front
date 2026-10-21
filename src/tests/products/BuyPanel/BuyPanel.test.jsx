@@ -31,4 +31,10 @@ describe('BuyPanel', () => {
     const buttons = screen.getAllByRole('button');
     buttons.forEach((btn) => expect(btn).toBeDisabled());
   });
+
+  it('un servicio no muestra cantidad de stock', () => {
+    render(<BuyPanel product={{ id: 2, price: 100, stock: null, type: 'SERVICE' }} />);
+    expect(screen.getByText('✓ Available')).toBeInTheDocument();
+    expect(screen.queryByText(/null/)).not.toBeInTheDocument();
+  });
 });

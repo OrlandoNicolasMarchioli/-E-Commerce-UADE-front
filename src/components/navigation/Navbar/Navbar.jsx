@@ -1,11 +1,23 @@
 import { useState } from 'react';
 import '../../ui.css';
 
-/** Top navigation bar; renders a simplified admin layout when isAdmin is true, otherwise the full storefront nav. */
-const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart, onLogin, onRegister }) => {
+
+const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart, onLogin, onRegister, onNavigate }) => {
   const [query, setQuery] = useState('');
 
-  // Admin navbar omits search and cart; shows section links and the logged-in user name
+  // Props de un <a> que navega a `path`. Con onNavigate (router) el click se intercepta;
+  // sin él (demo / tests) el link queda inerte como antes.
+  const link = (path) => ({
+    href: onNavigate ? path : '#',
+    onClick: (e) => {
+      if (onNavigate) {
+        e.preventDefault();
+        onNavigate(path);
+      }
+    },
+  });
+
+  
   if (isAdmin) {
     return (
       <nav className="ui-navbar">
@@ -13,10 +25,10 @@ const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart,
           UADE <span className="ui-admin-badge">ADMIN</span>
         </span>
         <div className="ui-navbar-actions">
-          <a className="ui-navbar-link" href="#">Categories</a>
-          <a className="ui-navbar-link" href="#">Products</a>
-          <a className="ui-navbar-link" href="#">Orders</a>
-          <a className="ui-navbar-link" href="#">Users</a>
+          <a className="ui-navbar-link" {...link('/admin/categories')}>Categories</a>
+          <a className="ui-navbar-link" {...link('/admin/products')}>Products</a>
+          <a className="ui-navbar-link" {...link('/admin/orders')}>Orders</a>
+          <a className="ui-navbar-link" {...link('/admin/users')}>Users</a>
           {user && (
             <span className="ui-navbar-link" style={{ color: '#fff', fontWeight: 700 }}>
               {user.firstName} ▾
@@ -29,7 +41,7 @@ const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart,
 
   return (
     <nav className="ui-navbar">
-      <a className="ui-navbar-logo" href="#">UADE</a>
+      <a className="ui-navbar-logo" {...link('/')}>UADE</a>
       <div className="ui-navbar-search">
         <input
           type="text"
@@ -43,7 +55,7 @@ const Navbar = ({ user = null, cartCount = 0, isAdmin = false, onSearch, onCart,
       <div className="ui-navbar-actions">
         {user ? (
           <>
-            <a className="ui-navbar-link" href="#">My orders</a>
+            <a className="ui-navbar-link" {...link('/my-orders')}>My orders</a>
             <span className="ui-navbar-link" style={{ color: '#fff', fontWeight: 700 }}>
               {user.firstName} ▾
             </span>

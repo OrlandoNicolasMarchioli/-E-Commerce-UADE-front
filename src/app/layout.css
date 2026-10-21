@@ -1,0 +1,42 @@
+/* Estructura general de la app y reglas responsive del layout. */
+
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.app-main  { flex: 1; width: 100%; }
+
+/* Contenedor centrado para el contenido de las páginas (el Hero de la home puede ir a ancho completo). */
+.app-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-4); box-sizing: border-box; }
+.ui-navbar-search input { box-sizing: border-box; }
+/* Tablet y mobile */
+@media (max-width: 768px) {
+  .ui-navbar        { flex-wrap: wrap; height: auto; padding: 8px 12px; gap: 8px; }
+  .ui-navbar-search { order: 3; flex-basis: 100%; max-width: none; }
+  .ui-footer        { grid-template-columns: 1fr; padding: var(--space-8) var(--space-4); gap: var(--space-6); }
+}
+
+/* Bloques compartidos por las páginas del catálogo (Home, Búsqueda, Categoría) */
+
+.app-categories { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+
+.app-section        { padding: var(--space-8) 0; background: var(--color-neutral-0); }
+.app-section-header { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-6); }
+.app-section-title  { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-brand-primary); margin: 0; }
+.app-section-link   { color: var(--color-brand-secondary); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); text-decoration: none; white-space: nowrap; }
+.app-section-link:hover { text-decoration: underline; }
+
+/* Grilla fluida: las cards ocupan el ancho de su columna (en la librería tienen 210px fijos). */
+.app-product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: var(--space-6); }
+.app-product-grid .ui-product-card { width: 100%; }
+
+.app-state { text-align: center; color: var(--color-neutral-600); padding: var(--space-12) var(--space-4); }
+
+@media (max-width: 768px) {
+  .ui-hero          { flex-direction: column; align-items: flex-start; padding: var(--space-8) var(--space-4); gap: var(--space-6); }
+  .ui-hero h1       { font-size: var(--font-size-2xl); }
+  .ui-hero p        { font-size: var(--font-size-base); }
+  .ui-hero-image    { width: 100%; height: 140px; }
+  .app-section      { padding: var(--space-6) 0; }
+}
+
+@media (max-width: 480px) {
+  .app-product-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+}

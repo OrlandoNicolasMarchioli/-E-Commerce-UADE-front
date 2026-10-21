@@ -2,9 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
+import { AuthProvider } from '../../context/AuthContext';
+import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
 
 beforeEach(() => {
+  localStorage.clear(); // Aísla sesiones entre pruebas.
   stubDataFetch();
 });
 
@@ -17,7 +20,7 @@ const settleHome = async () => {
 const renderAt = (path) =>
   render(
     <MemoryRouter initialEntries={[path]}>
-      <App />
+      <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
     </MemoryRouter>,
   );
 
@@ -26,11 +29,8 @@ describe('App · rutas', () => {
     ['/', 'Todo lo que necesitás en un solo lugar'],
     ['/search', 'Búsqueda de productos'],
     ['/category/2', 'Productos por categoría'],
-    ['/cart', 'Carrito'],
     ['/login', 'Iniciar sesión'],
     ['/register', 'Registro'],
-    ['/my-orders', 'Mis compras'],
-    ['/my-orders/7', 'Detalle de compra'],
     ['/profile', 'Mi perfil'],
   ])('%s muestra "%s" dentro del layout público', async (path, title) => {
     renderAt(path);
@@ -86,7 +86,7 @@ describe('App · navegación desde el layout', () => {
     expect(screen.getByText('/search?q=notebook')).toBeInTheDocument();
   });
 
-  it('el botón del carrito va a /cart', async () => {
+  it('el carrito sin sesión redirige a login', async () => {
     const user = userEvent.setup();
     renderAt('/');
     await user.click(screen.getByRole('button', { name: /Cart/ }));

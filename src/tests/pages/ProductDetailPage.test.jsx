@@ -3,6 +3,8 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import ProductDetailPage from '../../pages/ProductDetailPage/ProductDetailPage';
+import { AuthProvider } from '../../context/AuthContext';
+import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
 
 // Nombres tomados de los JSON reales, así los tests no dependen de qué usuarios haya cargados.
@@ -17,10 +19,12 @@ const Where = () => <div data-testid="where">{useLocation().pathname}</div>;
 const renderAt = (path) =>
   render(
     <MemoryRouter initialEntries={[path]}>
-      <Routes>
-        <Route path="/products/:id" element={<ProductDetailPage />} />
-        <Route path="*" element={<Where />} />
-      </Routes>
+      <AuthProvider><CartProvider>
+        <Routes>
+          <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="*" element={<Where />} />
+        </Routes>
+      </CartProvider></AuthProvider>
     </MemoryRouter>,
   );
 
@@ -28,6 +32,7 @@ const renderAt = (path) =>
 const loaded = (name) => screen.findByRole('heading', { level: 1, name });
 
 beforeEach(() => {
+  localStorage.clear();
   stubDataFetch();
 });
 
@@ -77,16 +82,13 @@ describe('ProductDetailPage · producto físico con imágenes y reseñas', () =>
     expect(screen.getByLabelText(`Puntaje ${avg} de 5`)).toHaveTextContent(`${reviews.length} reseñas`);
   });
 
-  it('Add to cart muestra una confirmación; Buy now además lleva al carrito', async () => {
+  it('sin sesión el carrito redirige a login y no confirma una compra falsa', async () => {
     const user = userEvent.setup();
     renderAt('/products/1');
     await loaded(/Notebook Lenovo/);
-    await user.click(screen.getByRole('button', { name: 'Increase' }));
     await user.click(screen.getByRole('button', { name: 'Add to cart' }));
-    expect(await screen.findByText('Agregado al carrito')).toBeInTheDocument();
-    expect(screen.getByText(/2 × Notebook Lenovo/)).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Buy now' }));
-    expect(screen.getByTestId('where')).toHaveTextContent('/cart');
+    expect(screen.getByTestId('where')).toHaveTextContent('/login');
+    expect(screen.queryByText('Agregado al carrito')).not.toBeInTheDocument();
   });
 });
 

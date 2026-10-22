@@ -178,6 +178,9 @@ describe('reviewService', () => {
 // Contrato con el backend: los campos deben ser exactamente los de los *ResponseDTO.
 describe('contrato JSON ↔ DTOs del backend', () => {
   const keys = (o) => Object.keys(o).sort();
+  // LocalDateTime del back: ISO sin zona, con fracción de segundos opcional
+  const localDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?$/;
+  const ITEM_KEYS = ['productId', 'productName', 'quantity', 'subtotal', 'unitPrice'];
 
   it('ProductResponseDTO', async () => {
     const expected = ['id', 'name', 'description', 'price', 'type', 'stock', 'minutesDuration', 'attendanceType', 'category', 'publisherId'].sort();
@@ -198,8 +201,21 @@ describe('contrato JSON ↔ DTOs del backend', () => {
 
   it('UserResponseDTO (sin password, como el back)', async () => {
     for (const u of await getUsers()) {
-      expect(keys(u)).toEqual(['email', 'firstName', 'id', 'isEnabled', 'lastName', 'regNumber', 'registrationDate']);
+      expect(keys(u)).toEqual(['email', 'firstName', 'id', 'isEnabled', 'lastName', 'regNumber', 'registrationDate', 'role']);
+      expect(typeof u.isEnabled).toBe('boolean');
+      expect(['USER', 'ADMIN']).toContain(u.role);
     }
+  });
+
+  it('hay al menos un usuario ADMIN para el panel /admin', async () => {
+    expect((await getUsers()).some((u) => u.role === 'ADMIN')).toBe(true);
+  });
+
+  it('AuthResponseDTO: auth.json es { token, user } con un usuario de users.json', async () => {
+    const auth = await getJson('auth');
+    expect(keys(auth)).toEqual(['token', 'user']);
+    expect(typeof auth.token).toBe('string');
+    expect(auth.user).toEqual((await getUsers()).find((u) => u.id === auth.user.id));
   });
 
   it('ReviewResponseDTO', async () => {
@@ -223,5 +239,66 @@ describe('contrato JSON ↔ DTOs del backend', () => {
     for (const i of await getJson('images')) expect(ids.has(i.productId)).toBe(true);
     for (const r of reviews) expect(ids.has(r.productId)).toBe(true);
     expect(new Set(reviews.map((r) => `${r.productId}-${r.userId}`)).size).toBe(reviews.length);
+  });
+
+  it('CartResponseDTO y CartItemResponseDTO (cart.json, con precios del catálogo)', async () => {
+    const cart = await getJson('cart');
+    const products = new Map((await getProducts()).map((p) => [p.id, p]));
+    expect(keys(cart)).toEqual(['id', 'items', 'total', 'userId']);
+    expect((await getUsers()).some((u) => u.id === cart.userId)).toBe(true);
+    expect(cart.items.length).toBeGreaterThan(0);
+    for (const item of cart.items) {
+      expect(keys(item)).toEqual(ITEM_KEYS);
+      expect(item.productName).toBe(products.get(item.productId).name);
+      expect(item.unitPrice).toBe(products.get(item.productId).price);
+      expect(item.subtotal).toBe(item.unitPrice * item.quantity);
+    }
+    expect(cart.total).toBe(cart.items.reduce((sum, item) => sum + item.subtotal, 0));
+  });
+
+  it('OrderResponseDTO y OrderItemResponseDTO (orders.json)', async () => {
+    const orders = await getJson('orders');
+    const userIds = new Set((await getUsers()).map((u) => u.id));
+    expect(orders.length).toBeGreaterThan(0);
+    for (const order of orders) {
+      expect(keys(order)).toEqual(['id', 'items', 'orderDate', 'status', 'total', 'userId']);
+      expect(['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED']).toContain(order.status);
+      expect(order.orderDate).toMatch(localDateTime);
+      expect(userIds.has(order.userId)).toBe(true);
+      for (const item of order.items) {
+        expect(keys(item)).toEqual(ITEM_KEYS);
+        expect(item.subtotal).toBe(item.unitPrice * item.quantity);
+      }
+      expect(order.total).toBe(order.items.reduce((sum, item) => sum + item.subtotal, 0));
+    }
+    expect(new Set(orders.map((o) => o.id)).size).toBe(orders.length);
+  });
+
+  it('las fechas tienen el formato de LocalDateTime del back (ISO sin zona)', async () => {
+    for (const u of await getUsers()) expect(u.registrationDate).toMatch(localDateTime);
+    for (const r of await getJson('reviews')) expect(r.date).toMatch(localDateTime);
+  });
+
+  it('la categoría embebida en cada producto es la misma de category.json', async () => {
+    const byId = new Map((await getCategories()).map((c) => [c.id, c]));
+    for (const p of await getProducts()) expect(p.category).toEqual(byId.get(p.category.id));
+  });
+
+  it('los servicios tienen duración y modalidad (VIRTUAL o PRESENCIAL) y los físicos no', async () => {
+    for (const p of await getProducts()) {
+      if (p.type === 'SERVICE') {
+        expect(p.minutesDuration).toBeGreaterThan(0);
+        expect(['VIRTUAL', 'PRESENCIAL']).toContain(p.attendanceType);
+      } else {
+        expect(p.minutesDuration).toBeNull();
+        expect(p.attendanceType).toBeNull();
+      }
+    }
+  });
+
+  it('ids únicos en cada JSON y emails únicos en users.json', async () => {
+    const unique = (list, field = 'id') => new Set(list.map((x) => x[field])).size === list.length;
+    for (const name of ['products', 'category', 'images', 'reviews', 'users']) expect(unique(await getJson(name))).toBe(true);
+    expect(unique(await getUsers(), 'email')).toBe(true);
   });
 });

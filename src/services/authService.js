@@ -1,6 +1,6 @@
 import { getJson } from './api/mockClient';
 import { ApiError } from './api/client';
-import { readMockState, writeMockState } from './mockStorage';
+import { localDateTimeNow, readMockState, writeMockState } from './mockStorage';
 
 const REGISTERED_KEY = 'uade_mock_registered_users';
 
@@ -37,8 +37,9 @@ export async function registerRequest({ firstName, lastName, email, password, re
     lastName: lastName.trim(),
     email: normalizedEmail,
     regNumber: regNumber.trim(),
-    registrationDate: new Date().toISOString().slice(0, 19),
+    registrationDate: localDateTimeNow(),
     isEnabled: true,
+    role: 'USER', // como en el back: todo usuario registrado arranca como USER
   };
   writeMockState(REGISTERED_KEY, [...readMockState(REGISTERED_KEY, []), user]);
   // El objeto user tiene exactamente las claves de UserResponseDTO.

@@ -33,6 +33,12 @@
     "id": 6,
     "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Clase+particular+1",
     "imageOrder": 1,
+    "productId": 6
+  },
+  {
+    "id": 7,
+    "url": "https://placehold.co/800x800/E8EEF7/002D62?text=Calculadora+Casio+1",
+    "imageOrder": 1,
     "productId": 3
   }
 ]

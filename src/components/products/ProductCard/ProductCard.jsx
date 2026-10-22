@@ -4,6 +4,9 @@ import '../../ui.css';
 const formatPrice = (price) =>
   price.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
 
+// Same labels as ProductInfo for the attendanceType values of the back
+const ATTENDANCE = { VIRTUAL: 'Virtual', PRESENCIAL: 'Presencial' };
+
 /** Clickable product summary card showing image, category, name, rating, price, and stock status. */
 const ProductCard = ({ product, onClick }) => {
   const { name, price, type, stock, category, images = [], averageRating, reviewCount } = product;
@@ -11,8 +14,15 @@ const ProductCard = ({ product, onClick }) => {
   const outOfStock = type === 'PHYSICAL' && stock === 0;
   const imgSrc     = images[0]?.url;
 
+  const serviceText = () => {
+    const { minutesDuration, attendanceType } = product;
+    if (!minutesDuration) return 'Service';
+    const mode = ATTENDANCE[attendanceType] ?? attendanceType;
+    return mode ? `${minutesDuration} min · ${mode}` : `${minutesDuration} min`;
+  };
+
   const stockText = () => {
-    if (type === 'SERVICE') return product.minutesDuration ? `${product.minutesDuration} min · Virtual` : 'Service';
+    if (type === 'SERVICE') return serviceText();
     if (outOfStock) return 'Out of stock';
     return `✓ ${stock} in stock`;
   };

@@ -1,7 +1,7 @@
 import { getJson } from './api/mockClient';
 import { ApiError } from './api/client';
 import { getCart, clearCart } from './cartService';
-import { readMockState, writeMockState } from './mockStorage';
+import { localDateTimeNow, readMockState, writeMockState } from './mockStorage';
 
 const keyFor = (userId) => `uade_mock_orders_${userId}`;
 
@@ -32,10 +32,12 @@ export async function createOrder(userId) {
   }
 
   const orders = await getOrders(userId);
+  const seed = await getJson('orders');
   const order = {
-    id: Math.max(0, ...orders.map((item) => item.id)) + 1,
+    // En el back el id es global: no se puede repetir el de un pedido de otro usuario.
+    id: Math.max(0, ...seed.map((item) => item.id), ...orders.map((item) => item.id)) + 1,
     userId: Number(userId),
-    orderDate: new Date().toISOString().slice(0, 19),
+    orderDate: localDateTimeNow(),
     status: 'PENDING',
     // OrdenItemResponseDTO: mismos cinco campos que los ítems del carrito.
     items: cart.items.map((item) => ({ ...item })),

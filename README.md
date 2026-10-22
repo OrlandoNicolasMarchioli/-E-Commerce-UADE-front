@@ -289,5 +289,5 @@ Current backend limitations the frontend must handle:
 | G5 | `POST /api/products` requires ADMIN | Regular users cannot publish |
 | G6 | `PUT /api/orders/{id}/status` requires ADMIN | Users can only cancel, not advance status |
 | G7 | No `GET /api/users/me` | Frontend must store userId from JWT token |
-| G8 | `UserResponseDTO` does not include `role` | Frontend must decode JWT to get the role |
+| G8 | `UserResponseDTO` does not include `role` (added by back PR #15) | The JWT does not carry it either (only `sub`, `iat`, `exp`); the mocks already include `role` |
 | G9 | No global `GET /api/orders` for ADMIN | Admin cannot list all orders without knowing userId |

@@ -1,1 +1,89 @@
-[]
+[
+  {
+    "id": 1,
+    "userId": 2,
+    "orderDate": "2026-09-20T10:15:00",
+    "status": "DELIVERED",
+    "items": [
+      {
+        "productId": 1,
+        "productName": "Notebook Lenovo IdeaPad 15\"",
+        "quantity": 1,
+        "unitPrice": 950000.0,
+        "subtotal": 950000.0
+      }
+    ],
+    "total": 950000.0
+  },
+  {
+    "id": 2,
+    "userId": 3,
+    "orderDate": "2026-10-02T18:40:00",
+    "status": "SHIPPED",
+    "items": [
+      {
+        "productId": 2,
+        "productName": "Cuaderno Rivadavia A4 rayado",
+        "quantity": 3,
+        "unitPrice": 1000.0,
+        "subtotal": 3000.0
+      },
+      {
+        "productId": 9,
+        "productName": "Apunte de Probabilidad y Estadística",
+        "quantity": 1,
+        "unitPrice": 9500.0,
+        "subtotal": 9500.0
+      }
+    ],
+    "total": 12500.0
+  },
+  {
+    "id": 3,
+    "userId": 2,
+    "orderDate": "2026-10-15T09:05:00",
+    "status": "PAID",
+    "items": [
+      {
+        "productId": 6,
+        "productName": "Clases particulares de Análisis Matemático",
+        "quantity": 2,
+        "unitPrice": 12000.0,
+        "subtotal": 24000.0
+      }
+    ],
+    "total": 24000.0
+  },
+  {
+    "id": 4,
+    "userId": 3,
+    "orderDate": "2026-10-18T21:30:00",
+    "status": "CANCELLED",
+    "items": [
+      {
+        "productId": 11,
+        "productName": "Auriculares Bluetooth con micrófono",
+        "quantity": 1,
+        "unitPrice": 54000.0,
+        "subtotal": 54000.0
+      }
+    ],
+    "total": 54000.0
+  },
+  {
+    "id": 5,
+    "userId": 2,
+    "orderDate": "2026-10-20T16:45:00",
+    "status": "PENDING",
+    "items": [
+      {
+        "productId": 5,
+        "productName": "Pack de lapiceras BIC x12",
+        "quantity": 1,
+        "unitPrice": 3800.0,
+        "subtotal": 3800.0
+      }
+    ],
+    "total": 3800.0
+  }
+]

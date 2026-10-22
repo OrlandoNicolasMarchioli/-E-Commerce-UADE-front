@@ -178,6 +178,9 @@ describe('reviewService', () => {
 // Contrato con el backend: los campos deben ser exactamente los de los *ResponseDTO.
 describe('contrato JSON ↔ DTOs del backend', () => {
   const keys = (o) => Object.keys(o).sort();
+  // LocalDateTime del back: ISO sin zona, con fracción de segundos opcional
+  const localDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?$/;
+  const ITEM_KEYS = ['productId', 'productName', 'quantity', 'subtotal', 'unitPrice'];
 
   it('ProductResponseDTO', async () => {
     const expected = ['id', 'name', 'description', 'price', 'type', 'stock', 'minutesDuration', 'attendanceType', 'category', 'publisherId'].sort();
@@ -238,8 +241,40 @@ describe('contrato JSON ↔ DTOs del backend', () => {
     expect(new Set(reviews.map((r) => `${r.productId}-${r.userId}`)).size).toBe(reviews.length);
   });
 
+  it('CartResponseDTO y CartItemResponseDTO (cart.json, con precios del catálogo)', async () => {
+    const cart = await getJson('cart');
+    const products = new Map((await getProducts()).map((p) => [p.id, p]));
+    expect(keys(cart)).toEqual(['id', 'items', 'total', 'userId']);
+    expect((await getUsers()).some((u) => u.id === cart.userId)).toBe(true);
+    expect(cart.items.length).toBeGreaterThan(0);
+    for (const item of cart.items) {
+      expect(keys(item)).toEqual(ITEM_KEYS);
+      expect(item.productName).toBe(products.get(item.productId).name);
+      expect(item.unitPrice).toBe(products.get(item.productId).price);
+      expect(item.subtotal).toBe(item.unitPrice * item.quantity);
+    }
+    expect(cart.total).toBe(cart.items.reduce((sum, item) => sum + item.subtotal, 0));
+  });
+
+  it('OrderResponseDTO y OrderItemResponseDTO (orders.json)', async () => {
+    const orders = await getJson('orders');
+    const userIds = new Set((await getUsers()).map((u) => u.id));
+    expect(orders.length).toBeGreaterThan(0);
+    for (const order of orders) {
+      expect(keys(order)).toEqual(['id', 'items', 'orderDate', 'status', 'total', 'userId']);
+      expect(['PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED']).toContain(order.status);
+      expect(order.orderDate).toMatch(localDateTime);
+      expect(userIds.has(order.userId)).toBe(true);
+      for (const item of order.items) {
+        expect(keys(item)).toEqual(ITEM_KEYS);
+        expect(item.subtotal).toBe(item.unitPrice * item.quantity);
+      }
+      expect(order.total).toBe(order.items.reduce((sum, item) => sum + item.subtotal, 0));
+    }
+    expect(new Set(orders.map((o) => o.id)).size).toBe(orders.length);
+  });
+
   it('las fechas tienen el formato de LocalDateTime del back (ISO sin zona)', async () => {
-    const localDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,9})?$/;
     for (const u of await getUsers()) expect(u.registrationDate).toMatch(localDateTime);
     for (const r of await getJson('reviews')) expect(r.date).toMatch(localDateTime);
   });

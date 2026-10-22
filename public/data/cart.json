@@ -1,6 +1,21 @@
 {
   "id": 1,
-  "userId": 1,
-  "items": [],
-  "total": 0
+  "userId": 2,
+  "items": [
+    {
+      "productId": 5,
+      "productName": "Pack de lapiceras BIC x12",
+      "quantity": 2,
+      "unitPrice": 3800.0,
+      "subtotal": 7600.0
+    },
+    {
+      "productId": 10,
+      "productName": "Tutoría de Programación en Java",
+      "quantity": 1,
+      "unitPrice": 18000.0,
+      "subtotal": 18000.0
+    }
+  ],
+  "total": 25600.0
 }

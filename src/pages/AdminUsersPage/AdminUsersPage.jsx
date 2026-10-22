@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useAuth } from '../../app/context/AuthContext.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const USERS_URL = '/data/users.json';
 

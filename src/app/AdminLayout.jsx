@@ -1,12 +1,21 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Navigate } from 'react-router-dom';
 import Navbar from '../components/navigation/Navbar/Navbar';
+import { useAuth } from '../context/AuthContext.jsx';
 
 /** Layout del panel de administración: Navbar admin + contenido de la ruta. */
 const AdminLayout = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // TODO (Parte 3): tomar el usuario del AuthContext y proteger estas rutas para el rol ADMIN.
-  const user = { firstName: 'Admin' };
+  // No permitir el acceso si no hay sesión.
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // No permitir el acceso a usuarios que no sean ADMIN.
+  if (user.role !== 'ADMIN') {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="app-shell">

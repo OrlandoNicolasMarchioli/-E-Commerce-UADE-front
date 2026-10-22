@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, Navigate } from 'react-router-dom';
 import Navbar from '../components/navigation/Navbar/Navbar';
-import { useAuth } from '../app/context/AuthContext.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 
 /** Layout del panel de administración: Navbar admin + contenido de la ruta. */
 const AdminLayout = () => {

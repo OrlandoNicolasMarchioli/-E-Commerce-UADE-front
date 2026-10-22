@@ -1,110 +1,115 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../app/context/AuthContext.jsx';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+import { useState } from 'react';
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+import { useAuth } from '../../app/context/AuthContext';
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  // Solo permitir redirecciones a rutas internas.
+  const requestedDestination = location.state?.from;
+  const destination =
+    typeof requestedDestination === 'string' &&
+    requestedDestination.startsWith('/') &&
+    !requestedDestination.startsWith('//')
+      ? requestedDestination
+      : '/';
+
+  if (isAuthenticated) {
+    return <Navigate to={destination} replace />;
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (loading) return;
+
     setLoading(true);
+    setError('');
 
     try {
-      const response = await fetch('../../../public/data/users.json');
-
-      if (!response.ok) {
-        throw new Error('No se pudieron cargar los usuarios.');
-      }
-
-      const users = await response.json();
-
-      const user = users.find(
-        (u) =>
-          u.email.toLowerCase() === email.trim().toLowerCase() &&
-          u.isEnabled
-      );
-
-      if (!user || !password.trim()) {
-        throw new Error('Email o contraseña incorrectos.');
-      }
-
-      // Datos temporales para adaptar el resultado al contexto de auth.
-      const authResponse = {
-        token: `demo-${user.id}`,
-        user: {
-          ...user,
-          role: 'USER',
-        },
-      };
-
-      login(authResponse);
-      navigate('/', { replace: true });
+      await login(email.trim(), password);
+      navigate(destination, { replace: true });
     } catch (err) {
-      setError(
-        err instanceof TypeError
-          ? 'No se pudieron cargar los usuarios.'
-          : err.message
-      );
+      setError(err.message || 'No se pudo iniciar sesión.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className="page-container">
-      <h1>Iniciar sesión</h1>
+    <div className="p2-auth">
+      <div className="ui-auth-card">
+        <p className="p2-demo-note">
+          Modo demostración: datos de /public/data/, sin autenticación real.
+        </p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="ui-form-group">
-          <label className="ui-label" htmlFor="email">
-            Email
-          </label>
+        <h1>Iniciar sesión</h1>
+
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: 'grid', gap: 14 }}
+        >
+          <label htmlFor="login-email">Email</label>
           <input
-            id="email"
             className="ui-input"
+            id="login-email"
             type="email"
-            autoComplete="username"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
           />
-        </div>
 
-        <div className="ui-form-group">
-          <label className="ui-label" htmlFor="password">
-            Contraseña
-          </label>
+          <label htmlFor="login-password">Contraseña</label>
           <input
-            id="password"
             className="ui-input"
+            id="login-password"
             type="password"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
           />
-        </div>
 
-        {error && <p role="alert">{error}</p>}
+          {error && (
+            <p role="alert" className="ui-auth-error">
+              {error}
+            </p>
+          )}
 
-        <button
-          className="ui-btn ui-btn--primary ui-btn--md"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Ingresando...' : 'Iniciar sesión'}
-        </button>
-      </form>
-    </section>
+          <button
+            className="ui-btn ui-btn--primary ui-btn--md"
+            disabled={loading}
+            type="submit"
+          >
+            {loading ? 'Ingresando…' : 'Ingresar'}
+          </button>
+        </form>
+
+        <p>
+          ¿No tenés cuenta?{' '}
+          <Link
+            to="/register"
+            state={{ from: destination }}
+          >
+            Registrate
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 };
 

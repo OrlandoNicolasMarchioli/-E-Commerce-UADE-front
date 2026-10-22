@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './app/Layout';
 import AdminLayout from './app/AdminLayout';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/SearchPage';
 import CategoryPage from './pages/CategoryPage/CategoryPage';
@@ -18,26 +19,28 @@ import AdminUsersPage from './pages/AdminUsersPage/AdminUsersPage';
 import AdminOrdersPage from './pages/AdminOrdersPage/AdminOrdersPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
-/** Mapa de rutas de la app (coincide con docs/02-matriz-cobertura.md). */
 function App() {
   return (
     <Routes>
-      {/* Zona pública y de usuario */}
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="category/:id" element={<CategoryPage />} />
         <Route path="products/:id" element={<ProductDetailPage />} />
-        <Route path="cart" element={<CartPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="my-orders" element={<MyOrdersPage />} />
-        <Route path="my-orders/:id" element={<OrderDetailPage />} />
+
+        {/* Parte 2: carrito e historial solamente para sesiones autenticadas. */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="cart" element={<CartPage />} />
+          <Route path="my-orders" element={<MyOrdersPage />} />
+          <Route path="my-orders/:id" element={<OrderDetailPage />} />
+        </Route>
         <Route path="profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 
-      {/* Panel de administración */}
+      {/* Protección por rol ADMIN pendiente para la Parte 3, como acordamos. */}
       <Route path="admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="products" replace />} />
         <Route path="products" element={<AdminProductsPage />} />

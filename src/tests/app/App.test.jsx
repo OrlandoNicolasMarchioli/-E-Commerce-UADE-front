@@ -1,7 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import App from '../../App';
+import { makeStore } from '../../store';
 import { AuthProvider } from '../../context/AuthContext';
 import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
@@ -19,9 +21,11 @@ const settleHome = async () => {
 
 const renderAt = (path) =>
   render(
-    <MemoryRouter initialEntries={[path]}>
-      <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
-    </MemoryRouter>,
+    <Provider store={makeStore()}>
+      <MemoryRouter initialEntries={[path]}>
+        <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
+      </MemoryRouter>
+    </Provider>,
   );
 
 describe('App · rutas', () => {

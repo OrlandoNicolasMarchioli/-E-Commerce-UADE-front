@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import MyOrdersPage from './pages/MyOrdersPage/MyOrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage/OrderDetailPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import FavoritesPage from './pages/FavoritesPage/FavoritesPage';
 import AdminProductsPage from './pages/AdminProductsPage/AdminProductsPage';
 import ProductFormPage from './pages/ProductFormPage/ProductFormPage';
 import AdminCategoriesPage from './pages/AdminCategoriesPage/AdminCategoriesPage';
@@ -29,6 +30,7 @@ function App() {
         <Route path="products/:id" element={<ProductDetailPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="favorites" element={<FavoritesPage />} />
 
         {/* Parte 2: carrito e historial solamente para sesiones autenticadas. */}
         <Route element={<ProtectedRoute />}>

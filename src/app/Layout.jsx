@@ -1,13 +1,15 @@
+import { useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from '../components/navigation/Navbar/Navbar';
 import Footer from '../components/layout/Footer/Footer';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { selectFavoritesCount } from '../store/favoritesSlice';
 
 const FOOTER_COLUMNS = [
   { heading: 'Shop', links: [
     { label: 'Home', href: '/' }, { label: 'Search products', href: '/search' },
-    { label: 'My cart', href: '/cart' },
+    { label: 'My cart', href: '/cart' }, { label: 'Mis favoritos', href: '/favorites' },
   ] },
   { heading: 'Account', links: [
     { label: 'Sign in', href: '/login' }, { label: 'Sign up', href: '/register' },
@@ -20,6 +22,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { count } = useCart();
+  const favoritesCount = useSelector(selectFavoritesCount);
 
   const signOut = () => {
     logout();
@@ -27,7 +30,8 @@ const Layout = () => {
   };
   return (
     <div className="app-shell">
-      <Navbar user={user} cartCount={count} onNavigate={navigate} onLogout={signOut}
+      <Navbar user={user} cartCount={count} favoritesCount={favoritesCount}
+        onFavorites={() => navigate('/favorites')} onNavigate={navigate} onLogout={signOut}
         onSearch={(q) => navigate(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : '/search')}
         onCart={() => navigate('/cart')} onLogin={() => navigate('/login')}
         onRegister={() => navigate('/register')} />

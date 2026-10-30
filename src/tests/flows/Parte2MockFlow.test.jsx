@@ -2,7 +2,9 @@ import { beforeEach, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import App from '../../App';
+import { makeStore } from '../../store';
 import { AuthProvider } from '../../context/AuthContext';
 import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
@@ -15,9 +17,11 @@ beforeEach(() => {
 });
 
 const renderRoute = (path) => render(
-  <MemoryRouter initialEntries={[path]}>
-    <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
-  </MemoryRouter>,
+  <Provider store={makeStore()}>
+    <MemoryRouter initialEntries={[path]}>
+      <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
+    </MemoryRouter>
+  </Provider>,
 );
 
 it('la ruta /cart sin sesión demostrativa redirige al login', () => {

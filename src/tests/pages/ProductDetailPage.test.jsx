@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import ProductDetailPage from '../../pages/ProductDetailPage/ProductDetailPage';
+import { makeStore } from '../../store';
 import { AuthProvider } from '../../context/AuthContext';
 import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
@@ -18,14 +20,16 @@ const Where = () => <div data-testid="where">{useLocation().pathname}</div>;
 
 const renderAt = (path) =>
   render(
-    <MemoryRouter initialEntries={[path]}>
-      <AuthProvider><CartProvider>
-        <Routes>
-          <Route path="/products/:id" element={<ProductDetailPage />} />
-          <Route path="*" element={<Where />} />
-        </Routes>
-      </CartProvider></AuthProvider>
-    </MemoryRouter>,
+    <Provider store={makeStore()}>
+      <MemoryRouter initialEntries={[path]}>
+        <AuthProvider><CartProvider>
+          <Routes>
+            <Route path="/products/:id" element={<ProductDetailPage />} />
+            <Route path="*" element={<Where />} />
+          </Routes>
+        </CartProvider></AuthProvider>
+      </MemoryRouter>
+    </Provider>,
   );
 
 // Espera a que termine la carga (el título del producto es el h1)

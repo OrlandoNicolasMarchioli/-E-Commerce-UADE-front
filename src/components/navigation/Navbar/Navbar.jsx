@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import '../../ui.css';
 
-// onLogout es opcional para no romper la demo ni las pruebas de componentes.
-const Navbar = ({ user = null, cartCount = 0, isAdmin = false,
-  onSearch, onCart, onLogin, onRegister, onLogout, onNavigate }) => {
+// onLogout y onFavorites son opcionales para no romper la demo ni las pruebas de componentes.
+const Navbar = ({ user = null, cartCount = 0, favoritesCount = 0, isAdmin = false,
+  onSearch, onCart, onFavorites, onLogin, onRegister, onLogout, onNavigate }) => {
   const [query, setQuery] = useState('');
   const link = (path) => ({
     href: onNavigate ? path : '#',
@@ -52,6 +52,11 @@ const Navbar = ({ user = null, cartCount = 0, isAdmin = false,
             <button className="ui-btn ui-btn--ghost ui-btn--sm" onClick={onLogin}>Sign in</button>
             <button className="ui-btn ui-btn--accent ui-btn--sm" onClick={onRegister}>Sign up</button>
           </>
+        )}
+        {onFavorites && (
+          <button className="ui-navbar-cart" onClick={onFavorites} aria-label={`Favoritos (${favoritesCount})`}>
+            ♥{favoritesCount > 0 && <span className="ui-cart-badge">{favoritesCount}</span>}
+          </button>
         )}
         <button className="ui-navbar-cart" onClick={onCart} aria-label={`Cart (${cartCount} items)`}>
           🛒{cartCount > 0 && <span className="ui-cart-badge">{cartCount}</span>}

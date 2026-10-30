@@ -5,6 +5,7 @@ import ProductImageGallery from '../../components/products/ProductImageGallery/P
 import ProductInfo from '../../components/products/ProductInfo/ProductInfo';
 import ProductNotFound from '../../components/products/ProductNotFound/ProductNotFound';
 import BuyPanel from '../../components/products/BuyPanel/BuyPanel';
+import FavoriteButton from '../../components/favorites/FavoriteButton/FavoriteButton';
 import ProductReviews from '../../components/reviews/ProductReviews/ProductReviews';
 import ToastContainer, { useToast } from '../../components/overlays/Toast/ToastContainer';
 import Button from '../../components/primitives/Button/Button';
@@ -73,6 +74,9 @@ const ProductDetailPage = () => {
         <aside className="pd-buy">
           <BuyPanel key={product.id} product={{ ...product, seller }}
             onBuy={handleBuy} onAddToCart={handleAddToCart} />
+          <div className="pd-favorite">
+            <FavoriteButton product={product} imageUrl={images[0]?.url} />
+          </div>
         </aside>
       </div>
       <ProductReviews reviews={reviews} />

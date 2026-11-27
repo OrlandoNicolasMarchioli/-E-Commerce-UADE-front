@@ -9,6 +9,7 @@ import { AuthProvider } from '../../context/AuthContext';
 import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
 import { clearMockCache } from '../../services/api/mockClient';
+import { createMockToken } from '../../services/mockToken';
 
 beforeEach(() => {
   localStorage.clear();
@@ -16,8 +17,8 @@ beforeEach(() => {
   stubDataFetch();
 });
 
-const renderRoute = (path) => render(
-  <Provider store={makeStore()}>
+const renderRoute = (path, preloadedState) => render(
+  <Provider store={makeStore(preloadedState)}>
     <MemoryRouter initialEntries={[path]}>
       <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
     </MemoryRouter>
@@ -31,9 +32,10 @@ it('la ruta /cart sin sesión demostrativa redirige al login', () => {
 
 it('usuario mock agrega al carrito y confirma una compra simulada', async () => {
   const users = await (await fetch('/data/users.json')).json();
-  localStorage.setItem('uade_mock_session', JSON.stringify(users[0]));
+  // La sesión ahora vive en el authSlice: se arranca con el usuario ya logueado.
+  const session = { token: createMockToken(users[0]), user: users[0], status: 'succeeded', error: null };
   const user = userEvent.setup();
-  renderRoute('/products/1');
+  renderRoute('/products/1', { auth: session });
   expect(await screen.findByRole('heading', { name: /Notebook Lenovo/ })).toBeInTheDocument();
   await user.click(screen.getByRole('button', { name: 'Add to cart' }));
   expect(await screen.findByText('Agregado al carrito')).toBeInTheDocument();

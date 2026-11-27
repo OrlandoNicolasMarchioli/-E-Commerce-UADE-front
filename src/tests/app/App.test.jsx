@@ -140,3 +140,29 @@ it('el carrito sin sesión redirige a login', async () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Admin · Usuarios' })).toBeInTheDocument();
   });
 });
+
+describe('App · preferencias', () => {
+  it('el botón de tema de la navbar cambia el tema de toda la página', async () => {
+    const user = userEvent.setup();
+    renderAt('/');
+    expect(document.documentElement.dataset.theme).toBe('light');
+    await user.click(screen.getByRole('button', { name: 'Activar tema oscuro' }));
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(screen.getByRole('button', { name: 'Activar tema claro' })).toBeInTheDocument();
+    await settleHome();
+  });
+
+  it('la búsqueda hecha desde la navbar queda guardada para la sesión', async () => {
+    const user = userEvent.setup();
+    const store = makeStore();
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <CartProvider><App /></CartProvider>
+        </MemoryRouter>
+      </Provider>,
+    );
+    await user.type(screen.getByPlaceholderText('Search products...'), 'notebook{Enter}');
+    expect(store.getState().search.lastQuery).toBe('notebook');
+  });
+});

@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { persistStore } from 'redux-persist';
 import { makeStore } from '../../store';
 import { login, logout, selectAuthUser, selectIsAuthenticated } from '../../store/authSlice';
+import { selectTheme, toggleTheme } from '../../store/preferencesSlice';
+import { selectLastQuery, setLastQuery } from '../../store/searchSlice';
 import { createMockToken } from '../../services/mockToken';
 import { clearMockCache } from '../../services/api/mockClient';
 import { stubDataFetch } from '../../test/mockDataFetch';
@@ -76,5 +78,40 @@ describe('persistencia de la sesión (authSlice)', () => {
 
     expect(app.store.getState().auth).toMatchObject({ token: null, user: null });
     expect(savedAuth()).toMatchObject({ token: null, user: null });
+  });
+});
+
+describe('persistencia de datos no sensibles', () => {
+  it('el tema elegido sobrevive a un F5 y queda en localStorage', async () => {
+    const first = await startApp();
+    first.store.dispatch(toggleTheme());
+    await first.persistor.flush();
+
+    expect(localStorage.getItem('persist:preferences')).toContain('dark');
+    const afterF5 = await startApp();
+    expect(selectTheme(afterF5.store.getState())).toBe('dark');
+  });
+
+  it('la última búsqueda va a sessionStorage, no a localStorage, y sobrevive a un F5', async () => {
+    const first = await startApp();
+    first.store.dispatch(setLastQuery('notebook'));
+    await first.persistor.flush();
+
+    expect(sessionStorage.getItem('persist:search')).toContain('notebook');
+    expect(localStorage.getItem('persist:search')).toBeNull();
+    const afterF5 = await startApp();
+    expect(selectLastQuery(afterF5.store.getState())).toBe('notebook');
+  });
+
+  it('al cerrar la pestaña se pierde la búsqueda pero no el tema', async () => {
+    const first = await startApp();
+    first.store.dispatch(toggleTheme());
+    first.store.dispatch(setLastQuery('notebook'));
+    await first.persistor.flush();
+
+    sessionStorage.clear(); // Es lo que hace el navegador al cerrar la pestaña.
+    const newTab = await startApp();
+    expect(selectLastQuery(newTab.store.getState())).toBe('');
+    expect(selectTheme(newTab.store.getState())).toBe('dark');
   });
 });

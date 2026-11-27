@@ -1,4 +1,7 @@
+import { useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { selectTheme } from './store/preferencesSlice';
 import Layout from './app/Layout';
 import AdminLayout from './app/AdminLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -21,6 +24,14 @@ import AdminOrdersPage from './pages/AdminOrdersPage/AdminOrdersPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
+  const theme = useSelector(selectTheme);
+
+  // El tema se aplica en <html> antes de pintar, para que después de un F5 no se vea
+  // un instante el tema claro antes del oscuro.
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
   return (
     <Routes>
       <Route element={<Layout />}>

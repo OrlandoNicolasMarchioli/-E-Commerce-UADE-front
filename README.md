@@ -146,6 +146,7 @@ docs/
 ├── 02-matriz-cobertura.md
 ├── 03-wireflow.md
 ├── 04-design-system.md
+├── 05-persistencia-y-seguridad.md   # TPG: redux-persist, XSS y CSRF
 └── mockups/
     └── 00-tokens.html … 18-component-library.html
 ```

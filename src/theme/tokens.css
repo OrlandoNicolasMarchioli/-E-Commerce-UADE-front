@@ -153,3 +153,52 @@
   --bp-xl:  1280px;
   --bp-2xl: 1536px;
 }
+
+/* ── TEMA OSCURO ──────────────────────────────────────────────────────────────
+   Se activa con data-theme="dark" en <html>. La preferencia la guarda el
+   preferencesSlice en localStorage, así se mantiene después de un F5.
+   Los componentes usan la escala de neutros siempre igual (0-200 para fondos,
+   500-900 para textos), así que alcanza con invertirla. El azul de marca se
+   aclara para que se lea como texto sobre fondo oscuro y siga teniendo buen
+   contraste con texto blanco encima (4.87:1). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-brand-primary:        #3570C9;
+  --color-brand-primary-hover:  #2B5FAE;
+  --color-brand-primary-light:  #4D8FDB;
+  --color-brand-secondary:      #3A78D6;
+  --color-brand-secondary-hover:#3570C9;
+
+  --color-neutral-0:   #161B22;
+  --color-neutral-50:  #0D1117;
+  --color-neutral-100: #1C2128;
+  --color-neutral-200: #262C36;
+  --color-neutral-300: #30363D;
+  --color-neutral-400: #484F58;
+  --color-neutral-500: #8B949E;
+  --color-neutral-600: #9DA7B3;
+  --color-neutral-700: #C9D1D9;
+  --color-neutral-800: #D8DEE4;
+  --color-neutral-900: #E6EDF3;
+
+  --color-surface-page:    #0D1117;
+  --color-surface-card:    #161B22;
+  --color-text-primary:    #E6EDF3;
+  --color-text-secondary:  #9DA7B3;
+  --color-text-disabled:   #6E7681;
+  --color-text-link:       #58A6FF;
+  --color-text-link-hover: #79B8FF;
+  --color-border-default:  #30363D;
+  --color-border-strong:   #484F58;
+}
+
+/* Fondos que no salen de un token y quedarían claros en el tema oscuro. */
+:root[data-theme="dark"] body { background: #0D1117; }
+:root[data-theme="dark"] .ui-type-opt--active,
+:root[data-theme="dark"] .ui-pn-item--active { background: rgba(53, 112, 201, 0.18); }
+:root[data-theme="dark"] .ui-pc-out-overlay { background: rgba(13, 17, 23, 0.6); }
+/* La navbar y el banner usan el azul de marca de fondo: en oscuro conservan el navy
+   original, que con texto blanco se lee igual de bien y no encandila. */
+:root[data-theme="dark"] .ui-navbar { background: var(--color-surface-navbar); }
+:root[data-theme="dark"] .ui-hero { background: linear-gradient(135deg, #002D62 0%, #004B9D 60%, #0070C0 100%); }

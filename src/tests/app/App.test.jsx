@@ -7,6 +7,7 @@ import { makeStore } from '../../store';
 import { AuthProvider } from '../../context/AuthContext';
 import { CartProvider } from '../../context/CartContext';
 import { stubDataFetch } from '../../test/mockDataFetch';
+import { createMockToken } from '../../services/mockToken';
 
 beforeEach(() => {
   localStorage.clear(); // Aísla sesiones entre pruebas.
@@ -19,9 +20,17 @@ const settleHome = async () => {
   await screen.findByRole('tab', { name: 'Tecnología' });
 };
 
-const renderAt = (path) =>
+// El panel admin exige una sesión con rol ADMIN (AdminLayout). Los usuarios de prueba
+// de users.json todavía no traen el rol, así que la sesión se arma acá.
+const ADMIN = {
+  id: 1, firstName: 'Nicolas', lastName: 'Marchioli', email: 'nicolasmarchioli@uade.edu.ar',
+  regNumber: '1000001', registrationDate: '2026-08-01T09:00:00', isEnabled: true, role: 'ADMIN',
+};
+const sessionOf = (user) => ({ auth: { token: createMockToken(user), user, status: 'succeeded', error: null } });
+
+const renderAt = (path, preloadedState) =>
   render(
-    <Provider store={makeStore()}>
+    <Provider store={makeStore(preloadedState)}>
       <MemoryRouter initialEntries={[path]}>
         <AuthProvider><CartProvider><App /></CartProvider></AuthProvider>
       </MemoryRouter>
@@ -45,22 +54,39 @@ describe('App · rutas', () => {
   });
 
   it.each([
-    ['/admin/products', 'Admin · Productos'],
+    ['/admin/products', 'Gestión de Productos'],
     ['/admin/products/new', 'Admin · Alta / edición de producto'],
     ['/admin/products/3/edit', 'Admin · Alta / edición de producto'],
-    ['/admin/categories', 'Admin · Categorías'],
-    ['/admin/users', 'Admin · Usuarios'],
-    ['/admin/orders', 'Admin · Pedidos'],
-  ])('%s muestra "%s" dentro del layout admin', (path, title) => {
-    renderAt(path);
-    expect(screen.getByRole('heading', { level: 1, name: title })).toBeInTheDocument();
+    ['/admin/categories', 'Gestión de Categorías'],
+    ['/admin/users', 'Gestión de Usuarios'],
+    ['/admin/orders', 'Gestión de Pedidos'],
+  ])('%s muestra "%s" dentro del layout admin', async (path, title) => {
+    renderAt(path, sessionOf(ADMIN));
+    expect(await screen.findByRole('heading', { level: 1, name: title })).toBeInTheDocument();
     expect(screen.getByText('ADMIN')).toBeInTheDocument();
     expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument();
   });
 
-  it('/admin redirige a /admin/products', () => {
-    renderAt('/admin');
-    expect(screen.getByRole('heading', { level: 1, name: 'Admin · Productos' })).toBeInTheDocument();
+  it('/admin redirige a /admin/products', async () => {
+    renderAt('/admin', sessionOf(ADMIN));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Gestión de Productos' })).toBeInTheDocument();
+  });
+
+  it('/admin sin sesión manda al login', () => {
+    renderAt('/admin/products');
+    expect(screen.getByRole('heading', { level: 1, name: 'Iniciar sesión' })).toBeInTheDocument();
+  });
+
+  it('/admin con un usuario que no es ADMIN vuelve al Home', async () => {
+    renderAt('/admin/products', sessionOf({ ...ADMIN, id: 2, role: 'USER' }));
+    expect(screen.getByRole('heading', { level: 1, name: 'Todo lo que necesitás en un solo lugar' })).toBeInTheDocument();
+    await settleHome();
+  });
+
+  it('/admin con el token vencido manda al login', () => {
+    const expired = { ...sessionOf(ADMIN).auth, token: createMockToken(ADMIN, Date.now() - 2 * 60 * 60 * 1000) };
+    renderAt('/admin/products', { auth: expired });
+    expect(screen.getByRole('heading', { level: 1, name: 'Iniciar sesión' })).toBeInTheDocument();
   });
 
   it('una ruta inexistente muestra la página 404 con el layout público', () => {
@@ -133,10 +159,36 @@ it('el carrito sin sesión redirige a login', async () => {
 
   it('los links de la Navbar admin navegan entre secciones', async () => {
     const user = userEvent.setup();
-    renderAt('/admin/products');
-    await user.click(screen.getByRole('link', { name: 'Categories' }));
-    expect(screen.getByRole('heading', { level: 1, name: 'Admin · Categorías' })).toBeInTheDocument();
+    renderAt('/admin/products', sessionOf(ADMIN));
+    await user.click(await screen.findByRole('link', { name: 'Categories' }));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Gestión de Categorías' })).toBeInTheDocument();
     await user.click(screen.getByRole('link', { name: 'Users' }));
-    expect(screen.getByRole('heading', { level: 1, name: 'Admin · Usuarios' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Gestión de Usuarios' })).toBeInTheDocument();
+  });
+});
+
+describe('App · preferencias', () => {
+  it('el botón de tema de la navbar cambia el tema de toda la página', async () => {
+    const user = userEvent.setup();
+    renderAt('/');
+    expect(document.documentElement.dataset.theme).toBe('light');
+    await user.click(screen.getByRole('button', { name: 'Activar tema oscuro' }));
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(screen.getByRole('button', { name: 'Activar tema claro' })).toBeInTheDocument();
+    await settleHome();
+  });
+
+  it('la búsqueda hecha desde la navbar queda guardada para la sesión', async () => {
+    const user = userEvent.setup();
+    const store = makeStore();
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <CartProvider><App /></CartProvider>
+        </MemoryRouter>
+      </Provider>,
+    );
+    await user.type(screen.getByPlaceholderText('Search products...'), 'notebook{Enter}');
+    expect(store.getState().search.lastQuery).toBe('notebook');
   });
 });

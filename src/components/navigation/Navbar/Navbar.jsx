@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import '../../ui.css';
 
-// onLogout y onFavorites son opcionales para no romper la demo ni las pruebas de componentes.
+// onLogout, onFavorites y onToggleTheme son opcionales para no romper la demo ni las pruebas de componentes.
 const Navbar = ({ user = null, cartCount = 0, favoritesCount = 0, isAdmin = false,
-  onSearch, onCart, onFavorites, onLogin, onRegister, onLogout, onNavigate }) => {
-  const [query, setQuery] = useState('');
+  theme = 'light', defaultQuery = '',
+  onSearch, onCart, onFavorites, onLogin, onRegister, onLogout, onNavigate, onToggleTheme }) => {
+  // Arranca con la última búsqueda guardada (si la hay), así no se pierde con un F5.
+  const [query, setQuery] = useState(defaultQuery);
+  const themeButton = onToggleTheme && (
+    <button className="ui-navbar-cart" onClick={onToggleTheme} aria-pressed={theme === 'dark'}
+      aria-label={theme === 'dark' ? 'Activar tema claro' : 'Activar tema oscuro'}>
+      {theme === 'dark' ? '☀' : '☾'}
+    </button>
+  );
   const link = (path) => ({
     href: onNavigate ? path : '#',
     onClick: (e) => {
@@ -21,6 +29,7 @@ const Navbar = ({ user = null, cartCount = 0, favoritesCount = 0, isAdmin = fals
           <a className="ui-navbar-link" {...link('/admin/products')}>Products</a>
           <a className="ui-navbar-link" {...link('/admin/orders')}>Orders</a>
           <a className="ui-navbar-link" {...link('/admin/users')}>Users</a>
+          {themeButton}
           {user && <span className="ui-navbar-link" style={{ color: '#fff', fontWeight: 700 }}>
             {user.firstName} ▾
           </span>}
@@ -53,6 +62,7 @@ const Navbar = ({ user = null, cartCount = 0, favoritesCount = 0, isAdmin = fals
             <button className="ui-btn ui-btn--accent ui-btn--sm" onClick={onRegister}>Sign up</button>
           </>
         )}
+        {themeButton}
         {onFavorites && (
           <button className="ui-navbar-cart" onClick={onFavorites} aria-label={`Favoritos (${favoritesCount})`}>
             ♥{favoritesCount > 0 && <span className="ui-cart-badge">{favoritesCount}</span>}

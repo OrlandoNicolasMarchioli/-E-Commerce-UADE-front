@@ -41,3 +41,29 @@ describe('Navbar · onNavigate', () => {
   });
 });
 
+describe('Navbar · tema y búsqueda guardada', () => {
+  it('sin onToggleTheme no muestra el botón de tema', () => {
+    render(<Navbar />);
+    expect(screen.queryByRole('button', { name: /Activar tema/ })).not.toBeInTheDocument();
+  });
+
+  it('en tema claro ofrece pasar al oscuro y avisa el click', async () => {
+    const onToggleTheme = vi.fn();
+    const user = userEvent.setup();
+    render(<Navbar theme="light" onToggleTheme={onToggleTheme} />);
+    const button = screen.getByRole('button', { name: 'Activar tema oscuro' });
+    expect(button).toHaveAttribute('aria-pressed', 'false');
+    await user.click(button);
+    expect(onToggleTheme).toHaveBeenCalledTimes(1);
+  });
+
+  it('en tema oscuro ofrece volver al claro, también en la navbar admin', () => {
+    render(<Navbar isAdmin user={{ firstName: 'Admin' }} theme="dark" onToggleTheme={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Activar tema claro' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('el buscador arranca con la última búsqueda guardada', () => {
+    render(<Navbar defaultQuery="notebook" />);
+    expect(screen.getByPlaceholderText('Search products...')).toHaveValue('notebook');
+  });
+});
